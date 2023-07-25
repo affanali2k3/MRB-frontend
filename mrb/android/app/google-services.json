@@ -1,0 +1,76 @@
+{
+  "project_info": {
+    "project_number": "736165935195",
+    "project_id": "my-referral-business-6124a",
+    "storage_bucket": "my-referral-business-6124a.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:736165935195:android:d36b6fcb47140d94a6277e",
+        "android_client_info": {
+          "package_name": "com.example.mrb"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "736165935195-7d5pfgj3k3and3nnvsvql2p35oqqtjkj.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.mrb",
+            "certificate_hash": "1f0f203eaf896257ce6e9dc51936fee1f2321ba4"
+          }
+        },
+        {
+          "client_id": "736165935195-rcg14sfo42mjp21egv69llpc5nuuo228.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDWo5eCGuWMdKV0C8pK-xdMQt8QptEwkG8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "736165935195-rcg14sfo42mjp21egv69llpc5nuuo228.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:736165935195:android:f334f221de973c3da6277e",
+        "android_client_info": {
+          "package_name": "com.example.mrb_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "736165935195-rcg14sfo42mjp21egv69llpc5nuuo228.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDWo5eCGuWMdKV0C8pK-xdMQt8QptEwkG8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "736165935195-rcg14sfo42mjp21egv69llpc5nuuo228.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
