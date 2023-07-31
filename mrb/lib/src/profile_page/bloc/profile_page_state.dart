@@ -17,12 +17,16 @@ class ProfilePageSuccessState extends ProfilePageState {
       required this.phone,
       required this.occupation,
       required this.gender});
-  final String ssn;
-  final String email;
-  final String name;
-  final String licence;
-  final String photo;
-  final String phone;
-  final String occupation;
-  final String gender;
+  final String? ssn;
+  final String? email;
+  final String? name;
+  final String? licence;
+  final String? photo;
+  final String? phone;
+  final String? occupation;
+  final String? gender;
+
+  @override
+  List<Object?> get props =>
+      [ssn, email, name, licence, photo, phone, occupation, gender];
 }

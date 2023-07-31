@@ -1,19 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:mrb/profile/bloc/profile_bloc.dart';
-import 'package:mrb/profile/bloc/profile_event.dart';
-import 'package:mrb/profile/bloc/profile_state.dart';
-import 'package:mrb/profile_page/bloc/profile_page_bloc.dart';
-import 'package:mrb/profile_page/bloc/profile_page_event.dart';
-import 'package:mrb/profile_page/view/profile_page_view.dart';
+import 'package:mrb/src/edit_profile/bloc/edit_profile_bloc.dart';
+import 'package:mrb/src/edit_profile/bloc/edit_profile_event.dart';
+import 'package:mrb/src/edit_profile/bloc/edit_profile_state.dart';
+import 'package:mrb/src/profile_page/bloc/profile_page_bloc.dart';
+import 'package:mrb/src/profile_page/bloc/profile_page_event.dart';
+import 'package:mrb/src/profile_page/view/profile_page_view.dart';
 
+// ignore: must_be_immutable
 class ProfileEditPage extends StatelessWidget {
+  String jobTime = 'Part time';
   final _name = TextEditingController();
   final _ssn = TextEditingController();
   final _licence = TextEditingController();
   final _phone = TextEditingController();
   final _occupation = TextEditingController();
   final _gender = TextEditingController();
+  final _address = TextEditingController();
 
   ProfileEditPage({super.key});
   @override
@@ -53,6 +56,23 @@ class ProfileEditPage extends StatelessWidget {
             controller: _gender,
             decoration: const InputDecoration(hintText: 'Gender'),
           ),
+          TextField(
+            controller: _address,
+            decoration: const InputDecoration(hintText: 'Address'),
+          ),
+          DropdownButton(
+              value: jobTime,
+              items: [
+                DropdownMenuItem(
+                  child: Text('Part time'),
+                  value: 'Part time',
+                ),
+                DropdownMenuItem(
+                  child: Text('Full time'),
+                  value: 'Full time',
+                )
+              ],
+              onChanged: (s) {}),
           ElevatedButton(
               onPressed: () {
                 context.read<ProfileBloc>().add(ProfileSetEvent(

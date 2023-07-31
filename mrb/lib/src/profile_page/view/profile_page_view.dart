@@ -2,11 +2,9 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:mrb/profile/bloc/profile_bloc.dart';
-import 'package:mrb/profile/bloc/profile_event.dart';
-import 'package:mrb/profile/view/profile_view.dart';
-import 'package:mrb/profile_page/bloc/profile_page_bloc.dart';
-import 'package:mrb/profile_page/bloc/profile_page_state.dart';
+import 'package:mrb/src/edit_profile/view/edit_profile_view.dart';
+import 'package:mrb/src/profile_page/bloc/profile_page_bloc.dart';
+import 'package:mrb/src/profile_page/bloc/profile_page_state.dart';
 
 class ProfilePage extends StatelessWidget {
   const ProfilePage({super.key});
@@ -15,6 +13,7 @@ class ProfilePage extends StatelessWidget {
     return Scaffold(body: BlocBuilder<ProfilePageBloc, ProfilePageState>(
         builder: (context, state) {
       if (state is ProfilePageLoadingState) {
+        print('Loading');
         return const Center(
           child: CircularProgressIndicator(),
         );
@@ -23,7 +22,11 @@ class ProfilePage extends StatelessWidget {
           mainAxisSize: MainAxisSize.max,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Image.memory(base64Decode(state.photo)),
+            Container(
+              child: state.photo == null
+                  ? null
+                  : Image.memory(base64Decode(state.photo!)),
+            ),
             Text('Name: ${state.name}'),
             Text('Email: ${state.email} '),
             Text('SSN: ${state.ssn}'),
@@ -33,13 +36,6 @@ class ProfilePage extends StatelessWidget {
             Text('Phone ${state.phone}'),
             ElevatedButton(
                 onPressed: () {
-                  BlocProvider.of<ProfileBloc>(context).add(ProfileSetEvent(
-                      name: state.name,
-                      ssn: state.ssn,
-                      licence: state.licence,
-                      phone: state.phone,
-                      occupation: state.occupation,
-                      gender: state.gender));
                   Navigator.push(
                       context,
                       MaterialPageRoute(

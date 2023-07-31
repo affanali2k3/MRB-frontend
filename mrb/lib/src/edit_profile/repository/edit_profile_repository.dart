@@ -15,12 +15,15 @@ class ProfileRepository {
       required gender}) async {
     try {
       var request = http.MultipartRequest(
-          'POST', Uri.parse('${GlobalVariables.url}/user'));
+          'PATCH', Uri.parse('${GlobalVariables.url}/user/a'));
 
-      final httpImage = http.MultipartFile.fromBytes('avatar', buffer,
-          contentType: MediaType.parse(mimeType), filename: 'avatar.png');
+      if (buffer != null) {
+        final httpImage = http.MultipartFile.fromBytes('avatar', buffer,
+            contentType: MediaType.parse(mimeType), filename: 'avatar.png');
+        request.files.add(httpImage);
+      }
 
-      request.files.add(httpImage);
+      print(FirebaseAuth.instance.currentUser?.email);
       request.fields['name'] = name;
       request.fields['ssn'] = ssn;
       request.fields['licence'] = licence;
@@ -30,7 +33,8 @@ class ProfileRepository {
       request.fields['email'] = FirebaseAuth.instance.currentUser?.email ?? "";
 
       final response = await request.send();
-      print(response.stream.bytesToString());
+      final responseDate = await response.stream.bytesToString();
+      print(responseDate);
     } catch (e) {
       print(e);
     }
