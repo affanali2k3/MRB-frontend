@@ -11,4 +11,10 @@ class LoginLoginEvent extends LoginEvent {
   final String password;
 }
 
+class LoginGoogleLoginEvent extends LoginEvent {}
+
 class LoginLogoutEvent extends LoginEvent {}
+
+class ChangeLoginEvent extends LoginEvent {}
+
+class ChangeLogoutEvent extends LoginEvent {}

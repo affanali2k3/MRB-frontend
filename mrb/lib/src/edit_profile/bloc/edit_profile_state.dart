@@ -26,6 +26,47 @@ abstract class ProfileState extends Equatable {
       [mimeType, bytes, name, ssn, licence, phone, occupation, gender];
 }
 
+class ProfileSetSuccessState extends ProfileState {
+  const ProfileSetSuccessState({
+    required this.message,
+    required super.name,
+    required super.ssn,
+    required super.phone,
+    required super.occupation,
+    required super.gender,
+    required super.licence,
+     super.bytes,
+    super.mimeType
+  });
+  final String message;
+}
+
+class ProfileSetLoadingState extends ProfileState {
+  const ProfileSetLoadingState(
+      {required super.name,
+      required super.ssn,
+      required super.phone,
+      required super.occupation,
+      required super.gender,
+      required super.licence,
+      super.bytes,
+      super.mimeType});
+}
+
+class ProfileSetFailureState extends ProfileState {
+  const ProfileSetFailureState(
+      {required this.message,
+      required super.name,
+      required super.ssn,
+      required super.phone,
+      required super.occupation,
+      required super.gender,
+      required super.licence,
+      super.bytes,
+      super.mimeType});
+  final String message;
+}
+
 class ProfileInitial extends ProfileState {
   const ProfileInitial({
     required super.name,

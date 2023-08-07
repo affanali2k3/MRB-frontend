@@ -14,8 +14,13 @@ class RegistorBloc extends Bloc<RegistorEvent, RegistorState> {
 
   Future<bool> _signUpUser(RegistorSignUpEvent event, emit) async {
     try {
-      await FirebaseAuth.instance.createUserWithEmailAndPassword(
-          email: event.email, password: event.password);
+      final userCredentials = await FirebaseAuth.instance
+          .createUserWithEmailAndPassword(
+              email: event.email, password: event.password);
+      if (userCredentials.user != null) {
+        print('Email verification: ${userCredentials.user!.emailVerified}');
+        await userCredentials.user!.sendEmailVerification();
+      }
       repository.setProfile(email: event.email);
       emit(RegistorSuccessState());
       return true;

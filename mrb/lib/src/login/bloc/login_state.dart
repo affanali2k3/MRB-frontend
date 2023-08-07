@@ -5,7 +5,7 @@ abstract class LoginState extends Equatable {
   List<Object> get props => [];
 }
 
-class LoginInitialState extends LoginState {}
+class LoginLoggedOutState extends LoginState {}
 
 class LoginInvalidEmailState extends LoginState {
   LoginInvalidEmailState({required this.error});
@@ -14,6 +14,8 @@ class LoginInvalidEmailState extends LoginState {
   @override
   List<Object> get props => [error];
 }
+
+class LoginSuccessState extends LoginState {}
 
 class LoginInvalidPasswordState extends LoginState {
   LoginInvalidPasswordState({required this.error});

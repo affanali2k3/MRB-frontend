@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:mrb/src/common/outline_button.dart';
 import 'package:mrb/src/login/view/login.dart';
 import 'package:mrb/src/registor/bloc/registor_bloc.dart';
 import 'package:mrb/src/registor/bloc/registor_event.dart';
@@ -20,6 +21,13 @@ class RegistorPage extends StatelessWidget {
           mainAxisSize: MainAxisSize.max,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
+            const Text(
+              'Sign Up',
+              style: TextStyle(fontSize: 30, fontWeight: FontWeight.normal),
+            ),
+            const SizedBox(
+              height: 20,
+            ),
             TextField(
               decoration: InputDecoration(
                 hintText: 'Email',
@@ -49,30 +57,20 @@ class RegistorPage extends StatelessWidget {
             const SizedBox(
               height: 20,
             ),
-            Container(
-              width: double.infinity,
-              child: ElevatedButton(
-                  onPressed: () {
-                    context.read<RegistorBloc>().add(RegistorSignUpEvent(
-                        email: _email.text, password: _password.text));
-                  },
-                  child: const Text(
-                    'Sign In',
-                    style: TextStyle(fontSize: 20),
-                  )),
+            CustomOutlineButton(
+                onPressed: () => context.read<RegistorBloc>().add(
+                    RegistorSignUpEvent(
+                        email: _email.text, password: _password.text)),
+                text: 'Sign up'),
+            const SizedBox(
+              height: 20,
             ),
-            Container(
-              width: double.infinity,
-              child: ElevatedButton(
-                  onPressed: () {
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => LoginPage()));
-                  },
-                  child: const Text(
-                    'Log in',
-                    style: TextStyle(fontSize: 20),
-                  )),
-            )
+            CustomOutlineButton(
+              onPressed: () => Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => LoginPage())),
+              text: 'Login',
+              primary: false,
+            ),
           ],
         ),
       );
