@@ -23,7 +23,6 @@ class ProfileRepository {
       required phone,
       required gender}) async {
     try {
-      print(buffer);
       var request = http.MultipartRequest(
           'PATCH', Uri.parse('${GlobalVariables.url}/user/a'));
 

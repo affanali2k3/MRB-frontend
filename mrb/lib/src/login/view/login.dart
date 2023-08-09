@@ -101,6 +101,30 @@ class LoginPage extends StatelessWidget {
                         style: TextStyle(fontSize: 21),
                       )
                     ]))),
+            Container(
+                padding: const EdgeInsets.symmetric(horizontal: 40),
+                margin: const EdgeInsets.only(top: 30),
+                child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.white,
+                        foregroundColor: Colors.black,
+                        padding: const EdgeInsets.all(10),
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(15))),
+                    onPressed: () {},
+                    child: const Row(children: [
+                      SizedBox(
+                        width: 30,
+                        child: Image(image: AssetImage('assets/facebook.png')),
+                      ),
+                      SizedBox(
+                        width: 20,
+                      ),
+                      Text(
+                        'Facebook Login',
+                        style: TextStyle(fontSize: 21),
+                      )
+                    ]))),
           ],
         ),
       );
