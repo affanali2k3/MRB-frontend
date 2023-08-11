@@ -5,8 +5,11 @@ import 'package:mrb/global_variables.dart';
 class UserTimelineRepository {
   Future<Response> loadTimeline({required String email}) async {
     try {
+      print('a');
+
       final response =
           await http.get(Uri.parse('${GlobalVariables.url}/post/$email'));
+      print('b');
       return response;
     } catch (e) {
       throw Exception(e);

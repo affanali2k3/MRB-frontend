@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:mrb/src/user_timeline/model/post_model.dart';
 
 class UserTimelineState extends Equatable {
   @override
@@ -8,11 +9,12 @@ class UserTimelineState extends Equatable {
 class UserTimelineLoadingState extends UserTimelineState {}
 
 class UserTimelineSuccessState extends UserTimelineInitialState {
-  UserTimelineSuccessState({required this.message});
+  UserTimelineSuccessState({required this.message, required this.posts});
   final String message;
+  final List<PostModel> posts;
 
   @override
-  List<Object?> get props => [message];
+  List<Object?> get props => [message, posts];
 }
 
 class UserTimelineFailureState extends UserTimelineInitialState {

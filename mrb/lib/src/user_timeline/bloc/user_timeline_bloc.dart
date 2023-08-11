@@ -23,13 +23,14 @@ class UserTimelineBloc extends Bloc<UserTimelineEvent, UserTimelineState> {
           email: FirebaseAuth.instance.currentUser!.email!);
       final responseJson = json.decode(response.body);
       final List<dynamic> responseJsonData = responseJson['data'];
+      print(responseJsonData);
       final List<PostModel> posts = responseJsonData
           .map(
             (post) => PostModel.fromJson(post),
           )
           .toList();
       print(posts);
-      emit(UserTimelineSuccessState(message: 'Success'));
+      emit(UserTimelineSuccessState(message: 'Success', posts: posts));
     } catch (e) {
       emit(UserTimelineFailureState(error: e.toString()));
     }

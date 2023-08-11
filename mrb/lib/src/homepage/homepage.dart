@@ -9,6 +9,8 @@ import 'package:mrb/src/network_page/bloc/network_page_bloc.dart';
 import 'package:mrb/src/network_page/bloc/network_page_event.dart';
 import 'package:mrb/src/network_page/view/network_page_view.dart';
 import 'package:mrb/src/search_page/view/search_page_view.dart';
+import 'package:mrb/src/user_timeline/bloc/user_timeline_bloc.dart';
+import 'package:mrb/src/user_timeline/bloc/user_timeline_event.dart';
 import 'package:mrb/src/user_timeline/view/user_timeline_view.dart';
 
 class HomePage extends StatelessWidget {
@@ -59,6 +61,8 @@ class HomePage extends StatelessWidget {
             ),
             CustomOutlineButton(
                 onPressed: () {
+                  BlocProvider.of<UserTimelineBloc>(context)
+                      .add(UserTimelineLoadingEvent());
                   Navigator.push(
                       context,
                       MaterialPageRoute(
