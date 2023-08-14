@@ -5,12 +5,35 @@ import 'package:mrb/global_variables.dart';
 class UserTimelineRepository {
   Future<Response> loadTimeline({required String email}) async {
     try {
-      print('a');
-
       final response =
           await http.get(Uri.parse('${GlobalVariables.url}/post/$email'));
-      print('b');
       return response;
+    } catch (e) {
+      throw Exception(e);
+    }
+  }
+
+  Future<void> likePost({required String email, required String postId}) async {
+    try {
+      final response = await http.post(
+          Uri.parse('${GlobalVariables.url}/like/'),
+          body: {"userEmail": email, "postId": postId});
+      print(response.body);
+    } catch (e) {
+      throw Exception(e);
+    }
+  }
+
+  Future<void> removeLike({required String postId, required int likeId}) async {
+    try {
+      print('d');
+      final response = await http.delete(
+          Uri.parse(
+            '${GlobalVariables.url}/like/delete',
+          ),
+          body: {"postId": postId, "likeId": likeId.toString()});
+      print('e');
+      print(response.body);
     } catch (e) {
       throw Exception(e);
     }

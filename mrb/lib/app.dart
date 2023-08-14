@@ -13,6 +13,8 @@ import 'package:mrb/src/login/view/login.dart';
 import 'package:mrb/src/main_page/bloc/main_page_bloc.dart';
 import 'package:mrb/src/network_page/bloc/network_page_bloc.dart';
 import 'package:mrb/src/network_page/repository/network_page_repository.dart';
+import 'package:mrb/src/post_comments/bloc/post_comments_bloc.dart';
+import 'package:mrb/src/post_comments/repository/post_comments_repository.dart';
 import 'package:mrb/src/post_page/bloc/post_page_bloc.dart';
 import 'package:mrb/src/post_page/repository/post_page_repository.dart';
 import 'package:mrb/src/profile_page/bloc/profile_page_bloc.dart';
@@ -39,11 +41,15 @@ class App extends StatelessWidget {
           RepositoryProvider(create: (_) => ChatPageRepository()),
           RepositoryProvider(create: (_) => PostPageRepository()),
           RepositoryProvider(create: (_) => UserTimelineRepository()),
+          RepositoryProvider(create: (_) => PostCommentsRepository()),
         ],
         child: MultiBlocProvider(
             providers: [
               BlocProvider(
                   create: (_) => LoginBloc(repository: LoginRepository())),
+              BlocProvider(
+                  create: (_) =>
+                      PostCommentsBloc(repository: PostCommentsRepository())),
               BlocProvider(
                   create: (_) =>
                       UserTimelineBloc(repository: UserTimelineRepository())),

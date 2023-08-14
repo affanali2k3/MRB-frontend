@@ -5,4 +5,13 @@ class UserTimelineEvent extends Equatable {
   List<Object?> get props => [];
 }
 
-class UserTimelineLoadingEvent extends UserTimelineEvent {}
+class UserTimelinePostLikeEvent extends UserTimelineEvent {
+  UserTimelinePostLikeEvent({required this.index, required this.postId});
+  final int index;
+  final String postId;
+}
+
+class UserTimelineLoadingEvent extends UserTimelineEvent {
+  UserTimelineLoadingEvent({required this.userEmail});
+  final String userEmail;
+}

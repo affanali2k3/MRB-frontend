@@ -4,7 +4,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mrb/src/post_page/bloc/post_page_event.dart';
 import 'package:mrb/src/post_page/bloc/post_page_state.dart';
 import 'package:mrb/src/post_page/repository/post_page_repository.dart';
-import 'package:mrb/src/profile_page/bloc/profile_page_state.dart';
 
 class PostPageBloc extends Bloc<PostPageEvent, PostPageState> {
   PostPageBloc({required this.repository})

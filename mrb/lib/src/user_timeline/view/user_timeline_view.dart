@@ -3,7 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mrb/global_variables.dart';
 import 'package:mrb/src/common/snack_bar.dart';
+import 'package:mrb/src/post_comments/bloc/post_comments_bloc.dart';
+import 'package:mrb/src/post_comments/bloc/post_comments_event.dart';
+import 'package:mrb/src/post_comments/view/post_comment_view.dart';
 import 'package:mrb/src/user_timeline/bloc/user_timeline_bloc.dart';
+import 'package:mrb/src/user_timeline/bloc/user_timeline_event.dart';
 import 'package:mrb/src/user_timeline/bloc/user_timeline_state.dart';
 
 class UserTimelinePage extends StatelessWidget {
@@ -31,13 +35,44 @@ class UserTimelinePage extends StatelessWidget {
                 // height: 900,
                 child: Column(
                   children: [
-                    // Image.memory(state.posts[index].images[0].)
-                    SizedBox(
-                        height: 100,
-                        width: 300,
-                        child: Image.network(
-                            '${GlobalVariables.url}/post/${FirebaseAuth.instance.currentUser!.email}/${state.posts[index].name}/${state.posts[index].imagesName[0]}')),
-                    Text(state.posts[index].text ?? "")
+                    Column(children: [
+                      // Image.memory(state.posts[index].images[0].)
+                      SizedBox(
+                          height: 100,
+                          width: 300,
+                          child: Image.network(
+                              '${GlobalVariables.url}/post/${FirebaseAuth.instance.currentUser!.email}/${state.posts[index].name}/${state.posts[index].imagesName[0]}')),
+                      Text(state.posts[index].text ?? ""),
+                      Row(
+                        children: [
+                          IconButton(
+                              onPressed: () {
+                                context.read<UserTimelineBloc>().add(
+                                    UserTimelinePostLikeEvent(
+                                        index: index,
+                                        postId: state.posts[index].postId));
+                              },
+                              icon: Icon(Icons.thumb_up,
+                                  color: state.posts[index].isLiked
+                                      ? Colors.blue
+                                      : Colors.black)),
+                          Text(state.posts[index].likes.toString()),
+                          IconButton(
+                              onPressed: () {
+                                BlocProvider.of<PostCommentsBloc>(context).add(
+                                    PostCommentsLoadingEvent(
+                                        postId: state.posts[index].postId));
+                                showDialog(
+                                  context: context,
+                                  builder: (context) => PostComments(
+                                    postId: state.posts[index].postId,
+                                  ),
+                                );
+                              },
+                              icon: const Icon(Icons.comment))
+                        ],
+                      ),
+                    ])
                   ],
                 ),
               );
