@@ -49,8 +49,10 @@ class ProfileRepository {
 
       final response = await request.send();
       final responseDate = await response.stream.bytesToString();
+      if (response.statusCode == 500) throw Exception('Failed to save profile');
       print(responseDate);
     } catch (e) {
+      print(e);
       throw Exception(e);
     }
   }

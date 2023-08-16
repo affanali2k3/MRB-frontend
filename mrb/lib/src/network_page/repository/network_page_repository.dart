@@ -10,6 +10,7 @@ class NetworkPageRepository {
         Uri.parse(
             '${GlobalVariables.url}/associate/getAll/${FirebaseAuth.instance.currentUser?.email}'),
       );
+      print(response.body);
       return response;
     } catch (e) {
       throw Exception("Error: $e");

@@ -14,6 +14,9 @@ class PostCommentSuccessState extends PostCommentsState {
   PostCommentSuccessState({required this.comments, required this.message});
   final List<CommentModel> comments;
   final String message;
+
+  @override
+  List<Object?> get props => [comments, message];
 }
 
 class PostCommentFailedState extends PostCommentsState {

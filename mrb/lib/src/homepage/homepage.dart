@@ -2,6 +2,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mrb/src/common/outline_button.dart';
+import 'package:mrb/src/feed_page/bloc/feed_page_bloc.dart';
+import 'package:mrb/src/feed_page/bloc/feed_page_event.dart';
 import 'package:mrb/src/feed_page/view/feed_page_view.dart';
 import 'package:mrb/src/login/bloc/login_bloc.dart';
 import 'package:mrb/src/login/bloc/login_state.dart';
@@ -50,10 +52,17 @@ class HomePage extends StatelessWidget {
             ),
             CustomOutlineButton(
                 onPressed: () {
+                  BlocProvider.of<FeedPageBloc>(context)
+                      .add(FeedPageLoadingEvent(
+                    userEmail: FirebaseAuth.instance.currentUser!.email!,
+                  ));
                   Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => const FeedPage()));
+                          builder: (context) => FeedPage(
+                                userEmail:
+                                    FirebaseAuth.instance.currentUser!.email!,
+                              )));
                 },
                 text: 'Feed'),
             const SizedBox(
@@ -68,7 +77,10 @@ class HomePage extends StatelessWidget {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => const UserTimelinePage()));
+                          builder: (context) => UserTimelinePage(
+                                userEmail:
+                                    FirebaseAuth.instance.currentUser!.email!,
+                              )));
                 },
                 text: 'Timeline'),
           ]);

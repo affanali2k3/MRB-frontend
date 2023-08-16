@@ -2,7 +2,6 @@ import 'dart:convert';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:http/http.dart';
-import 'package:mrb/src/edit_profile/model/deal_model.dart';
 import 'package:mrb/src/profile_page/bloc/profile_page_event.dart';
 import 'package:mrb/src/profile_page/bloc/profile_page_state.dart';
 import 'package:mrb/src/profile_page/model/user_association_model.dart';
@@ -37,24 +36,17 @@ class ProfilePageBloc extends Bloc<ProfilePageEvent, ProfilePageState> {
       }
       final responseJson = json.decode(response);
       final data = responseJson['data'];
+      print(data);
       final photo = responseJson['photo'];
 
-      final dealsJsonString = data['previousDeals'];
-      List<Deal> previousDeals = [];
-      if (dealsJsonString != null) {
-        final dealsJson = jsonDecode(dealsJsonString) as List<dynamic>;
-        previousDeals = dealsJson.map((deal) => Deal.fromJson(deal)).toList();
-      }
       print(associationStatus);
       emit(ProfilePageSuccessState(
-          ssn: data['ssn'],
           associationStatus: associationStatus,
           address: data['address'],
           licenceState: data['licenceState'],
           licenceNumber: data['licenceNumber'],
           yearLicenced: data['yearLicenced'],
           completedDeals: data['completedDeals'],
-          previousDeals: previousDeals,
           email: data['email'],
           name: data['name'],
           licence: data['licence'],
@@ -71,8 +63,30 @@ class ProfilePageBloc extends Bloc<ProfilePageEvent, ProfilePageState> {
       ProfilePageSendAssociateRequestEvent event, emit) async {
     try {
       print('a');
-      await repository.sendAssociateEvent(
+      final Response response = await repository.sendAssociateEvent(
           senderEmail: event.senderEmail, receiverEmail: event.receiverEmail);
+
+      final successState = (state as ProfilePageSuccessState);
+      if (response.statusCode == 500) {
+      } else if (response.statusCode == 200) {
+        emit(ProfilePageSuccessState(
+            associationStatus: UserAssociationModel(
+                senderEmail: event.senderEmail,
+                receiverEmail: event.receiverEmail,
+                status: 'Pending'),
+            email: successState.email,
+            name: successState.name,
+            licence: successState.licence,
+            photo: successState.photo,
+            phone: successState.phone,
+            address: successState.address,
+            completedDeals: successState.completedDeals,
+            licenceState: successState.licenceState,
+            licenceNumber: successState.licenceNumber,
+            yearLicenced: successState.yearLicenced,
+            occupation: successState.occupation,
+            gender: successState.gender));
+      }
 
       print('b');
     } catch (e) {

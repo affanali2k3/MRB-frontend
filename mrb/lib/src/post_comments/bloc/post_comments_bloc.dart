@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:http/http.dart';
 import 'package:mrb/src/post_comments/bloc/post_comments_event.dart';
@@ -37,7 +38,24 @@ class PostCommentsBloc extends Bloc<PostCommentsEvent, PostCommentsState> {
 
   void _saveComment(PostCommentsSaveCommentEvent event, emit) async {
     try {
-      await repository.saveComment(postId: event.postId, text: event.comment);
+      final Response response = await repository.saveComment(
+          postId: event.postId, text: event.comment);
+      final Map<String, dynamic> responseDataJson = json.decode(response.body);
+      final int commentId = responseDataJson['data'];
+
+      final successState = state as PostCommentSuccessState;
+      final List<CommentModel> comments = List.from(successState.comments);
+
+      comments.insert(
+          0,
+          CommentModel(
+              id: commentId,
+              postId: int.parse(event.postId),
+              userEmail: FirebaseAuth.instance.currentUser!.email!,
+              text: event.comment));
+
+      emit(PostCommentSuccessState(
+          comments: comments, message: 'Comment saved'));
     } catch (e) {
       emit(PostCommentFailedState(error: e.toString()));
     }

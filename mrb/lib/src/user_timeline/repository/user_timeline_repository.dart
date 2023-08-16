@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:http/http.dart';
 import 'package:http/http.dart' as http;
 import 'package:mrb/global_variables.dart';
@@ -18,7 +19,9 @@ class UserTimelineRepository {
       final response = await http.post(
           Uri.parse('${GlobalVariables.url}/like/'),
           body: {"userEmail": email, "postId": postId});
-      print(response.body);
+      if (kDebugMode) {
+        print(response.body);
+      }
     } catch (e) {
       throw Exception(e);
     }
@@ -26,14 +29,14 @@ class UserTimelineRepository {
 
   Future<void> removeLike({required String postId, required int likeId}) async {
     try {
-      print('d');
       final response = await http.delete(
           Uri.parse(
             '${GlobalVariables.url}/like/delete',
           ),
           body: {"postId": postId, "likeId": likeId.toString()});
-      print('e');
-      print(response.body);
+      if (kDebugMode) {
+        print(response.body);
+      }
     } catch (e) {
       throw Exception(e);
     }

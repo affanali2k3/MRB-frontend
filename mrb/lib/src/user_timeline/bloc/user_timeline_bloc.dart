@@ -22,27 +22,24 @@ class UserTimelineBloc extends Bloc<UserTimelineEvent, UserTimelineState> {
       final successState = (state as UserTimelineSuccessState);
       List<PostModel> newPosts = List.from(successState.posts);
 
-      newPosts[event.index] =
+      final PostModel newPost =
           newPosts[event.index].copyWith(newPosts[event.index]);
 
-      print(newPosts[event.index]);
-      print(newPosts[event.index].isLiked);
-      if (!newPosts[event.index].isLiked) {
-        print('here');
+      if (!newPost.isLiked) {
         await repository.likePost(
             email: FirebaseAuth.instance.currentUser!.email!,
             postId: event.postId);
+        newPost.likes = newPost.likes + 1;
       } else {
-        print('here2');
-        if (newPosts[event.index].likeId != null) {
-          print('here3');
+        if (newPost.likeId != null) {
           await repository.removeLike(
-              postId: newPosts[event.index].postId,
-              likeId: newPosts[event.index].likeId!);
+              postId: newPost.postId, likeId: newPost.likeId!);
         }
+        newPost.likes = newPost.likes - 1;
       }
 
-      newPosts[event.index].isLiked = !newPosts[event.index].isLiked;
+      newPost.isLiked = !newPost.isLiked;
+      newPosts[event.index] = newPost;
       emit(UserTimelineSuccessState(message: 'Success', posts: newPosts));
     } catch (e) {
       print(e);

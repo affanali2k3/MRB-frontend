@@ -13,11 +13,13 @@ class ProfilePageRepository {
     }
   }
 
-  Future<void> sendAssociateEvent(
+  Future<Response> sendAssociateEvent(
       {required String senderEmail, required String receiverEmail}) async {
     try {
-      await http.post(Uri.parse('${GlobalVariables.url}/associate/send'),
+      final Response response = await http.post(
+          Uri.parse('${GlobalVariables.url}/associate/send'),
           body: {"senderEmail": senderEmail, "receiverEmail": receiverEmail});
+      return response;
     } catch (e) {
       throw Exception(e);
     }

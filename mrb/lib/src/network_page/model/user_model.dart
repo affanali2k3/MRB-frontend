@@ -10,7 +10,7 @@ class UserModel {
   final String email;
   String? name;
   String? address;
-  String? completedDeals;
+  int? completedDeals;
   String? photo;
   String? phone;
   String? gender;

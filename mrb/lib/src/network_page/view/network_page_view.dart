@@ -16,6 +16,7 @@ class NetworkPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(body: BlocBuilder<NetworkPageBloc, NetworkPageState>(
       builder: (context, state) {
+        print(state);
         if (state is NetworkPageInitialState) {
           context.read<NetworkPageBloc>().add(NetworkPageGetAssociatesEvent());
         } else if (state is NetworkPageSuccessState) {

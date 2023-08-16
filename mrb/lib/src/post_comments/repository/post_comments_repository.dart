@@ -14,7 +14,7 @@ class PostCommentsRepository {
     }
   }
 
-  Future<void> saveComment(
+  Future<Response> saveComment(
       {required String postId, required String text}) async {
     try {
       final response =
@@ -24,6 +24,7 @@ class PostCommentsRepository {
         "text": text
       });
       print(response.body);
+      return response;
     } catch (e) {
       throw Exception(e.toString());
     }

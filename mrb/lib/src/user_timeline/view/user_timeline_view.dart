@@ -1,4 +1,3 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mrb/global_variables.dart';
@@ -11,13 +10,13 @@ import 'package:mrb/src/user_timeline/bloc/user_timeline_event.dart';
 import 'package:mrb/src/user_timeline/bloc/user_timeline_state.dart';
 
 class UserTimelinePage extends StatelessWidget {
-  const UserTimelinePage({Key? key}) : super(key: key);
+  const UserTimelinePage({Key? key, required this.userEmail}) : super(key: key);
+  final String userEmail;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(body: BlocBuilder<UserTimelineBloc, UserTimelineState>(
         builder: (context, state) {
-      print(state);
       if (state is UserTimelineLoadingState) {
         return const Center(child: CircularProgressIndicator());
       } else if (state is UserTimelineFailureState) {
@@ -31,7 +30,7 @@ class UserTimelinePage extends StatelessWidget {
             shrinkWrap: true,
             itemCount: state.posts.length,
             itemBuilder: (context, index) {
-              return Container(
+              return SizedBox(
                 // height: 900,
                 child: Column(
                   children: [
@@ -41,7 +40,7 @@ class UserTimelinePage extends StatelessWidget {
                           height: 100,
                           width: 300,
                           child: Image.network(
-                              '${GlobalVariables.url}/post/${FirebaseAuth.instance.currentUser!.email}/${state.posts[index].name}/${state.posts[index].imagesName[0]}')),
+                              '${GlobalVariables.url}/post/$userEmail/${state.posts[index].name}/${state.posts[index].imagesName[0]}')),
                       Text(state.posts[index].text ?? ""),
                       Row(
                         children: [
