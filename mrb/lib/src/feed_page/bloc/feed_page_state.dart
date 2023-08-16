@@ -8,7 +8,13 @@ class FeedPageState extends Equatable {
 
 class FeedPageInitialState extends FeedPageState {}
 
-class FeedPageLoadingState extends FeedPageState {}
+class FeedPageLoadingState extends FeedPageState {
+  FeedPageLoadingState({required this.posts});
+  final List<PostModel> posts;
+
+  @override
+  List<Object?> get props => [posts];
+}
 
 class FeedPageFailedState extends FeedPageState {
   FeedPageFailedState({required this.error});

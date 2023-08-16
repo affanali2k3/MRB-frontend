@@ -16,20 +16,32 @@ class FeedPageBloc extends Bloc<FeedPageEvent, FeedPageState> {
 
   void _loadPosts(FeedPageLoadingEvent event, emit) async {
     try {
-      emit(FeedPageLoadingState());
-      final Response response =
-          await repository.loadPosts(userEmail: event.userEmail);
+      if (event.pageNumber == '1') {
+        emit(FeedPageLoadingState(posts: const []));
+      } else {
+        emit(
+            FeedPageSuccessState(posts: (state as FeedPageSuccessState).posts));
+      }
+      final Response response = await repository.loadPosts(
+          userEmail: event.userEmail, pageNumber: event.pageNumber);
       final Map<String, dynamic> responseJson = json.decode(response.body);
-      print(responseJson);
+      // print(responseJson);
       final List<dynamic> responseJsonData = responseJson['data'];
-      print(responseJsonData);
-      final List<PostModel> posts = responseJsonData
+      final List<PostModel> newPosts = responseJsonData
           .map(
             (post) => PostModel.fromJson(post),
           )
           .toList();
-      print(posts);
-      emit(FeedPageSuccessState(posts: posts));
+
+      if (state is FeedPageSuccessState) {
+        final List<PostModel> posts =
+            List.from((state as FeedPageSuccessState).posts);
+        posts.addAll(newPosts);
+        emit(FeedPageSuccessState(posts: posts));
+      } else {
+        emit(FeedPageSuccessState(posts: newPosts));
+      }
+      print('Emitted');
     } catch (e) {
       emit(FeedPageFailedState(error: e.toString()));
     }

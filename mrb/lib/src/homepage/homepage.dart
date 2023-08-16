@@ -52,10 +52,10 @@ class HomePage extends StatelessWidget {
             ),
             CustomOutlineButton(
                 onPressed: () {
-                  BlocProvider.of<FeedPageBloc>(context)
-                      .add(FeedPageLoadingEvent(
-                    userEmail: FirebaseAuth.instance.currentUser!.email!,
-                  ));
+                  BlocProvider.of<FeedPageBloc>(context).add(
+                      FeedPageLoadingEvent(
+                          userEmail: FirebaseAuth.instance.currentUser!.email!,
+                          pageNumber: '1'));
                   Navigator.push(
                       context,
                       MaterialPageRoute(
