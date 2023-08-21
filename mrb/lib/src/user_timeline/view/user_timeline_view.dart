@@ -24,6 +24,7 @@ class UserTimelinePage extends StatelessWidget {
         return Container();
       } else if (state is UserTimelineSuccessState) {
         customSnackBar(message: state.message, context: context);
+        print(state.posts.length);
 
         return SingleChildScrollView(
           child: ListView.builder(
@@ -39,8 +40,10 @@ class UserTimelinePage extends StatelessWidget {
                       SizedBox(
                           height: 100,
                           width: 300,
-                          child: Image.network(
-                              '${GlobalVariables.url}/post/$userEmail/${state.posts[index].name}/${state.posts[index].imagesName[0]}')),
+                          child: state.posts[index].imagesName.isEmpty
+                              ? null
+                              : Image.network(
+                                  '${GlobalVariables.url}/post/$userEmail/${state.posts[index].name}/${state.posts[index].imagesName[0]}')),
                       Text(state.posts[index].text ?? ""),
                       Row(
                         children: [

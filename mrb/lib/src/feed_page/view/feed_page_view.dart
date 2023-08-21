@@ -31,7 +31,7 @@ class FeedPage extends StatelessWidget {
               Navigator.push(
                   context, MaterialPageRoute(builder: (context) => PostPage()));
             },
-            child: Text('Post')),
+            child: const Text('Post')),
         body:
             BlocBuilder<FeedPageBloc, FeedPageState>(builder: (context, state) {
           print(state);
@@ -46,7 +46,7 @@ class FeedPage extends StatelessWidget {
               // shrinkWrap: true,
               itemCount: state.posts.length,
               itemBuilder: (context, index) {
-                return Container(
+                return SizedBox(
                   // height: 900,
                   child: Column(
                     children: [

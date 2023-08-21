@@ -1,6 +1,10 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:mrb/src/agent_forms_received/bloc/agent_forms_received_bloc.dart';
+import 'package:mrb/src/agent_forms_received/repository/agent_forms_received_repository.dart';
+import 'package:mrb/src/agent_open_forms_sent/bloc/agent_forms_received_bloc.dart';
+import 'package:mrb/src/agent_open_forms_sent/repository/agent_forms_received_repository.dart';
 import 'package:mrb/src/chat_page/bloc/chat_page_bloc.dart';
 import 'package:mrb/src/chat_page/repository/chat_page_repository.dart';
 import 'package:mrb/src/feed_page/bloc/feed_page_bloc.dart';
@@ -24,6 +28,8 @@ import 'package:mrb/src/registor/bloc/registor_bloc.dart';
 import 'package:mrb/src/registor/repository/registor_repository.dart';
 import 'package:mrb/src/search_page/bloc/search_page_bloc.dart';
 import 'package:mrb/src/search_page/repository/search_page_repository.dart';
+import 'package:mrb/src/sender_agent_form/bloc/sender_agent_form_bloc.dart';
+import 'package:mrb/src/sender_agent_form/repository/sender_agent_form_repository.dart';
 import 'package:mrb/src/user_timeline/bloc/user_timeline_bloc.dart';
 import 'package:mrb/src/user_timeline/repository/user_timeline_repository.dart';
 
@@ -44,11 +50,25 @@ class App extends StatelessWidget {
           RepositoryProvider(create: (_) => UserTimelineRepository()),
           RepositoryProvider(create: (_) => PostCommentsRepository()),
           RepositoryProvider(create: (_) => FeedPageRepository()),
+          RepositoryProvider(create: (_) => SenderAgentFormRepository()),
+          RepositoryProvider(create: (_) => AgentFormsReceivedRepository()),
+          RepositoryProvider(create: (_) => AgentOpenFormsSentRepository()),
         ],
         child: MultiBlocProvider(
             providers: [
               BlocProvider(
                   create: (_) => LoginBloc(repository: LoginRepository())),
+              BlocProvider(
+                  create: (_) => AgentOpenFormsSentBloc(
+                      repository: AgentOpenFormsSentRepository())),
+              BlocProvider(
+                  create: (_) => AgentFormsReceivedBloc(
+                      repository: AgentFormsReceivedRepository())),
+              BlocProvider(
+                  create: (_) => LoginBloc(repository: LoginRepository())),
+              BlocProvider(
+                  create: (_) => SenderAgentFormBloc(
+                      repository: SenderAgentFormRepository())),
               BlocProvider(
                   create: (_) =>
                       PostCommentsBloc(repository: PostCommentsRepository())),

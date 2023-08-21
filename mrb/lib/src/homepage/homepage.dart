@@ -1,6 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:mrb/src/agent_forms_received/bloc/agent_forms_received_bloc.dart';
+import 'package:mrb/src/agent_forms_received/bloc/agent_forms_received_event.dart';
+import 'package:mrb/src/agent_forms_received/view/agent_forms_received_view.dart';
 import 'package:mrb/src/common/outline_button.dart';
 import 'package:mrb/src/feed_page/bloc/feed_page_bloc.dart';
 import 'package:mrb/src/feed_page/bloc/feed_page_event.dart';
@@ -11,6 +14,7 @@ import 'package:mrb/src/network_page/bloc/network_page_bloc.dart';
 import 'package:mrb/src/network_page/bloc/network_page_event.dart';
 import 'package:mrb/src/network_page/view/network_page_view.dart';
 import 'package:mrb/src/search_page/view/search_page_view.dart';
+import 'package:mrb/src/sender_agent_form/view/sender_agent_form_view.dart';
 import 'package:mrb/src/user_timeline/bloc/user_timeline_bloc.dart';
 import 'package:mrb/src/user_timeline/bloc/user_timeline_event.dart';
 import 'package:mrb/src/user_timeline/view/user_timeline_view.dart';
@@ -83,6 +87,31 @@ class HomePage extends StatelessWidget {
                               )));
                 },
                 text: 'Timeline'),
+            const SizedBox(
+              height: 20,
+            ),
+            CustomOutlineButton(
+                onPressed: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => SenderAgentFormPage()));
+                },
+                text: 'Sender Agent Form'),
+            const SizedBox(
+              height: 20,
+            ),
+            CustomOutlineButton(
+                onPressed: () {
+                  BlocProvider.of<AgentFormsReceivedBloc>(context)
+                      .add(AgentFormsReceivedLoadingEvent());
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) =>
+                              const AgentFormsReceivedPage()));
+                },
+                text: 'Received agent forms'),
           ]);
     }));
   }
