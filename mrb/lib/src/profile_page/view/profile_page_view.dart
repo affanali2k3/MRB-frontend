@@ -2,6 +2,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mrb/global_variables.dart';
+import 'package:mrb/src/agent_open_forms_sent/bloc/agent_forms_received_bloc.dart';
+import 'package:mrb/src/agent_open_forms_sent/bloc/agent_forms_received_event.dart';
+import 'package:mrb/src/agent_open_forms_sent/view/agent_forms_received_view.dart';
 import 'package:mrb/src/common/outline_button.dart';
 import 'package:mrb/src/main_page/bloc/main_page_bloc.dart';
 import 'package:mrb/src/main_page/bloc/main_page_event.dart';
@@ -115,6 +118,21 @@ class ProfilePage extends StatelessWidget {
                                   UserTimelinePage(userEmail: state.email!)));
                     },
                     text: 'Timeline'),
+                const SizedBox(
+                  height: 20,
+                ),
+                CustomOutlineButton(
+                    onPressed: () {
+                      BlocProvider.of<AgentOpenFormsSentBloc>(context).add(
+                          AgentOpenFormsSentLoadingEvent(
+                              userEmail: state.email!));
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) =>
+                                  const AgentOpenFormsSentPage()));
+                    },
+                    text: 'Shared Leads'),
               ],
             ),
           ),
