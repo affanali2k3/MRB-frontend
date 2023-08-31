@@ -3,7 +3,7 @@ import 'package:http/http.dart' as http;
 import 'package:mrb/global_variables.dart';
 import 'package:mrb/src/sender_agent_form/bloc/sender_agent_form_state.dart';
 
-class AgentFormsReceivedRepository {
+class ClientReferralsReceivedRepository {
   Future<Response> getReceivedForms({required String userEmail}) async {
     try {
       final Response response = await http.get(Uri.parse(

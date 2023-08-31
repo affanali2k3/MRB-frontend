@@ -5,17 +5,19 @@ class CustomOutlineButton extends StatelessWidget {
       {super.key,
       required this.onPressed,
       required this.text,
+      this.width = double.infinity,
       this.primary = true});
 
   final void Function()? onPressed;
   final bool primary;
   final String text;
+  final double width;
 
   @override
   Widget build(BuildContext context) => GestureDetector(
         onTap: onPressed,
         child: Container(
-          width: double.infinity,
+          width: width,
           alignment: Alignment.center,
           padding: const EdgeInsets.all(14),
           decoration: BoxDecoration(

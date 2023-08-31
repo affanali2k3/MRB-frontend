@@ -7,7 +7,7 @@ import 'package:mrb/src/sender_agent_form/bloc/sender_agent_form_state.dart';
 
 class SenderAgentFormRepository {
   Future<Response> createForm(
-      {required String senderAgent,
+      {required int senderAgent,
       required String? receiverAgent,
       required FormType formType,
       required UserType userType,

@@ -1,5 +1,5 @@
 import 'package:equatable/equatable.dart';
-import 'package:mrb/src/agent_forms_received/model/form_model.dart';
+import 'package:mrb/src/client_referrals_received/model/form_model.dart';
 
 abstract class AgentOpenFormsSentState extends Equatable {
   @override

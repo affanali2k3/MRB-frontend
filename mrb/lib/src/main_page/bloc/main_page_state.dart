@@ -7,10 +7,12 @@ abstract class MainPageState extends Equatable {
 
 class MainPageInitialState extends MainPageState {}
 
-class LoginPageState extends MainPageState {}
+class ReferralCenterPageState extends MainPageState {}
+
+class NetworkPageState extends MainPageState {}
+
+class FeedPageState extends MainPageState {}
+
+class NotificationPageState extends MainPageState {}
 
 class ProfilePageState extends MainPageState {}
-
-class RegistorPageState extends MainPageState {}
-
-class ProfileEditPageState extends MainPageState {}

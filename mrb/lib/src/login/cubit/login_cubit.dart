@@ -1,41 +1,40 @@
+import 'dart:convert';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:mrb/src/login/bloc/login_event.dart';
-import 'package:mrb/src/login/bloc/login_state.dart';
+import 'package:http/http.dart';
+import 'package:mrb/global_variables.dart';
+import 'package:mrb/src/login/cubit/login_event.dart';
+import 'package:mrb/src/login/cubit/login_state.dart';
 import 'package:mrb/src/login/repository/login_repository.dart';
+import 'package:mrb/src/network_page/model/user_model.dart';
 
-class LoginBloc extends Bloc<LoginEvent, LoginState> {
-  LoginBloc({required this.repository}) : super(LoginLoggedOutState()) {
-    on<LoginLoginEvent>(_login);
-    on<LoginLogoutEvent>(_logout);
-    on<ChangeLoginEvent>(_changeLoginState);
-    on<ChangeLogoutEvent>(_changeLogoutState);
-    on<LoginGoogleLoginEvent>(_googleLogin);
-  }
+class LoginCubit extends Cubit<LoginState> {
+  LoginCubit({required this.repository}) : super(LoginLoggedOutState());
+
   final auth = FirebaseAuth.instance;
   final LoginRepository repository;
   final GoogleSignIn _googleSignIn = GoogleSignIn();
 
-  void _changeLoginState(ChangeLoginEvent event, emit) {
+  void changeLoginState({emit = Emitter}) {
     emit(LoginSuccessState());
   }
 
-  void _changeLogoutState(ChangeLogoutEvent event, emit) {
+  void changeLogoutState({emit = Emitter}) {
     emit(LoginLoggedOutState());
   }
 
-  void _login(LoginLoginEvent event, emit) async {
+  Future<void> login({required String email, required String password}) async {
     try {
-      final userCredentials = await auth.signInWithEmailAndPassword(
-          email: event.email, password: event.password);
-      if (userCredentials.user!.emailVerified == false) {
-        // emit(LoginInvalidEmailState(
-        //     error: 'Please verify the email before logging in'));
-        // auth.signOut();
-        return;
-      }
+      await auth.signInWithEmailAndPassword(email: email, password: password);
+
+      final Response response = await repository.getUser(email: email);
+      final UserModel user =
+          UserModel.fromJson(json.decode(response.body)['data']);
+      GlobalVariables.user = user;
+      print(GlobalVariables.user);
     } on FirebaseAuthException catch (e) {
       debugPrint(e.message);
       switch (e.code) {
@@ -52,7 +51,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     }
   }
 
-  void _googleLogin(LoginGoogleLoginEvent event, emit) async {
+  Future<void> googleLogin() async {
     final user = await _googleSignIn.signIn();
     if (user == null) return;
 
@@ -72,7 +71,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     }
   }
 
-  void _logout(LoginLogoutEvent event, emit) async {
+  void logout(LoginLogoutEvent event, emit) async {
     try {
       await auth.signOut();
       emit(LoginLoggedOutState());

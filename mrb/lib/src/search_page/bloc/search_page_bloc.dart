@@ -23,7 +23,7 @@ class SearchPageBloc extends Bloc<SearchPageEvent, SearchPageState> {
       final List<dynamic> responseJsonData = responseJson['data'];
       final List<UserModel> result = responseJsonData
           .map(
-            (user) => UserModel.toJSON(user),
+            (user) => UserModel.fromJson(user),
           )
           .toList();
       emit(SearchPageSuccessState(queryResult: result));

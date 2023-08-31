@@ -10,6 +10,7 @@ import 'package:mrb/src/post_comments/bloc/post_comments_event.dart';
 import 'package:mrb/src/post_comments/view/post_comment_view.dart';
 import 'package:mrb/src/post_page/view/post_page_view.dart';
 
+// ignore: must_be_immutable
 class FeedPage extends StatelessWidget {
   FeedPage({Key? key, required this.userEmail}) : super(key: key);
   final String userEmail;

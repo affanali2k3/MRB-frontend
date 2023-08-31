@@ -1,8 +1,7 @@
 import 'dart:convert';
-
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:http/http.dart';
+import 'package:mrb/global_variables.dart';
 import 'package:mrb/src/sender_agent_form/bloc/sender_agent_form_event.dart';
 import 'package:mrb/src/sender_agent_form/bloc/sender_agent_form_state.dart';
 import 'package:mrb/src/sender_agent_form/repository/sender_agent_form_repository.dart';
@@ -29,7 +28,7 @@ class SenderAgentFormBloc
 
       final Response response = await repository.createForm(
           city: event.city,
-          senderAgent: FirebaseAuth.instance.currentUser!.email!,
+          senderAgent: GlobalVariables.user.id,
           receiverAgent: event.receiverAgent,
           desiredDate: state.desiredDate,
           state: event.state,

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:mrb/src/agent_forms_received/bloc/agent_forms_received_bloc.dart';
-import 'package:mrb/src/agent_forms_received/bloc/agent_forms_received_event.dart';
-import 'package:mrb/src/agent_forms_received/bloc/agent_forms_received_state.dart';
+import 'package:mrb/src/client_referrals_received/bloc/client_referrals_recieved_bloc.dart';
+import 'package:mrb/src/client_referrals_received/bloc/client_referrals_recieved_event.dart';
+import 'package:mrb/src/client_referrals_received/bloc/client_referrals_recieved_state.dart';
 import 'package:mrb/src/common/outline_button.dart';
 import 'package:mrb/src/common/snack_bar.dart';
 
@@ -12,18 +12,18 @@ class AgentFormsReceivedPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(body:
-        BlocBuilder<AgentFormsReceivedBloc, AgentFormsReceivedState>(
+        BlocBuilder<ClientReferralsRecievedBloc, ClientReferralsRecievedState>(
             builder: (context, state) {
-      if (state is AgentFormsReceivedSucessState) {
+      if (state is ClientReferralsRecievedSuccessState) {
         customSnackBar(message: state.message, context: context);
-      } else if (state is AgentFormsReceivedFailedState) {
+      } else if (state is ClientReferralsRecievedFailedState) {
         customSnackBar(message: state.error, context: context);
       }
-      if (state is AgentFormsReceivedLoadingState) {
+      if (state is ClientReferralsRecievedLoadingState) {
         return const Center(
           child: CircularProgressIndicator(),
         );
-      } else if (state is AgentFormsReceivedSucessState) {
+      } else if (state is ClientReferralsRecievedSuccessState) {
         return ListView.builder(
           itemCount: state.receivedForms.length,
           itemBuilder: (context, index) {
@@ -96,12 +96,16 @@ class AgentFormsReceivedPage extends StatelessWidget {
                                         onPressed: () {
                                           Navigator.pop(context);
                                           context
-                                              .read<AgentFormsReceivedBloc>()
-                                              .add(AgentFormsSendProposalEvent(
-                                                  senderAgentFormId: state
-                                                      .receivedForms[index].id,
-                                                  proposal:
-                                                      proposalController.text));
+                                              .read<
+                                                  ClientReferralsRecievedBloc>()
+                                              .add(
+                                                  ClientReferralsRecievedProposalEvent(
+                                                      senderAgentFormId: state
+                                                          .receivedForms[index]
+                                                          .id,
+                                                      proposal:
+                                                          proposalController
+                                                              .text));
                                         },
                                         text: 'Send')
                                   ],

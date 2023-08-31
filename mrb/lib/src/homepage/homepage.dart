@@ -1,20 +1,27 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:mrb/src/agent_forms_received/bloc/agent_forms_received_bloc.dart';
-import 'package:mrb/src/agent_forms_received/bloc/agent_forms_received_event.dart';
-import 'package:mrb/src/agent_forms_received/view/agent_forms_received_view.dart';
+import 'package:mrb/src/client_referrals_received/bloc/client_referrals_recieved_bloc.dart';
+import 'package:mrb/src/client_referrals_received/bloc/client_referrals_recieved_event.dart';
+import 'package:mrb/src/client_referrals_received/view/client_referrals_recieved_view.dart';
 import 'package:mrb/src/common/outline_button.dart';
 import 'package:mrb/src/feed_page/bloc/feed_page_bloc.dart';
 import 'package:mrb/src/feed_page/bloc/feed_page_event.dart';
 import 'package:mrb/src/feed_page/view/feed_page_view.dart';
-import 'package:mrb/src/login/bloc/login_bloc.dart';
-import 'package:mrb/src/login/bloc/login_state.dart';
+import 'package:mrb/src/login/cubit/login_cubit.dart';
+import 'package:mrb/src/login/cubit/login_state.dart';
 import 'package:mrb/src/network_page/bloc/network_page_bloc.dart';
 import 'package:mrb/src/network_page/bloc/network_page_event.dart';
 import 'package:mrb/src/network_page/view/network_page_view.dart';
+import 'package:mrb/src/profile_page/view/profile_page_view.dart';
+import 'package:mrb/src/referral_centre/bloc/referral_centre_bloc.dart';
+import 'package:mrb/src/referral_centre/bloc/referral_centre_event.dart';
+import 'package:mrb/src/referral_centre/view/referral_centre_view.dart';
 import 'package:mrb/src/search_page/view/search_page_view.dart';
 import 'package:mrb/src/sender_agent_form/view/sender_agent_form_view.dart';
+import 'package:mrb/src/sent_client_referrals/bloc/sent_client_referrals_bloc.dart';
+import 'package:mrb/src/sent_client_referrals/bloc/sent_client_referrals_event.dart';
+import 'package:mrb/src/sent_client_referrals/view/sent_client_referrals_view.dart';
 import 'package:mrb/src/user_timeline/bloc/user_timeline_bloc.dart';
 import 'package:mrb/src/user_timeline/bloc/user_timeline_event.dart';
 import 'package:mrb/src/user_timeline/view/user_timeline_view.dart';
@@ -25,7 +32,7 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: BlocBuilder<LoginBloc, LoginState>(builder: (context, state) {
+        body: BlocBuilder<LoginCubit, LoginState>(builder: (context, state) {
       return Column(
           mainAxisSize: MainAxisSize.max,
           mainAxisAlignment: MainAxisAlignment.center,
@@ -74,6 +81,21 @@ class HomePage extends StatelessWidget {
             ),
             CustomOutlineButton(
                 onPressed: () {
+                  BlocProvider.of<FeedPageBloc>(context).add(
+                      FeedPageLoadingEvent(
+                          userEmail: FirebaseAuth.instance.currentUser!.email!,
+                          pageNumber: '1'));
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const ProfilePage()));
+                },
+                text: 'Profile Page'),
+            const SizedBox(
+              height: 20,
+            ),
+            CustomOutlineButton(
+                onPressed: () {
                   BlocProvider.of<UserTimelineBloc>(context).add(
                       UserTimelineLoadingEvent(
                           userEmail:
@@ -103,15 +125,39 @@ class HomePage extends StatelessWidget {
             ),
             CustomOutlineButton(
                 onPressed: () {
-                  BlocProvider.of<AgentFormsReceivedBloc>(context)
-                      .add(AgentFormsReceivedLoadingEvent());
+                  BlocProvider.of<ClientReferralsRecievedBloc>(context)
+                      .add(ClientReferralsRecievedLoadingEvent());
                   Navigator.push(
                       context,
                       MaterialPageRoute(
                           builder: (context) =>
                               const AgentFormsReceivedPage()));
                 },
-                text: 'Received agent forms'),
+                text: 'Client referrals received'),
+            CustomOutlineButton(
+                onPressed: () {
+                  BlocProvider.of<SentClientReferralsBloc>(context)
+                      .add(SentClientReferralsDirectLoadingEvent());
+                  BlocProvider.of<SentClientReferralsBloc>(context)
+                      .add(SentClientReferralsOpenLoadingEvent());
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) =>
+                              const SentClientReferralsPage()));
+                },
+                text: 'Client referrals sent'),
+            CustomOutlineButton(
+                onPressed: () {
+                  BlocProvider.of<ReferralCentreBloc>(context).add(
+                      ReferralCentreLoadingEvent(
+                          state: 'California', city: 'Los Angeles'));
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => ReferralCentrePage()));
+                },
+                text: 'Referral Centre'),
           ]);
     }));
   }

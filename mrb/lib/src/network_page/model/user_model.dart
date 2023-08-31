@@ -1,6 +1,7 @@
 class UserModel {
   UserModel(
       {required this.email,
+      required this.id,
       this.name,
       this.address,
       this.completedDeals,
@@ -8,16 +9,18 @@ class UserModel {
       this.phone,
       this.gender});
   final String email;
-  String? name;
-  String? address;
-  int? completedDeals;
-  String? photo;
-  String? phone;
-  String? gender;
+  final int id;
+  final String? name;
+  final String? address;
+  final int? completedDeals;
+  final String? photo;
+  final String? phone;
+  final String? gender;
 
-  static UserModel toJSON(Map<String, dynamic> json) {
+  static UserModel fromJson(Map<String, dynamic> json) {
     return UserModel(
         email: json['email'],
+        id: json['id'],
         name: json['name'],
         address: json['address'],
         completedDeals: json['completedDeals'],

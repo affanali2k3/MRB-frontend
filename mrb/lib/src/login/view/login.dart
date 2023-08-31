@@ -2,10 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mrb/global_variables.dart';
 import 'package:mrb/src/common/outline_button.dart';
-import 'package:mrb/src/edit_profile/view/edit_profile_view.dart';
-import 'package:mrb/src/login/bloc/login_bloc.dart';
-import 'package:mrb/src/login/bloc/login_event.dart';
-import 'package:mrb/src/login/bloc/login_state.dart';
+import 'package:mrb/src/login/cubit/login_cubit.dart';
+import 'package:mrb/src/login/cubit/login_state.dart';
+import 'package:mrb/src/main_page/view/main_page_view.dart';
 import 'package:mrb/src/registor/view/registor_view.dart';
 import 'package:socket_io_client/socket_io_client.dart' as IO;
 
@@ -17,7 +16,7 @@ class LoginPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: BlocBuilder<LoginBloc, LoginState>(builder: (context, state) {
+        body: BlocBuilder<LoginCubit, LoginState>(builder: (context, state) {
       return Container(
         margin: const EdgeInsets.all(20),
         child: Column(
@@ -53,17 +52,21 @@ class LoginPage extends StatelessWidget {
             const SizedBox(height: 20),
             CustomOutlineButton(
                 onPressed: () {
-                  context.read<LoginBloc>().add(LoginLoginEvent(
-                      email: _email.text, password: _password.text));
+                  context
+                      .read<LoginCubit>()
+                      .login(email: _email.text, password: _password.text)
+                      .then((value) {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const MainPage()));
+                  }).onError((error, stackTrace) => null);
+
                   GlobalVariables.socket =
                       IO.io('http://192.168.1.10:8080', <String, dynamic>{
                     'transports': ['websocket']
                   });
                   GlobalVariables.socket.emit('user-connected', _email.text);
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => ProfileEditPage()));
                 },
                 text: 'Login'),
             const SizedBox(
@@ -86,7 +89,7 @@ class LoginPage extends StatelessWidget {
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(15))),
                     onPressed: () {
-                      context.read<LoginBloc>().add(LoginGoogleLoginEvent());
+                      context.read<LoginCubit>().googleLogin();
                     },
                     child: const Row(children: [
                       SizedBox(

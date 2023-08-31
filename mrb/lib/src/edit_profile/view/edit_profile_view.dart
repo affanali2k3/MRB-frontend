@@ -8,8 +8,8 @@ import 'package:mrb/src/edit_profile/bloc/edit_profile_event.dart';
 import 'package:mrb/src/edit_profile/bloc/edit_profile_state.dart';
 import 'package:mrb/src/edit_profile/model/deal_model.dart';
 import 'package:mrb/src/homepage/homepage.dart';
-import 'package:mrb/src/login/bloc/login_bloc.dart';
-import 'package:mrb/src/login/bloc/login_state.dart';
+import 'package:mrb/src/login/cubit/login_cubit.dart';
+import 'package:mrb/src/login/cubit/login_state.dart';
 import 'package:mrb/src/login/view/login.dart';
 import 'package:mrb/src/profile_page/bloc/profile_page_bloc.dart';
 import 'package:mrb/src/profile_page/bloc/profile_page_event.dart';
@@ -36,7 +36,7 @@ class ProfileEditPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: BlocBuilder<LoginBloc, LoginState>(builder: (context, state) {
+        body: BlocBuilder<LoginCubit, LoginState>(builder: (context, state) {
       if (state is LoginLoggedOutState) {
         return LoginPage();
       } else if (state is LoginSuccessState) {

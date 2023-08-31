@@ -15,131 +15,207 @@ import 'package:mrb/src/profile_page/model/user_association_model.dart';
 import 'package:mrb/src/user_timeline/bloc/user_timeline_bloc.dart';
 import 'package:mrb/src/user_timeline/bloc/user_timeline_event.dart';
 import 'package:mrb/src/user_timeline/view/user_timeline_view.dart';
+import 'package:mrb/themes/font_theme.dart';
 
 class ProfilePage extends StatelessWidget {
   const ProfilePage({super.key});
   @override
   Widget build(BuildContext context) {
-    return Scaffold(body: BlocBuilder<ProfilePageBloc, ProfilePageState>(
-        builder: (context, state) {
-      if (state is ProfilePageLoadingState) {
-        return const Center(
-          child: CircularProgressIndicator(),
-        );
-      } else if (state is ProfilePageSuccessState) {
-        return SafeArea(
-          minimum: const EdgeInsets.all(20),
-          child: SingleChildScrollView(
-            child: Column(
-              // mainAxisSize: MainAxisSize.min,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                associateAction(context,
-                    userAssociaation: state.associationStatus,
-                    profileEmail: state.email!),
-                SizedBox(
-                  child: Image.network(
-                    '${GlobalVariables.url}/user/avatar/${state.email}',
-                    errorBuilder: (BuildContext context, Object exception,
-                        StackTrace? stackTrace) {
-                      // Handle the error here
-                      return const Text('Error loading image');
-                    },
-                  ),
+    return Scaffold(
+        backgroundColor: Color(0xff1f1f23),
+        body: BlocBuilder<ProfilePageBloc, ProfilePageState>(
+            builder: (context, state) {
+          if (state is ProfilePageLoadingState) {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          } else if (state is ProfilePageSuccessState) {
+            return SafeArea(
+              // minimum: const EdgeInsets.all(20),
+              child: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    Container(
+                      height: 200,
+                      width: double.infinity,
+                      color: Colors.green,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Container(
+                            width: 90,
+                            height: 90,
+                            decoration: BoxDecoration(
+                                color: Colors.grey,
+                                borderRadius: BorderRadius.circular(50)),
+                          ),
+                          Text('Ali Makhdoom'),
+                          Text('@ali_Mak')
+                        ],
+                      ),
+                    ),
+                    Container(
+                      padding: const EdgeInsets.all(20),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          Column(
+                            children: [
+                              TextCustom('204'),
+                              TextCustom('Referrals Sent')
+                            ],
+                          ),
+                          Column(
+                            children: [
+                              TextCustom('204'),
+                              TextCustom('Referrals Received')
+                            ],
+                          ),
+                          Column(
+                            children: [
+                              TextCustom('204'),
+                              TextCustom('Deals Completed')
+                            ],
+                          )
+                        ],
+                      ),
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        GestureDetector(
+                          onTap: () {},
+                          child: Container(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 40, vertical: 10),
+                              decoration: BoxDecoration(
+                                  color: CustomTheme.primaryColor,
+                                  borderRadius: BorderRadius.circular(5)),
+                              child: TextCustom('Connect')),
+                        ),
+                        const SizedBox(
+                          width: 10,
+                        ),
+                        GestureDetector(
+                          onTap: () {},
+                          child: Container(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 40, vertical: 10),
+                              decoration: BoxDecoration(
+                                  color: CustomTheme.primaryColor,
+                                  borderRadius: BorderRadius.circular(5)),
+                              child: TextCustom('Message')),
+                        ),
+                        // CustomOutlineButton(onPressed: () {}, text: 'Message')
+                      ],
+                    ),
+                    associateAction(context,
+                        userAssociaation: state.associationStatus,
+                        profileEmail: state.email!),
+                    SizedBox(
+                      child: Image.network(
+                        '${GlobalVariables.url}/user/avatar/${state.email}',
+                        errorBuilder: (BuildContext context, Object exception,
+                            StackTrace? stackTrace) {
+                          // Handle the error here
+                          return const Text('Error loading image');
+                        },
+                      ),
+                    ),
+                    Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          const Text('Name'),
+                          Text('${state.name}'),
+                        ]),
+                    Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          const Text('Email'),
+                          Text('${state.email} '),
+                        ]),
+                    Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          const Text('Occupation'),
+                          Text('${state.occupation}'),
+                        ]),
+                    Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          const Text('Gender'),
+                          Text('${state.gender}'),
+                        ]),
+                    Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          const Text('Phone'),
+                          Text('${state.phone}'),
+                        ]),
+                    Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          const Text('Licence Number'),
+                          Text('${state.licenceNumber}'),
+                        ]),
+                    Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          const Text('Licence State'),
+                          Text('${state.licenceState}'),
+                        ]),
+                    Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          const Text('Year Licenced'),
+                          Text('${state.yearLicenced}'),
+                        ]),
+                    Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          const Text('Address'),
+                          Text('${state.address}'),
+                        ]),
+                    ElevatedButton(
+                        onPressed: () {
+                          BlocProvider.of<MainPageBloc>(context)
+                              .add(ChangePageEvent(page: 2));
+                        },
+                        child: const Text('Edit Profile')),
+                    CustomOutlineButton(
+                        onPressed: () {
+                          BlocProvider.of<UserTimelineBloc>(context).add(
+                              UserTimelineLoadingEvent(
+                                  userEmail: state.email!));
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => UserTimelinePage(
+                                      userEmail: state.email!)));
+                        },
+                        text: 'Timeline'),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    CustomOutlineButton(
+                        onPressed: () {
+                          BlocProvider.of<AgentOpenFormsSentBloc>(context).add(
+                              AgentOpenFormsSentLoadingEvent(
+                                  userEmail: state.email!));
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                      const AgentOpenFormsSentPage()));
+                        },
+                        text: 'Shared Leads'),
+                  ],
                 ),
-                Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      const Text('Name'),
-                      Text('${state.name}'),
-                    ]),
-                Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      const Text('Email'),
-                      Text('${state.email} '),
-                    ]),
-                Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      const Text('Occupation'),
-                      Text('${state.occupation}'),
-                    ]),
-                Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      const Text('Gender'),
-                      Text('${state.gender}'),
-                    ]),
-                Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      const Text('Phone'),
-                      Text('${state.phone}'),
-                    ]),
-                Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      const Text('Licence Number'),
-                      Text('${state.licenceNumber}'),
-                    ]),
-                Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      const Text('Licence State'),
-                      Text('${state.licenceState}'),
-                    ]),
-                Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      const Text('Year Licenced'),
-                      Text('${state.yearLicenced}'),
-                    ]),
-                Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      const Text('Address'),
-                      Text('${state.address}'),
-                    ]),
-                ElevatedButton(
-                    onPressed: () {
-                      BlocProvider.of<MainPageBloc>(context)
-                          .add(ChangePageEvent(page: 2));
-                    },
-                    child: const Text('Edit Profile')),
-                CustomOutlineButton(
-                    onPressed: () {
-                      BlocProvider.of<UserTimelineBloc>(context).add(
-                          UserTimelineLoadingEvent(userEmail: state.email!));
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) =>
-                                  UserTimelinePage(userEmail: state.email!)));
-                    },
-                    text: 'Timeline'),
-                const SizedBox(
-                  height: 20,
-                ),
-                CustomOutlineButton(
-                    onPressed: () {
-                      BlocProvider.of<AgentOpenFormsSentBloc>(context).add(
-                          AgentOpenFormsSentLoadingEvent(
-                              userEmail: state.email!));
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) =>
-                                  const AgentOpenFormsSentPage()));
-                    },
-                    text: 'Shared Leads'),
-              ],
-            ),
-          ),
-        );
-      }
-      return const CircularProgressIndicator();
-    }));
+              ),
+            );
+          }
+          return const CircularProgressIndicator();
+        }));
   }
 }
 
@@ -177,3 +253,9 @@ Widget associateAction(BuildContext context,
     return const Text('Error');
   }
 }
+
+// ignore: non_constant_identifier_names
+Widget TextCustom(String data) => Text(
+      data,
+      style: const TextStyle(color: CustomTheme.nightFontColor),
+    );

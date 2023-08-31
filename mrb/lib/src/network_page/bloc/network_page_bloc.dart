@@ -22,7 +22,7 @@ class NetworkPageBloc extends Bloc<NetworkPageEvent, NetworkPageState> {
       final List<dynamic> responseJsonData = responseJson['data'];
       final List<UserModel> associates = responseJsonData
           .map(
-            (user) => UserModel.toJSON(user),
+            (user) => UserModel.fromJson(user),
           )
           .toList();
       emit(NetworkPageSuccessState(associates: associates));

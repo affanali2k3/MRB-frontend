@@ -46,7 +46,7 @@ class ChatPageBloc extends Bloc<ChatPageEvent, ChatPageState> {
         "senderEmail": FirebaseAuth.instance.currentUser?.email,
         "receiverEmail": "singh@rempower.com"
       });
-      final Response response = await repository.saveMessage(
+      await repository.saveMessage(
           receiverEmail: event.receiverEmail,
           senderEmail: event.senderEmail,
           message: event.message);
