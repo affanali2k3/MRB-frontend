@@ -5,6 +5,8 @@ import 'package:mrb/src/common/outline_button.dart';
 import 'package:mrb/src/login/cubit/login_cubit.dart';
 import 'package:mrb/src/login/cubit/login_state.dart';
 import 'package:mrb/src/main_page/view/main_page_view.dart';
+import 'package:mrb/src/referral_centre/bloc/referral_centre_bloc.dart';
+import 'package:mrb/src/referral_centre/bloc/referral_centre_event.dart';
 import 'package:mrb/src/registor/view/registor_view.dart';
 import 'package:socket_io_client/socket_io_client.dart' as IO;
 
@@ -56,11 +58,18 @@ class LoginPage extends StatelessWidget {
                       .read<LoginCubit>()
                       .login(email: _email.text, password: _password.text)
                       .then((value) {
+                    print('object');
                     Navigator.push(
                         context,
                         MaterialPageRoute(
                             builder: (context) => const MainPage()));
-                  }).onError((error, stackTrace) => null);
+
+                    context.read<ReferralCentreBloc>().add(
+                        ReferralCentreLoadingEvent(
+                            city: 'New York', state: 'California'));
+                  }).onError((error, stackTrace) {
+                    print(error);
+                  });
 
                   GlobalVariables.socket =
                       IO.io('http://192.168.1.10:8080', <String, dynamic>{

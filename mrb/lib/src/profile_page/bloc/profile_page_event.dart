@@ -12,7 +12,13 @@ class ProfilePageLoadingEvent extends ProfilePageEvent {
   final String associateEmail;
 }
 
-class ProfilePageSuccessEvent extends ProfilePageEvent {}
+class ProfilePagePostTabEvent extends ProfilePageEvent {}
+
+class ProfilePageReviewsTabEvent extends ProfilePageEvent {}
+
+class ProfilePageNetworkTabEvent extends ProfilePageEvent {}
+
+class ProfilePageAboutTabEvent extends ProfilePageEvent {}
 
 class ProfilePageSendAssociateRequestEvent extends ProfilePageEvent {
   ProfilePageSendAssociateRequestEvent(

@@ -56,3 +56,71 @@ class ProfilePageSuccessState extends ProfilePageState {
         gender
       ];
 }
+
+class ProfilePagePostTabState extends ProfilePageSuccessState {
+  ProfilePagePostTabState(
+      {super.associationStatus,
+      super.email,
+      super.name,
+      super.licence,
+      super.photo,
+      super.phone,
+      super.address,
+      super.completedDeals,
+      super.licenceState,
+      super.licenceNumber,
+      super.yearLicenced,
+      super.occupation,
+      super.gender});
+}
+
+class ProfilePageReviewsTabState extends ProfilePageSuccessState {
+  ProfilePageReviewsTabState(
+      {super.associationStatus,
+      super.email,
+      super.name,
+      super.licence,
+      super.photo,
+      super.phone,
+      super.address,
+      super.completedDeals,
+      super.licenceState,
+      super.licenceNumber,
+      super.yearLicenced,
+      super.occupation,
+      super.gender});
+}
+
+class ProfilePageNetworkTabState extends ProfilePageSuccessState {
+  ProfilePageNetworkTabState(
+      {super.associationStatus,
+      super.email,
+      super.name,
+      super.licence,
+      super.photo,
+      super.phone,
+      super.address,
+      super.completedDeals,
+      super.licenceState,
+      super.licenceNumber,
+      super.yearLicenced,
+      super.occupation,
+      super.gender});
+}
+
+class ProfilePageAboutTabState extends ProfilePageSuccessState {
+  ProfilePageAboutTabState(
+      {super.associationStatus,
+      super.email,
+      super.name,
+      super.licence,
+      super.photo,
+      super.phone,
+      super.address,
+      super.completedDeals,
+      super.licenceState,
+      super.licenceNumber,
+      super.yearLicenced,
+      super.occupation,
+      super.gender});
+}

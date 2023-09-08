@@ -13,19 +13,34 @@ class ProfilePageBloc extends Bloc<ProfilePageEvent, ProfilePageState> {
     on<ProfilePageLoadingEvent>(_getProfileData);
     on<ProfilePageSendAssociateRequestEvent>(_sendAssociateRequest);
     on<ProfilePageAcceptAssociateRequestEvent>(_acceptAssociationRequest);
+    on<ProfilePagePostTabEvent>(_gotoPostTab);
+    on<ProfilePageReviewsTabEvent>(_gotoReviewTab);
+    on<ProfilePageNetworkTabEvent>(_gotoNetworkTab);
+    on<ProfilePageAboutTabEvent>(_gotoAboutTab);
   }
 
   final ProfilePageRepository repository;
 
+  void _gotoPostTab(ProfilePagePostTabEvent event, emit) =>
+      emit(ProfilePagePostTabState());
+
+  void _gotoNetworkTab(ProfilePageNetworkTabEvent event, emit) =>
+      emit(ProfilePageNetworkTabState());
+
+  void _gotoAboutTab(ProfilePageAboutTabEvent event, emit) =>
+      emit(ProfilePageAboutTabState());
+
+  void _gotoReviewTab(ProfilePageReviewsTabEvent event, emit) =>
+      emit(ProfilePageReviewsTabState());
+
   void _getProfileData(ProfilePageLoadingEvent event, emit) async {
     try {
-      print('0');
       final String response =
           await repository.getUserDetails(email: event.userEmail);
-      print('1');
+
       final Response status = await repository.getAssociationStatus(
           userName: event.userEmail, associateEmail: event.associateEmail);
-      print('2');
+
       final associationStausJson = json.decode(status.body)['data'];
       final UserAssociationModel? associationStatus;
 
@@ -36,10 +51,8 @@ class ProfilePageBloc extends Bloc<ProfilePageEvent, ProfilePageState> {
       }
       final responseJson = json.decode(response);
       final data = responseJson['data'];
-      print(data);
       final photo = responseJson['photo'];
 
-      print(associationStatus);
       emit(ProfilePageSuccessState(
           associationStatus: associationStatus,
           address: data['address'],
@@ -62,7 +75,6 @@ class ProfilePageBloc extends Bloc<ProfilePageEvent, ProfilePageState> {
   void _sendAssociateRequest(
       ProfilePageSendAssociateRequestEvent event, emit) async {
     try {
-      print('a');
       final Response response = await repository.sendAssociateEvent(
           senderEmail: event.senderEmail, receiverEmail: event.receiverEmail);
 
@@ -87,8 +99,6 @@ class ProfilePageBloc extends Bloc<ProfilePageEvent, ProfilePageState> {
             occupation: successState.occupation,
             gender: successState.gender));
       }
-
-      print('b');
     } catch (e) {
       print(e);
     }

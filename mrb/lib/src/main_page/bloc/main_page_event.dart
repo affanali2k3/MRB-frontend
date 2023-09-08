@@ -7,5 +7,5 @@ abstract class MainPageEvent extends Equatable {
 
 class ChangePageEvent extends MainPageEvent {
   ChangePageEvent({required this.page});
-  final int page;
+  final String page;
 }

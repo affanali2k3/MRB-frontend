@@ -1,5 +1,5 @@
 import 'package:equatable/equatable.dart';
-import 'package:mrb/src/client_referrals_received/model/form_model.dart';
+import 'package:mrb/src/agent_forms_received/model/form_model.dart';
 
 abstract class SentClientReferralsState extends Equatable {
   @override
@@ -13,13 +13,13 @@ final class SentClientReferralsLoadingState extends SentClientReferralsState {}
 final class SentClientReferralsDirectSuccessState
     extends SentClientReferralsState {
   SentClientReferralsDirectSuccessState({required this.directReferralsSent});
-  final List<ReceivedFormModel> directReferralsSent;
+  final List<FormReceivedModel> directReferralsSent;
 }
 
 final class SentClientReferralsOpenSuccessState
     extends SentClientReferralsState {
   SentClientReferralsOpenSuccessState({required this.openReferralsSent});
-  final List<ReceivedFormModel> openReferralsSent;
+  final List<FormReceivedModel> openReferralsSent;
 }
 
 final class SentClientReferralsDirectFailedState

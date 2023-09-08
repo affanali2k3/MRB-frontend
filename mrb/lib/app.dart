@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:mrb/src/client_referrals_received/bloc/client_referrals_recieved_bloc.dart';
-import 'package:mrb/src/client_referrals_received/repository/client_referrals_received_repository.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:mrb/src/chat_panel_page/bloc/chat_panel_bloc.dart';
+import 'package:mrb/src/chat_panel_page/repository/chat_panel_repository.dart';
+import 'package:mrb/src/agent_forms_received/bloc/agent_forms_received_bloc.dart';
+import 'package:mrb/src/agent_forms_received/repository/agent_forms_received_repository.dart';
 import 'package:mrb/src/agent_open_forms_sent/bloc/agent_forms_received_bloc.dart';
 import 'package:mrb/src/agent_open_forms_sent/repository/agent_forms_received_repository.dart';
 import 'package:mrb/src/chat_page/bloc/chat_page_bloc.dart';
@@ -55,14 +58,17 @@ class App extends StatelessWidget {
           RepositoryProvider(create: (_) => SenderAgentFormRepository()),
           RepositoryProvider(create: (_) => ReferralCentreRepository()),
           RepositoryProvider(create: (_) => SentClientReferralsRepository()),
-          RepositoryProvider(
-              create: (_) => ClientReferralsReceivedRepository()),
+          RepositoryProvider(create: (_) => ChatPanelRepository()),
+          RepositoryProvider(create: (_) => AgentFormsReceivedRepository()),
           RepositoryProvider(create: (_) => AgentOpenFormsSentRepository()),
         ],
         child: MultiBlocProvider(
             providers: [
               BlocProvider(
                   create: (_) => LoginCubit(repository: LoginRepository())),
+              BlocProvider(
+                  create: (_) =>
+                      ChatPanelBloc(repository: ChatPanelRepository())),
               BlocProvider(
                   create: (_) => ReferralCentreBloc(
                       repository: ReferralCentreRepository())),
@@ -73,8 +79,8 @@ class App extends StatelessWidget {
                   create: (_) => AgentOpenFormsSentBloc(
                       repository: AgentOpenFormsSentRepository())),
               BlocProvider(
-                  create: (_) => ClientReferralsRecievedBloc(
-                      repository: ClientReferralsReceivedRepository())),
+                  create: (_) => AgentFormsReceivedBloc(
+                      repository: AgentFormsReceivedRepository())),
               BlocProvider(
                   create: (_) => SenderAgentFormBloc(
                       repository: SenderAgentFormRepository())),
@@ -111,6 +117,7 @@ class App extends StatelessWidget {
             child: MaterialApp(
                 debugShowCheckedModeBanner: false,
                 theme: ThemeData(
+                  textTheme: GoogleFonts.poppinsTextTheme(),
                   primarySwatch: Colors.blue,
                 ),
                 home: LoginPage())));

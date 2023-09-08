@@ -1,9 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:mrb/src/client_referrals_received/bloc/client_referrals_recieved_bloc.dart';
-import 'package:mrb/src/client_referrals_received/bloc/client_referrals_recieved_event.dart';
-import 'package:mrb/src/client_referrals_received/view/client_referrals_recieved_view.dart';
+import 'package:mrb/src/agent_forms_received/bloc/agent_forms_received_bloc.dart';
+import 'package:mrb/src/agent_forms_received/bloc/agent_forms_received_event.dart';
+import 'package:mrb/src/agent_forms_received/view/agent_forms_received_view.dart';
 import 'package:mrb/src/common/outline_button.dart';
 import 'package:mrb/src/feed_page/bloc/feed_page_bloc.dart';
 import 'package:mrb/src/feed_page/bloc/feed_page_event.dart';
@@ -125,8 +125,8 @@ class HomePage extends StatelessWidget {
             ),
             CustomOutlineButton(
                 onPressed: () {
-                  BlocProvider.of<ClientReferralsRecievedBloc>(context)
-                      .add(ClientReferralsRecievedLoadingEvent());
+                  BlocProvider.of<AgentFormsReceivedBloc>(context)
+                      .add(AgentFormsReceivedLoadingEvent());
                   Navigator.push(
                       context,
                       MaterialPageRoute(
@@ -143,8 +143,7 @@ class HomePage extends StatelessWidget {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) =>
-                              const SentClientReferralsPage()));
+                          builder: (context) => const ProfilePage()));
                 },
                 text: 'Client referrals sent'),
             CustomOutlineButton(

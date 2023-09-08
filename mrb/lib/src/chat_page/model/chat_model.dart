@@ -1,5 +1,5 @@
-class ChatModel {
-  ChatModel(
+class MessageModel {
+  MessageModel(
       {required this.senderEmail,
       required this.receiverEmail,
       required this.message});
@@ -7,7 +7,7 @@ class ChatModel {
   final String receiverEmail;
   final String message;
 
-  static ChatModel fromJson(Map<String, dynamic> json) => ChatModel(
+  static MessageModel fromJson(json) => MessageModel(
       senderEmail: json['senderEmail'],
       receiverEmail: json['receiverEmail'],
       message: json['message']);

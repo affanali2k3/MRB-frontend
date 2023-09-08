@@ -3,11 +3,11 @@ import 'package:http/http.dart' as http;
 import 'package:mrb/global_variables.dart';
 import 'package:mrb/src/sender_agent_form/bloc/sender_agent_form_state.dart';
 
-class ClientReferralsReceivedRepository {
-  Future<Response> getReceivedForms({required String userEmail}) async {
+class AgentFormsReceivedRepository {
+  Future<Response> getReceivedForms({required int userId}) async {
     try {
       final Response response = await http.get(Uri.parse(
-          '${GlobalVariables.url}/senderAgentForm/getFormsReceived/$userEmail'));
+          '${GlobalVariables.url}/receiverAgentForm/open-forms-received?userId=$userId'));
       return response;
     } catch (e) {
       throw Exception(e);

@@ -30,7 +30,9 @@ class LoginCubit extends Cubit<LoginState> {
     try {
       await auth.signInWithEmailAndPassword(email: email, password: password);
 
+      print('Getting user data');
       final Response response = await repository.getUser(email: email);
+      print('Got user data');
       final UserModel user =
           UserModel.fromJson(json.decode(response.body)['data']);
       GlobalVariables.user = user;

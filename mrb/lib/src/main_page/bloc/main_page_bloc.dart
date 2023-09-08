@@ -8,15 +8,15 @@ class MainPageBloc extends Bloc<MainPageEvent, MainPageState> {
   }
 
   void _changePage(ChangePageEvent event, emit) {
-    if (event.page == 1) {
+    if (event.page == 'referralCentrePage') {
       emit(ReferralCenterPageState());
-    } else if (event.page == 2) {
+    } else if (event.page == 'networkPage') {
       emit(NetworkPageState());
-    } else if (event.page == 3) {
+    } else if (event.page == 'feedPage') {
       emit(FeedPageState());
-    } else if (event.page == 4) {
+    } else if (event.page == 'notificationPage') {
       emit(NotificationPageState());
-    } else if (event.page == 5) {
+    } else if (event.page == 'profilePage') {
       emit(ProfilePageState());
     }
   }

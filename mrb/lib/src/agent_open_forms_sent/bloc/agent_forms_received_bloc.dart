@@ -2,9 +2,9 @@ import 'dart:convert';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:http/http.dart';
-import 'package:mrb/src/client_referrals_received/model/form_model.dart';
 import 'package:mrb/src/agent_open_forms_sent/bloc/agent_forms_received_event.dart';
 import 'package:mrb/src/agent_open_forms_sent/bloc/agent_forms_received_state.dart';
+import 'package:mrb/src/agent_open_forms_sent/model/form_model.dart';
 import 'package:mrb/src/agent_open_forms_sent/repository/agent_forms_received_repository.dart';
 
 class AgentOpenFormsSentBloc
@@ -28,10 +28,10 @@ class AgentOpenFormsSentBloc
       final String responseMessage = decodedData['message'];
       final List<dynamic> sentFormsJson = decodedData['data'];
 
-      final List<ReceivedFormModel> sentForms = [];
+      final List<SentFormModel> sentForms = [];
 
       for (final Map<String, dynamic> json in sentFormsJson) {
-        sentForms.add(ReceivedFormModel.fromJson(json));
+        sentForms.add(SentFormModel.fromJson(json));
       }
 
       print(sentForms);
