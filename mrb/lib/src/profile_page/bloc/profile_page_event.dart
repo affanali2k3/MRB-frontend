@@ -16,7 +16,10 @@ class ProfilePagePostTabEvent extends ProfilePageEvent {}
 
 class ProfilePageReviewsTabEvent extends ProfilePageEvent {}
 
-class ProfilePageNetworkTabEvent extends ProfilePageEvent {}
+class ProfilePageNetworkTabEvent extends ProfilePageEvent {
+  ProfilePageNetworkTabEvent({required this.userId});
+  final int userId;
+}
 
 class ProfilePageAboutTabEvent extends ProfilePageEvent {}
 

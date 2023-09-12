@@ -13,19 +13,22 @@ class ProfileBusinessStatsWidget extends StatelessWidget {
             Column(
               children: [
                 TextCustom('204'),
-                TextCustom('Referrals Sent', secondary: true)
+                TextCustom('Referrals', secondary: true),
+                TextCustom('Sent', secondary: true)
               ],
             ),
             Column(
               children: [
                 TextCustom('204'),
-                TextCustom('Referrals Received', secondary: true)
+                TextCustom('Referrals', secondary: true),
+                TextCustom('Received', secondary: true)
               ],
             ),
             Column(
               children: [
                 TextCustom('204'),
-                TextCustom('Deals Completed', secondary: true)
+                TextCustom('Deals', secondary: true),
+                TextCustom('Completed', secondary: true)
               ],
             )
           ],

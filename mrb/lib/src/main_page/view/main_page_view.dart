@@ -92,11 +92,11 @@ class MainPage extends StatelessWidget {
           if (state is MainPageInitialState) {
             return const ReferralCentrePage();
           } else if (state is ProfilePageState) {
-            return const ProfilePage();
+            return ProfilePage(
+              userId: GlobalVariables.user.id,
+            );
           } else if (state is NetworkPageState) {
             return const AgentFormsReceivedPage();
-          } else if (state is ProfilePageState) {
-            return const ProfilePage();
           } else if (state is FeedPageState) {
             return ChatPanelPage();
           }

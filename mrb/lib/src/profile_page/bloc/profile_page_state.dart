@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:mrb/src/profile_page/model/user_association_model.dart';
+import 'package:mrb/src/profile_page/model/user_network_model.dart';
 
 abstract class ProfilePageState extends Equatable {
   @override
@@ -93,7 +94,8 @@ class ProfilePageReviewsTabState extends ProfilePageSuccessState {
 
 class ProfilePageNetworkTabState extends ProfilePageSuccessState {
   ProfilePageNetworkTabState(
-      {super.associationStatus,
+      {required this.userNetwork,
+      super.associationStatus,
       super.email,
       super.name,
       super.licence,
@@ -106,6 +108,8 @@ class ProfilePageNetworkTabState extends ProfilePageSuccessState {
       super.yearLicenced,
       super.occupation,
       super.gender});
+
+  final List<UserNetworkModel> userNetwork;
 }
 
 class ProfilePageAboutTabState extends ProfilePageSuccessState {

@@ -13,6 +13,16 @@ class ProfilePageRepository {
     }
   }
 
+  Future<Response> getAllAssociatesForUser({required int userId}) async {
+    try {
+      final Response response = await http.get(
+          Uri.parse('${GlobalVariables.url}/associate/get-all?userId=$userId'));
+      return response;
+    } catch (e) {
+      throw Exception(e);
+    }
+  }
+
   Future<Response> sendAssociateEvent(
       {required String senderEmail, required String receiverEmail}) async {
     try {

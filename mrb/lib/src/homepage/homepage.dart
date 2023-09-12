@@ -85,10 +85,10 @@ class HomePage extends StatelessWidget {
                       FeedPageLoadingEvent(
                           userEmail: FirebaseAuth.instance.currentUser!.email!,
                           pageNumber: '1'));
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const ProfilePage()));
+                  // Navigator.push(
+                  //     context,
+                  //     MaterialPageRoute(
+                  //         builder: (context) => const ProfilePage(userId: ,)));
                 },
                 text: 'Profile Page'),
             const SizedBox(
@@ -140,10 +140,10 @@ class HomePage extends StatelessWidget {
                       .add(SentClientReferralsDirectLoadingEvent());
                   BlocProvider.of<SentClientReferralsBloc>(context)
                       .add(SentClientReferralsOpenLoadingEvent());
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const ProfilePage()));
+                  // Navigator.push(
+                  //     context,
+                  //     MaterialPageRoute(
+                  //         builder: (context) => const ProfilePage()));
                 },
                 text: 'Client referrals sent'),
             CustomOutlineButton(

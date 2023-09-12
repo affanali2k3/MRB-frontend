@@ -5,6 +5,7 @@ import 'package:http/http.dart';
 import 'package:mrb/src/profile_page/bloc/profile_page_event.dart';
 import 'package:mrb/src/profile_page/bloc/profile_page_state.dart';
 import 'package:mrb/src/profile_page/model/user_association_model.dart';
+import 'package:mrb/src/profile_page/model/user_network_model.dart';
 import 'package:mrb/src/profile_page/repository/profile_page_repository.dart';
 
 class ProfilePageBloc extends Bloc<ProfilePageEvent, ProfilePageState> {
@@ -24,8 +25,19 @@ class ProfilePageBloc extends Bloc<ProfilePageEvent, ProfilePageState> {
   void _gotoPostTab(ProfilePagePostTabEvent event, emit) =>
       emit(ProfilePagePostTabState());
 
-  void _gotoNetworkTab(ProfilePageNetworkTabEvent event, emit) =>
-      emit(ProfilePageNetworkTabState());
+  void _gotoNetworkTab(ProfilePageNetworkTabEvent event, emit) async {
+    final Response response =
+        await repository.getAllAssociatesForUser(userId: event.userId);
+
+    final List<dynamic> userNetworkJson = json.decode(response.body)['data'];
+    final List<UserNetworkModel> userNetwork = [];
+
+    for (final json in userNetworkJson) {
+      userNetwork.add(UserNetworkModel.fromJson(json));
+    }
+
+    emit(ProfilePageNetworkTabState(userNetwork: userNetwork));
+  }
 
   void _gotoAboutTab(ProfilePageAboutTabEvent event, emit) =>
       emit(ProfilePageAboutTabState());

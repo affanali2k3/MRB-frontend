@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 
 class CustomProfilePhoto extends StatelessWidget {
-  const CustomProfilePhoto({Key? key}) : super(key: key);
+  const CustomProfilePhoto({Key? key, this.size = 40}) : super(key: key);
+
+  final double size;
 
   @override
   Widget build(BuildContext context) => Container(
-        width: 40,
-        height: 40,
+        width: size,
+        height: size,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(40),
           color: Colors.white,

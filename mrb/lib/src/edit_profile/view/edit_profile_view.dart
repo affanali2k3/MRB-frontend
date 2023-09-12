@@ -160,10 +160,10 @@ class ProfileEditPage extends StatelessWidget {
                                     FirebaseAuth.instance.currentUser!.email!,
                                 associateEmail:
                                     FirebaseAuth.instance.currentUser!.email!));
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => const ProfilePage()));
+                        // Navigator.push(
+                        //     context,
+                        //     MaterialPageRoute(
+                        //         builder: (context) => const ProfilePage()));
                       },
                       text: 'Go to Profile'),
                   const SizedBox(height: 20),

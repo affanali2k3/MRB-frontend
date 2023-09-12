@@ -1,29 +1,22 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:mrb/global_variables.dart';
-import 'package:mrb/src/agent_open_forms_sent/bloc/agent_forms_received_bloc.dart';
-import 'package:mrb/src/agent_open_forms_sent/bloc/agent_forms_received_event.dart';
-import 'package:mrb/src/agent_open_forms_sent/view/agent_forms_received_view.dart';
-import 'package:mrb/src/common/outline_button.dart';
-import 'package:mrb/src/main_page/bloc/main_page_bloc.dart';
-import 'package:mrb/src/main_page/bloc/main_page_event.dart';
 import 'package:mrb/src/profile_page/bloc/profile_page_bloc.dart';
 import 'package:mrb/src/profile_page/bloc/profile_page_event.dart';
 import 'package:mrb/src/profile_page/bloc/profile_page_state.dart';
 import 'package:mrb/src/profile_page/model/user_association_model.dart';
 import 'package:mrb/src/profile_page/view/pages/profile_agent_reviews_page.dart';
+import 'package:mrb/src/profile_page/view/pages/profile_network_page.dart';
 import 'package:mrb/src/profile_page/view/pages/profile_posts_page.dart';
 import 'package:mrb/src/profile_page/view/widgets/profile_business_stats.dart';
 import 'package:mrb/src/profile_page/view/widgets/profile_connect_message.dart';
 import 'package:mrb/src/profile_page/view/widgets/profile_cover_name.dart';
 import 'package:mrb/src/profile_page/view/widgets/profile_tabs.dart';
-import 'package:mrb/src/user_timeline/bloc/user_timeline_bloc.dart';
-import 'package:mrb/src/user_timeline/bloc/user_timeline_event.dart';
-import 'package:mrb/src/user_timeline/view/user_timeline_view.dart';
 
 class ProfilePage extends StatelessWidget {
-  const ProfilePage({super.key});
+  const ProfilePage({super.key, required this.userId});
+
+  final int userId;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -37,120 +30,21 @@ class ProfilePage extends StatelessWidget {
             );
           } else if (state is ProfilePageSuccessState) {
             return SingleChildScrollView(
-              // minimum: const EdgeInsets.all(20),
               child: SafeArea(
                 child: Column(
                   children: [
                     const ProfileCoverNameWidget(),
                     const ProfileBusinessStatsWidget(),
                     const ProfileConnectMessageWidget(),
-                    const ProfileTabsWidget(),
+                    ProfileTabsWidget(
+                      userId: userId,
+                    ),
                     if (state is ProfilePagePostTabState)
                       const ProfilePostsPage(),
                     if (state is ProfilePageReviewsTabState)
-                      const ProfileAgentReviewsPage()
-
-                    // const ProfilePostsPage(),
-                    // associateAction(context,
-                    //     userAssociaation: state.associationStatus,
-                    //     profileEmail: state.email!),
-                    // SizedBox(
-                    //   child: Image.network(
-                    //     '${GlobalVariables.url}/user/avatar/${state.email}',
-                    //     errorBuilder: (BuildContext context, Object exception,
-                    //         StackTrace? stackTrace) {
-                    //       // Handle the error here
-                    //       return const Text('Error loading image');
-                    //     },
-                    //   ),
-                    // ),
-                    // Row(
-                    //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    //     children: [
-                    //       const Text('Name'),
-                    //       Text('${state.name}'),
-                    //     ]),
-                    // Row(
-                    //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    //     children: [
-                    //       const Text('Email'),
-                    //       Text('${state.email} '),
-                    //     ]),
-                    // Row(
-                    //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    //     children: [
-                    //       const Text('Occupation'),
-                    //       Text('${state.occupation}'),
-                    //     ]),
-                    // Row(
-                    //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    //     children: [
-                    //       const Text('Gender'),
-                    //       Text('${state.gender}'),
-                    //     ]),
-                    // Row(
-                    //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    //     children: [
-                    //       const Text('Phone'),
-                    //       Text('${state.phone}'),
-                    //     ]),
-                    // Row(
-                    //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    //     children: [
-                    //       const Text('Licence Number'),
-                    //       Text('${state.licenceNumber}'),
-                    //     ]),
-                    // Row(
-                    //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    //     children: [
-                    //       const Text('Licence State'),
-                    //       Text('${state.licenceState}'),
-                    //     ]),
-                    // Row(
-                    //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    //     children: [
-                    //       const Text('Year Licenced'),
-                    //       Text('${state.yearLicenced}'),
-                    //     ]),
-                    // Row(
-                    //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    //     children: [
-                    //       const Text('Address'),
-                    //       Text('${state.address}'),
-                    //     ]),
-                    // ElevatedButton(
-                    //     onPressed: () {
-                    //       BlocProvider.of<MainPageBloc>(context)
-                    //           .add(ChangePageEvent(page: 2));
-                    //     },
-                    //     child: const Text('Edit Profile')),
-                    // CustomOutlineButton(
-                    //     onPressed: () {
-                    //       BlocProvider.of<UserTimelineBloc>(context).add(
-                    //           UserTimelineLoadingEvent(
-                    //               userEmail: state.email!));
-                    //       Navigator.push(
-                    //           context,
-                    //           MaterialPageRoute(
-                    //               builder: (context) => UserTimelinePage(
-                    //                   userEmail: state.email!)));
-                    //     },
-                    //     text: 'Timeline'),
-                    // const SizedBox(
-                    //   height: 20,
-                    // ),
-                    // CustomOutlineButton(
-                    //     onPressed: () {
-                    //       BlocProvider.of<AgentOpenFormsSentBloc>(context).add(
-                    //           AgentOpenFormsSentLoadingEvent(
-                    //               userEmail: state.email!));
-                    //       Navigator.push(
-                    //           context,
-                    //           MaterialPageRoute(
-                    //               builder: (context) =>
-                    //                   const AgentOpenFormsSentPage()));
-                    //     },
-                    //     text: 'Shared Leads'),
+                      const ProfileAgentReviewsPage(),
+                    if (state is ProfilePageNetworkTabState)
+                      const ProfileNetworkPage(),
                   ],
                 ),
               ),

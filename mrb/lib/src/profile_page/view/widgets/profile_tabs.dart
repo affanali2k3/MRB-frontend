@@ -7,7 +7,9 @@ import 'package:mrb/src/profile_page/view/widgets/profile_business_stats.dart';
 import 'package:mrb/themes/font_theme.dart';
 
 class ProfileTabsWidget extends StatelessWidget {
-  const ProfileTabsWidget({Key? key}) : super(key: key);
+  const ProfileTabsWidget({Key? key, required this.userId}) : super(key: key);
+
+  final int userId;
 
   @override
   Widget build(BuildContext context) =>
@@ -24,7 +26,7 @@ class ProfileTabsWidget extends StatelessWidget {
                       active: state is ProfilePageNetworkTabState,
                       onTap: () => context
                           .read<ProfilePageBloc>()
-                          .add(ProfilePageNetworkTabEvent()),
+                          .add(ProfilePageNetworkTabEvent(userId: userId)),
                     ),
                     profileTabItem(
                       context,
