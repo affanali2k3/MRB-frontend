@@ -26,7 +26,7 @@ class SearchPageBloc extends Bloc<SearchPageEvent, SearchPageState> {
             (user) => UserModel.fromJson(user),
           )
           .toList();
-      emit(SearchPageSuccessState(queryResult: result));
+      emit(SearchPageAgentSearchState(agents: result));
     } catch (e) {
       print(e);
     }

@@ -44,6 +44,9 @@ dependencies:
   socket_io_client: ^2.0.3+1
   google_sign_in: ^6.1.4
   mime: ^1.0.4
+  flutter_rating_bar: ^4.0.1
+  google_fonts: ^5.1.0
+
 
 dev_dependencies:
   flutter_test:
@@ -71,6 +74,9 @@ flutter:
   assets:
       - assets/
       - assets/icons/navbar/
+      - assets/icons/post/
+      - assets/icons/referral_centre/
+      - assets/icons/profile_page/
   # assets:
   #   - images/a_dot_burr.jpeg
   #   - images/a_dot_ham.jpeg

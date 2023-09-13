@@ -6,24 +6,35 @@ abstract class ProfilePageEvent extends Equatable {
 }
 
 class ProfilePageLoadingEvent extends ProfilePageEvent {
-  ProfilePageLoadingEvent(
-      {required this.userEmail, required this.associateEmail});
-  final String userEmail;
-  final String associateEmail;
+  ProfilePageLoadingEvent({required this.userId, required this.associateId});
+  final int userId;
+  final int associateId;
 }
 
-class ProfilePageSuccessEvent extends ProfilePageEvent {}
+class ProfilePagePostTabEvent extends ProfilePageEvent {
+  ProfilePagePostTabEvent({required this.userId});
+  final int userId;
+}
+
+class ProfilePageReviewsTabEvent extends ProfilePageEvent {}
+
+class ProfilePageNetworkTabEvent extends ProfilePageEvent {
+  ProfilePageNetworkTabEvent({required this.userId});
+  final int userId;
+}
+
+class ProfilePageAboutTabEvent extends ProfilePageEvent {}
 
 class ProfilePageSendAssociateRequestEvent extends ProfilePageEvent {
   ProfilePageSendAssociateRequestEvent(
-      {required this.senderEmail, required this.receiverEmail});
-  final String senderEmail;
-  final String receiverEmail;
+      {required this.senderId, required this.receiverId});
+  final int senderId;
+  final int receiverId;
 }
 
 class ProfilePageAcceptAssociateRequestEvent extends ProfilePageEvent {
   ProfilePageAcceptAssociateRequestEvent(
-      {required this.senderEmail, required this.receiverEmail});
-  final String senderEmail;
-  final String receiverEmail;
+      {required this.senderId, required this.receiverId});
+  final int senderId;
+  final int receiverId;
 }

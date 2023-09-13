@@ -1,5 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:mrb/src/profile_page/model/user_association_model.dart';
+import 'package:mrb/src/profile_page/model/user_network_model.dart';
+import 'package:mrb/src/profile_page/model/user_post_model.dart';
 
 abstract class ProfilePageState extends Equatable {
   @override
@@ -55,4 +57,78 @@ class ProfilePageSuccessState extends ProfilePageState {
         occupation,
         gender
       ];
+}
+
+class ProfilePagePostTabState extends ProfilePageSuccessState {
+  ProfilePagePostTabState(
+      {super.associationStatus,
+      required this.posts,
+      super.email,
+      super.name,
+      super.licence,
+      super.photo,
+      super.phone,
+      super.address,
+      super.completedDeals,
+      super.licenceState,
+      super.licenceNumber,
+      super.yearLicenced,
+      super.occupation,
+      super.gender});
+
+  final List<UserPostModel> posts;
+}
+
+class ProfilePageReviewsTabState extends ProfilePageSuccessState {
+  ProfilePageReviewsTabState(
+      {super.associationStatus,
+      super.email,
+      super.name,
+      super.licence,
+      super.photo,
+      super.phone,
+      super.address,
+      super.completedDeals,
+      super.licenceState,
+      super.licenceNumber,
+      super.yearLicenced,
+      super.occupation,
+      super.gender});
+}
+
+class ProfilePageNetworkTabState extends ProfilePageSuccessState {
+  ProfilePageNetworkTabState(
+      {required this.userNetwork,
+      super.associationStatus,
+      super.email,
+      super.name,
+      super.licence,
+      super.photo,
+      super.phone,
+      super.address,
+      super.completedDeals,
+      super.licenceState,
+      super.licenceNumber,
+      super.yearLicenced,
+      super.occupation,
+      super.gender});
+
+  final List<UserNetworkModel> userNetwork;
+}
+
+class ProfilePageAboutTabState extends ProfilePageSuccessState {
+  ProfilePageAboutTabState(
+      {super.associationStatus,
+      super.email,
+      super.name,
+      super.licence,
+      super.photo,
+      super.phone,
+      super.address,
+      super.completedDeals,
+      super.licenceState,
+      super.licenceNumber,
+      super.yearLicenced,
+      super.occupation,
+      super.gender});
 }

@@ -34,7 +34,7 @@ class AgentOpenFormsSentPage extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       const Text('Sender Agent'),
-                      Text(state.sentForms[index].senderAgent)
+                      Text(state.sentForms[index].senderAgent.toString())
                     ],
                   ),
                   Row(

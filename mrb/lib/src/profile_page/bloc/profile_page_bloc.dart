@@ -5,6 +5,8 @@ import 'package:http/http.dart';
 import 'package:mrb/src/profile_page/bloc/profile_page_event.dart';
 import 'package:mrb/src/profile_page/bloc/profile_page_state.dart';
 import 'package:mrb/src/profile_page/model/user_association_model.dart';
+import 'package:mrb/src/profile_page/model/user_network_model.dart';
+import 'package:mrb/src/profile_page/model/user_post_model.dart';
 import 'package:mrb/src/profile_page/repository/profile_page_repository.dart';
 
 class ProfilePageBloc extends Bloc<ProfilePageEvent, ProfilePageState> {
@@ -13,19 +15,58 @@ class ProfilePageBloc extends Bloc<ProfilePageEvent, ProfilePageState> {
     on<ProfilePageLoadingEvent>(_getProfileData);
     on<ProfilePageSendAssociateRequestEvent>(_sendAssociateRequest);
     on<ProfilePageAcceptAssociateRequestEvent>(_acceptAssociationRequest);
+    on<ProfilePagePostTabEvent>(_gotoPostTab);
+    on<ProfilePageReviewsTabEvent>(_gotoReviewTab);
+    on<ProfilePageNetworkTabEvent>(_gotoNetworkTab);
+    on<ProfilePageAboutTabEvent>(_gotoAboutTab);
   }
 
   final ProfilePageRepository repository;
 
+  void _gotoPostTab(ProfilePagePostTabEvent event, emit) async {
+    final Response response =
+        await repository.getAllPostsForUser(userId: event.userId);
+
+    print(response.body);
+
+    final List<dynamic> postsJson = json.decode(response.body)['data'];
+    final List<UserPostModel> posts = [];
+
+    for (final json in postsJson) {
+      posts.add(UserPostModel.fromJson(json));
+    }
+
+    emit(ProfilePagePostTabState(posts: posts));
+  }
+
+  void _gotoNetworkTab(ProfilePageNetworkTabEvent event, emit) async {
+    final Response response =
+        await repository.getAllAssociatesForUser(userId: event.userId);
+
+    final List<dynamic> userNetworkJson = json.decode(response.body)['data'];
+    final List<UserNetworkModel> userNetwork = [];
+
+    for (final json in userNetworkJson) {
+      userNetwork.add(UserNetworkModel.fromJson(json));
+    }
+
+    emit(ProfilePageNetworkTabState(userNetwork: userNetwork));
+  }
+
+  void _gotoAboutTab(ProfilePageAboutTabEvent event, emit) =>
+      emit(ProfilePageAboutTabState());
+
+  void _gotoReviewTab(ProfilePageReviewsTabEvent event, emit) =>
+      emit(ProfilePageReviewsTabState());
+
   void _getProfileData(ProfilePageLoadingEvent event, emit) async {
     try {
-      print('0');
       final String response =
-          await repository.getUserDetails(email: event.userEmail);
-      print('1');
+          await repository.getUserDetails(userId: event.userId);
+
       final Response status = await repository.getAssociationStatus(
-          userName: event.userEmail, associateEmail: event.associateEmail);
-      print('2');
+          userId: event.userId, associateId: event.associateId);
+
       final associationStausJson = json.decode(status.body)['data'];
       final UserAssociationModel? associationStatus;
 
@@ -34,12 +75,13 @@ class ProfilePageBloc extends Bloc<ProfilePageEvent, ProfilePageState> {
       } else {
         associationStatus = UserAssociationModel.fromJson(associationStausJson);
       }
+
       final responseJson = json.decode(response);
+
       final data = responseJson['data'];
-      print(data);
+
       final photo = responseJson['photo'];
 
-      print(associationStatus);
       emit(ProfilePageSuccessState(
           associationStatus: associationStatus,
           address: data['address'],
@@ -62,17 +104,16 @@ class ProfilePageBloc extends Bloc<ProfilePageEvent, ProfilePageState> {
   void _sendAssociateRequest(
       ProfilePageSendAssociateRequestEvent event, emit) async {
     try {
-      print('a');
       final Response response = await repository.sendAssociateEvent(
-          senderEmail: event.senderEmail, receiverEmail: event.receiverEmail);
+          senderId: event.senderId, receiverId: event.receiverId);
 
       final successState = (state as ProfilePageSuccessState);
       if (response.statusCode == 500) {
       } else if (response.statusCode == 200) {
         emit(ProfilePageSuccessState(
             associationStatus: UserAssociationModel(
-                senderEmail: event.senderEmail,
-                receiverEmail: event.receiverEmail,
+                senderId: event.senderId,
+                receiverId: event.receiverId,
                 status: 'Pending'),
             email: successState.email,
             name: successState.name,
@@ -87,8 +128,6 @@ class ProfilePageBloc extends Bloc<ProfilePageEvent, ProfilePageState> {
             occupation: successState.occupation,
             gender: successState.gender));
       }
-
-      print('b');
     } catch (e) {
       print(e);
     }
@@ -98,7 +137,7 @@ class ProfilePageBloc extends Bloc<ProfilePageEvent, ProfilePageState> {
       ProfilePageAcceptAssociateRequestEvent event, emit) async {
     try {
       await repository.acceptAssociation(
-          senderEmail: event.senderEmail, receiverEmail: event.receiverEmail);
+          senderId: event.senderId, receiverId: event.receiverId);
     } catch (e) {
       print(e);
     }

@@ -1,214 +1,53 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mrb/global_variables.dart';
-import 'package:mrb/src/agent_open_forms_sent/bloc/agent_forms_received_bloc.dart';
-import 'package:mrb/src/agent_open_forms_sent/bloc/agent_forms_received_event.dart';
-import 'package:mrb/src/agent_open_forms_sent/view/agent_forms_received_view.dart';
-import 'package:mrb/src/common/outline_button.dart';
-import 'package:mrb/src/main_page/bloc/main_page_bloc.dart';
-import 'package:mrb/src/main_page/bloc/main_page_event.dart';
 import 'package:mrb/src/profile_page/bloc/profile_page_bloc.dart';
-import 'package:mrb/src/profile_page/bloc/profile_page_event.dart';
 import 'package:mrb/src/profile_page/bloc/profile_page_state.dart';
-import 'package:mrb/src/profile_page/model/user_association_model.dart';
-import 'package:mrb/src/user_timeline/bloc/user_timeline_bloc.dart';
-import 'package:mrb/src/user_timeline/bloc/user_timeline_event.dart';
-import 'package:mrb/src/user_timeline/view/user_timeline_view.dart';
-import 'package:mrb/themes/font_theme.dart';
+import 'package:mrb/src/profile_page/view/pages/profile_agent_reviews_page.dart';
+import 'package:mrb/src/profile_page/view/pages/profile_network_page.dart';
+import 'package:mrb/src/profile_page/view/pages/profile_posts_page.dart';
+import 'package:mrb/src/profile_page/view/widgets/profile_business_stats.dart';
+import 'package:mrb/src/profile_page/view/widgets/profile_connect_message.dart';
+import 'package:mrb/src/profile_page/view/widgets/profile_cover_name.dart';
+import 'package:mrb/src/profile_page/view/widgets/profile_tabs.dart';
 
 class ProfilePage extends StatelessWidget {
-  const ProfilePage({super.key});
+  const ProfilePage({super.key, required this.userId});
+
+  final int userId;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         backgroundColor: Color(0xff1f1f23),
         body: BlocBuilder<ProfilePageBloc, ProfilePageState>(
             builder: (context, state) {
+          print(state);
           if (state is ProfilePageLoadingState) {
             return const Center(
               child: CircularProgressIndicator(),
             );
           } else if (state is ProfilePageSuccessState) {
-            return SafeArea(
-              // minimum: const EdgeInsets.all(20),
-              child: SingleChildScrollView(
+            return SingleChildScrollView(
+              child: SafeArea(
                 child: Column(
                   children: [
-                    Container(
-                      height: 200,
-                      width: double.infinity,
-                      color: Colors.green,
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Container(
-                            width: 90,
-                            height: 90,
-                            decoration: BoxDecoration(
-                                color: Colors.grey,
-                                borderRadius: BorderRadius.circular(50)),
-                          ),
-                          Text('Ali Makhdoom'),
-                          Text('@ali_Mak')
-                        ],
-                      ),
-                    ),
-                    Container(
-                      padding: const EdgeInsets.all(20),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: [
-                          Column(
-                            children: [
-                              TextCustom('204'),
-                              TextCustom('Referrals Sent')
-                            ],
-                          ),
-                          Column(
-                            children: [
-                              TextCustom('204'),
-                              TextCustom('Referrals Received')
-                            ],
-                          ),
-                          Column(
-                            children: [
-                              TextCustom('204'),
-                              TextCustom('Deals Completed')
-                            ],
-                          )
-                        ],
-                      ),
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        GestureDetector(
-                          onTap: () {},
-                          child: Container(
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 40, vertical: 10),
-                              decoration: BoxDecoration(
-                                  color: CustomTheme.primaryColor,
-                                  borderRadius: BorderRadius.circular(5)),
-                              child: TextCustom('Connect')),
-                        ),
-                        const SizedBox(
-                          width: 10,
-                        ),
-                        GestureDetector(
-                          onTap: () {},
-                          child: Container(
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 40, vertical: 10),
-                              decoration: BoxDecoration(
-                                  color: CustomTheme.primaryColor,
-                                  borderRadius: BorderRadius.circular(5)),
-                              child: TextCustom('Message')),
-                        ),
-                        // CustomOutlineButton(onPressed: () {}, text: 'Message')
-                      ],
-                    ),
-                    associateAction(context,
-                        userAssociaation: state.associationStatus,
-                        profileEmail: state.email!),
+                    const ProfileCoverNameWidget(),
+                    const ProfileBusinessStatsWidget(),
                     SizedBox(
-                      child: Image.network(
-                        '${GlobalVariables.url}/user/avatar/${state.email}',
-                        errorBuilder: (BuildContext context, Object exception,
-                            StackTrace? stackTrace) {
-                          // Handle the error here
-                          return const Text('Error loading image');
-                        },
-                      ),
+                        child: userId == GlobalVariables.user.id
+                            ? null
+                            : ProfileConnectMessageWidget(
+                                userId: userId,
+                              )),
+                    ProfileTabsWidget(
+                      userId: userId,
                     ),
-                    Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          const Text('Name'),
-                          Text('${state.name}'),
-                        ]),
-                    Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          const Text('Email'),
-                          Text('${state.email} '),
-                        ]),
-                    Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          const Text('Occupation'),
-                          Text('${state.occupation}'),
-                        ]),
-                    Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          const Text('Gender'),
-                          Text('${state.gender}'),
-                        ]),
-                    Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          const Text('Phone'),
-                          Text('${state.phone}'),
-                        ]),
-                    Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          const Text('Licence Number'),
-                          Text('${state.licenceNumber}'),
-                        ]),
-                    Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          const Text('Licence State'),
-                          Text('${state.licenceState}'),
-                        ]),
-                    Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          const Text('Year Licenced'),
-                          Text('${state.yearLicenced}'),
-                        ]),
-                    Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          const Text('Address'),
-                          Text('${state.address}'),
-                        ]),
-                    ElevatedButton(
-                        onPressed: () {
-                          BlocProvider.of<MainPageBloc>(context)
-                              .add(ChangePageEvent(page: 2));
-                        },
-                        child: const Text('Edit Profile')),
-                    CustomOutlineButton(
-                        onPressed: () {
-                          BlocProvider.of<UserTimelineBloc>(context).add(
-                              UserTimelineLoadingEvent(
-                                  userEmail: state.email!));
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => UserTimelinePage(
-                                      userEmail: state.email!)));
-                        },
-                        text: 'Timeline'),
-                    const SizedBox(
-                      height: 20,
-                    ),
-                    CustomOutlineButton(
-                        onPressed: () {
-                          BlocProvider.of<AgentOpenFormsSentBloc>(context).add(
-                              AgentOpenFormsSentLoadingEvent(
-                                  userEmail: state.email!));
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) =>
-                                      const AgentOpenFormsSentPage()));
-                        },
-                        text: 'Shared Leads'),
+                    if (state is ProfilePagePostTabState)
+                      const ProfilePostsPage(),
+                    if (state is ProfilePageReviewsTabState)
+                      const ProfileAgentReviewsPage(),
+                    if (state is ProfilePageNetworkTabState)
+                      const ProfileNetworkPage(),
                   ],
                 ),
               ),
@@ -219,43 +58,37 @@ class ProfilePage extends StatelessWidget {
   }
 }
 
-Widget associateAction(BuildContext context,
-    {required UserAssociationModel? userAssociaation,
-    required String profileEmail}) {
-  if (userAssociaation == null &&
-      profileEmail == FirebaseAuth.instance.currentUser?.email) {
-    return const SizedBox();
-  } else if (userAssociaation == null) {
-    return ElevatedButton(
-        onPressed: () => context.read<ProfilePageBloc>().add(
-            ProfilePageSendAssociateRequestEvent(
-                senderEmail: FirebaseAuth.instance.currentUser!.email!,
-                receiverEmail: profileEmail)),
-        child: const Text('Send Request'));
-  } else if (userAssociaation.senderEmail ==
-          FirebaseAuth.instance.currentUser?.email &&
-      userAssociaation.status == 'Pending') {
-    return const Text('Request already sent');
-  } else if (userAssociaation.receiverEmail ==
-          FirebaseAuth.instance.currentUser?.email &&
-      userAssociaation.status == 'Pending') {
-    return ElevatedButton(
-        onPressed: () {
-          context.read<ProfilePageBloc>().add(
-              ProfilePageAcceptAssociateRequestEvent(
-                  senderEmail: profileEmail,
-                  receiverEmail: FirebaseAuth.instance.currentUser!.email!));
-        },
-        child: const Text('Accept'));
-  } else if (userAssociaation.status == 'Accepted') {
-    return const Text('Associates');
-  } else {
-    return const Text('Error');
-  }
-}
-
-// ignore: non_constant_identifier_names
-Widget TextCustom(String data) => Text(
-      data,
-      style: const TextStyle(color: CustomTheme.nightFontColor),
-    );
+// Widget associateAction(BuildContext context,
+//     {required UserAssociationModel? userAssociaation,
+//     required String profileEmail}) {
+//   if (userAssociaation == null &&
+//       profileEmail == FirebaseAuth.instance.currentUser?.email) {
+//     return const SizedBox();
+//   } else if (userAssociaation == null) {
+//     return ElevatedButton(
+//         onPressed: () => context.read<ProfilePageBloc>().add(
+//             ProfilePageSendAssociateRequestEvent(
+//                 senderEmail: FirebaseAuth.instance.currentUser!.email!,
+//                 receiverEmail: profileEmail)),
+//         child: const Text('Send Request'));
+//   } else if (userAssociaation.senderEmail ==
+//           FirebaseAuth.instance.currentUser?.email &&
+//       userAssociaation.status == 'Pending') {
+//     return const Text('Request already sent');
+//   } else if (userAssociaation.receiverEmail ==
+//           FirebaseAuth.instance.currentUser?.email &&
+//       userAssociaation.status == 'Pending') {
+//     return ElevatedButton(
+//         onPressed: () {
+//           context.read<ProfilePageBloc>().add(
+//               ProfilePageAcceptAssociateRequestEvent(
+//                   senderEmail: profileEmail,
+//                   receiverEmail: FirebaseAuth.instance.currentUser!.email!));
+//         },
+//         child: const Text('Accept'));
+//   } else if (userAssociaation.status == 'Accepted') {
+//     return const Text('Associates');
+//   } else {
+//     return const Text('Error');
+//   }
+// }

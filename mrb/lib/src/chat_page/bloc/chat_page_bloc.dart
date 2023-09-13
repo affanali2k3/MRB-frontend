@@ -25,9 +25,9 @@ class ChatPageBloc extends Bloc<ChatPageEvent, ChatPageState> {
 
       final responseJson = json.decode(response.body);
       final List<dynamic> responseJsonData = responseJson['data'];
-      final List<ChatModel> messages = responseJsonData
+      final List<MessageModel> messages = responseJsonData
           .map(
-            (chat) => ChatModel.fromJson(chat),
+            (chat) => MessageModel.fromJson(chat),
           )
           .toList();
 
@@ -50,8 +50,8 @@ class ChatPageBloc extends Bloc<ChatPageEvent, ChatPageState> {
           receiverEmail: event.receiverEmail,
           senderEmail: event.senderEmail,
           message: event.message);
-      List<ChatModel> messages = List.from(state.messages);
-      messages.add(ChatModel(
+      List<MessageModel> messages = List.from(state.messages);
+      messages.add(MessageModel(
           senderEmail: event.senderEmail,
           receiverEmail: event.receiverEmail,
           message: event.message));

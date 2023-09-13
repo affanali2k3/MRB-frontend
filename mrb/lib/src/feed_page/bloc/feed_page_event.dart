@@ -6,7 +6,7 @@ class FeedPageEvent extends Equatable {
 }
 
 class FeedPageLoadingEvent extends FeedPageEvent {
-  FeedPageLoadingEvent({required this.userEmail, required this.pageNumber});
-  final String userEmail;
-  final String pageNumber;
+  FeedPageLoadingEvent({required this.userId, required this.pageNumber});
+  final int userId;
+  final int pageNumber;
 }

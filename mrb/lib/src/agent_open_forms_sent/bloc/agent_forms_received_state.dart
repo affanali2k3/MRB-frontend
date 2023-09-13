@@ -1,5 +1,5 @@
 import 'package:equatable/equatable.dart';
-import 'package:mrb/src/client_referrals_received/model/form_model.dart';
+import 'package:mrb/src/agent_open_forms_sent/model/form_model.dart';
 
 abstract class AgentOpenFormsSentState extends Equatable {
   @override
@@ -13,7 +13,7 @@ final class AgentOpenFormsSentLoadingState extends AgentOpenFormsSentState {}
 final class AgentOpenFormsSentSuccessState extends AgentOpenFormsSentState {
   AgentOpenFormsSentSuccessState(
       {required this.sentForms, required this.message});
-  final List<ReceivedFormModel> sentForms;
+  final List<SentFormModel> sentForms;
   final String message;
 
   @override

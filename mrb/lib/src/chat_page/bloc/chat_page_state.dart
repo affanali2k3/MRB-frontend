@@ -3,7 +3,7 @@ import 'package:mrb/src/chat_page/model/chat_model.dart';
 
 abstract class ChatPageState extends Equatable {
   const ChatPageState({required this.messages});
-  final List<ChatModel> messages;
+  final List<MessageModel> messages;
 
   @override
   List<Object?> get props => [messages];

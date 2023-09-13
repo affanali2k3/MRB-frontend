@@ -1,15 +1,13 @@
 class UserAssociationModel {
   UserAssociationModel(
-      {required this.senderEmail,
-      required this.receiverEmail,
-      required this.status});
-  final String senderEmail;
-  final String receiverEmail;
+      {required this.senderId, required this.receiverId, required this.status});
+  final int senderId;
+  final int receiverId;
   final String status;
 
   static UserAssociationModel? fromJson(Map<String, dynamic> json) =>
       UserAssociationModel(
-          senderEmail: json['userEmail'],
-          receiverEmail: json['associateEmail'],
+          senderId: json['userId'],
+          receiverId: json['associateId'],
           status: json['status']);
 }

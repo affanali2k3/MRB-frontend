@@ -17,8 +17,8 @@ class LoginRepository {
 
   Future<Response> getUser({required String email}) async {
     try {
-      final Response response =
-          await http.get(Uri.parse('${GlobalVariables.url}/user/$email'));
+      final Response response = await http.get(
+          Uri.parse('${GlobalVariables.url}/user/get/email?userEmail=$email'));
       return response;
     } catch (e) {
       throw Exception(e);

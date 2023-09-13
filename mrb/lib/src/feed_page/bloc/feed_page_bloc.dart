@@ -16,14 +16,14 @@ class FeedPageBloc extends Bloc<FeedPageEvent, FeedPageState> {
 
   void _loadPosts(FeedPageLoadingEvent event, emit) async {
     try {
-      if (event.pageNumber == '1') {
+      if (event.pageNumber == 1) {
         emit(FeedPageLoadingState(posts: const []));
       } else {
         emit(
             FeedPageSuccessState(posts: (state as FeedPageSuccessState).posts));
       }
       final Response response = await repository.loadPosts(
-          userEmail: event.userEmail, pageNumber: event.pageNumber);
+          userId: event.userId, pageNumber: event.pageNumber);
       final Map<String, dynamic> responseJson = json.decode(response.body);
       // print(responseJson);
       final List<dynamic> responseJsonData = responseJson['data'];
