@@ -3,6 +3,7 @@ import 'package:mrb/src/chat_panel_page/bloc/chat_panel_bloc.dart';
 import 'package:mrb/src/chat_panel_page/bloc/chat_panel_event.dart';
 import 'package:mrb/src/chat_panel_page/view/chat_panel_page.dart';
 import 'package:mrb/src/profile_page/view/widgets/profile_business_stats.dart';
+import 'package:mrb/src/search_page/view/search_page_view.dart';
 import 'package:mrb/themes/font_theme.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -31,11 +32,19 @@ class CustomTopBarWidget extends StatelessWidget {
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(10),
                     color: CustomTheme.nightSecondaryColor),
-                child: const Icon(
-                  Icons.search,
-                  color: Colors.white,
-                  size: 15,
-                ),
+                child: GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => SearchPage(),
+                          ));
+                    },
+                    child: const Icon(
+                      Icons.search,
+                      color: Colors.white,
+                      size: 15,
+                    )),
               ),
               const SizedBox(
                 width: 5,

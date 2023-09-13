@@ -1,10 +1,8 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:mrb/global_variables.dart';
 import 'package:mrb/src/profile_page/bloc/profile_page_bloc.dart';
-import 'package:mrb/src/profile_page/bloc/profile_page_event.dart';
 import 'package:mrb/src/profile_page/bloc/profile_page_state.dart';
-import 'package:mrb/src/profile_page/model/user_association_model.dart';
 import 'package:mrb/src/profile_page/view/pages/profile_agent_reviews_page.dart';
 import 'package:mrb/src/profile_page/view/pages/profile_network_page.dart';
 import 'package:mrb/src/profile_page/view/pages/profile_posts_page.dart';
@@ -35,7 +33,12 @@ class ProfilePage extends StatelessWidget {
                   children: [
                     const ProfileCoverNameWidget(),
                     const ProfileBusinessStatsWidget(),
-                    const ProfileConnectMessageWidget(),
+                    SizedBox(
+                        child: userId == GlobalVariables.user.id
+                            ? null
+                            : ProfileConnectMessageWidget(
+                                userId: userId,
+                              )),
                     ProfileTabsWidget(
                       userId: userId,
                     ),
@@ -55,37 +58,37 @@ class ProfilePage extends StatelessWidget {
   }
 }
 
-Widget associateAction(BuildContext context,
-    {required UserAssociationModel? userAssociaation,
-    required String profileEmail}) {
-  if (userAssociaation == null &&
-      profileEmail == FirebaseAuth.instance.currentUser?.email) {
-    return const SizedBox();
-  } else if (userAssociaation == null) {
-    return ElevatedButton(
-        onPressed: () => context.read<ProfilePageBloc>().add(
-            ProfilePageSendAssociateRequestEvent(
-                senderEmail: FirebaseAuth.instance.currentUser!.email!,
-                receiverEmail: profileEmail)),
-        child: const Text('Send Request'));
-  } else if (userAssociaation.senderEmail ==
-          FirebaseAuth.instance.currentUser?.email &&
-      userAssociaation.status == 'Pending') {
-    return const Text('Request already sent');
-  } else if (userAssociaation.receiverEmail ==
-          FirebaseAuth.instance.currentUser?.email &&
-      userAssociaation.status == 'Pending') {
-    return ElevatedButton(
-        onPressed: () {
-          context.read<ProfilePageBloc>().add(
-              ProfilePageAcceptAssociateRequestEvent(
-                  senderEmail: profileEmail,
-                  receiverEmail: FirebaseAuth.instance.currentUser!.email!));
-        },
-        child: const Text('Accept'));
-  } else if (userAssociaation.status == 'Accepted') {
-    return const Text('Associates');
-  } else {
-    return const Text('Error');
-  }
-}
+// Widget associateAction(BuildContext context,
+//     {required UserAssociationModel? userAssociaation,
+//     required String profileEmail}) {
+//   if (userAssociaation == null &&
+//       profileEmail == FirebaseAuth.instance.currentUser?.email) {
+//     return const SizedBox();
+//   } else if (userAssociaation == null) {
+//     return ElevatedButton(
+//         onPressed: () => context.read<ProfilePageBloc>().add(
+//             ProfilePageSendAssociateRequestEvent(
+//                 senderEmail: FirebaseAuth.instance.currentUser!.email!,
+//                 receiverEmail: profileEmail)),
+//         child: const Text('Send Request'));
+//   } else if (userAssociaation.senderEmail ==
+//           FirebaseAuth.instance.currentUser?.email &&
+//       userAssociaation.status == 'Pending') {
+//     return const Text('Request already sent');
+//   } else if (userAssociaation.receiverEmail ==
+//           FirebaseAuth.instance.currentUser?.email &&
+//       userAssociaation.status == 'Pending') {
+//     return ElevatedButton(
+//         onPressed: () {
+//           context.read<ProfilePageBloc>().add(
+//               ProfilePageAcceptAssociateRequestEvent(
+//                   senderEmail: profileEmail,
+//                   receiverEmail: FirebaseAuth.instance.currentUser!.email!));
+//         },
+//         child: const Text('Accept'));
+//   } else if (userAssociaation.status == 'Accepted') {
+//     return const Text('Associates');
+//   } else {
+//     return const Text('Error');
+//   }
+// }

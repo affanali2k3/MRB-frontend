@@ -8,10 +8,10 @@ abstract class SearchPageState extends Equatable {
 
 class SearchPageInitialState extends SearchPageState {}
 
-class SearchPageSuccessState extends SearchPageState {
-  SearchPageSuccessState({required this.queryResult});
-  final List<UserModel>? queryResult;
+class SearchPageAgentSearchState extends SearchPageState {
+  SearchPageAgentSearchState({required this.agents});
+  final List<UserModel> agents;
 
   @override
-  List<Object?> get props => [queryResult];
+  List<Object?> get props => [agents];
 }

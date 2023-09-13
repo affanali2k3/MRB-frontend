@@ -63,17 +63,13 @@ class HomePage extends StatelessWidget {
             ),
             CustomOutlineButton(
                 onPressed: () {
-                  BlocProvider.of<FeedPageBloc>(context).add(
-                      FeedPageLoadingEvent(
-                          userEmail: FirebaseAuth.instance.currentUser!.email!,
-                          pageNumber: '1'));
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => FeedPage(
-                                userEmail:
-                                    FirebaseAuth.instance.currentUser!.email!,
-                              )));
+                  // Navigator.push(
+                  //     context,
+                  //     MaterialPageRoute(
+                  //         builder: (context) => FeedPage(
+                  //               userEmail:
+                  //                   FirebaseAuth.instance.currentUser!.email!,
+                  //             )));
                 },
                 text: 'Feed'),
             const SizedBox(
@@ -81,10 +77,10 @@ class HomePage extends StatelessWidget {
             ),
             CustomOutlineButton(
                 onPressed: () {
-                  BlocProvider.of<FeedPageBloc>(context).add(
-                      FeedPageLoadingEvent(
-                          userEmail: FirebaseAuth.instance.currentUser!.email!,
-                          pageNumber: '1'));
+                  // BlocProvider.of<FeedPageBloc>(context).add(
+                  //     FeedPageLoadingEvent(
+                  //         userEmail: FirebaseAuth.instance.currentUser!.email!,
+                  //         pageNumber: '1'));
                   // Navigator.push(
                   //     context,
                   //     MaterialPageRoute(

@@ -35,6 +35,7 @@ class LoginCubit extends Cubit<LoginState> {
       print('Got user data');
       final UserModel user =
           UserModel.fromJson(json.decode(response.body)['data']);
+      print(user);
       GlobalVariables.user = user;
       print(GlobalVariables.user);
     } on FirebaseAuthException catch (e) {

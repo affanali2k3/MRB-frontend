@@ -3,15 +3,19 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mrb/global_variables.dart';
 import 'package:mrb/src/agent_forms_received/bloc/agent_forms_received_bloc.dart';
 import 'package:mrb/src/agent_forms_received/bloc/agent_forms_received_event.dart';
-import 'package:mrb/src/chat_panel_page/view/chat_panel_page.dart';
 import 'package:mrb/src/agent_forms_received/view/agent_forms_received_view.dart';
+import 'package:mrb/src/feed_page/bloc/feed_page_bloc.dart';
+import 'package:mrb/src/feed_page/bloc/feed_page_event.dart';
+import 'package:mrb/src/feed_page/view/feed_page_view.dart';
 import 'package:mrb/src/main_page/bloc/main_page_bloc.dart';
 import 'package:mrb/src/main_page/bloc/main_page_event.dart';
 import 'package:mrb/src/main_page/bloc/main_page_state.dart';
+import 'package:mrb/src/post_page/view/post_page_view.dart';
 import 'package:mrb/src/profile_page/bloc/profile_page_bloc.dart';
 import 'package:mrb/src/profile_page/bloc/profile_page_event.dart';
 import 'package:mrb/src/profile_page/view/profile_page_view.dart';
 import 'package:mrb/src/referral_centre/view/referral_centre_view.dart';
+import 'package:mrb/src/referral_centre/view/widgets/lead_post_widget.dart';
 import 'package:mrb/themes/font_theme.dart';
 
 enum Pages {
@@ -31,13 +35,24 @@ class MainPage extends StatelessWidget {
         extendBody: true,
         floatingActionButton:
             BlocBuilder<MainPageBloc, MainPageState>(builder: (context, state) {
-          if (state is ReferralCenterPageState) {
+          if (state is ReferralCenterPageState || state is FeedPageState) {
             return FloatingActionButton(
               elevation: 1000,
-              onPressed: () {},
+              onPressed: () {
+                if (state is FeedPageState) {
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => PostPage()));
+                } else if (state is ReferralCenterPageState) {
+                  showModalBottomSheet<dynamic>(
+                      backgroundColor: CustomTheme.nightBackgroundColor,
+                      context: context,
+                      builder: (context) => ReferralCentreLeadPostWidget());
+                }
+              },
               child: const Icon(Icons.add),
             );
           }
+
           return const SizedBox();
         }),
         bottomNavigationBar: Container(
@@ -64,9 +79,13 @@ class MainPage extends StatelessWidget {
                   },
                   icon: Image.asset('assets/icons/navbar/network.png')),
               IconButton(
-                  onPressed: () => context
-                      .read<MainPageBloc>()
-                      .add(ChangePageEvent(page: Pages.feedPage.name)),
+                  onPressed: () {
+                    context
+                        .read<MainPageBloc>()
+                        .add(ChangePageEvent(page: Pages.feedPage.name));
+                    context.read<FeedPageBloc>().add(FeedPageLoadingEvent(
+                        userId: GlobalVariables.user.id, pageNumber: 1));
+                  },
                   icon: Image.asset('assets/icons/navbar/feed.png')),
               IconButton(
                   onPressed: () => context
@@ -77,8 +96,8 @@ class MainPage extends StatelessWidget {
                   onPressed: () {
                     BlocProvider.of<ProfilePageBloc>(context).add(
                         ProfilePageLoadingEvent(
-                            userEmail: GlobalVariables.user.email,
-                            associateEmail: GlobalVariables.user.email));
+                            userId: GlobalVariables.user.id,
+                            associateId: GlobalVariables.user.id));
                     context
                         .read<MainPageBloc>()
                         .add(ChangePageEvent(page: Pages.profilePage.name));
@@ -98,7 +117,9 @@ class MainPage extends StatelessWidget {
           } else if (state is NetworkPageState) {
             return const AgentFormsReceivedPage();
           } else if (state is FeedPageState) {
-            return ChatPanelPage();
+            return FeedPage(
+              userId: GlobalVariables.user.id,
+            );
           }
 
           return const ReferralCentrePage();

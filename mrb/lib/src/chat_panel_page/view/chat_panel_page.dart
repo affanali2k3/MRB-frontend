@@ -4,6 +4,7 @@ import 'package:mrb/src/chat_page/view/chat_page_view.dart';
 import 'package:mrb/src/chat_panel_page/bloc/chat_panel_bloc.dart';
 import 'package:mrb/src/chat_panel_page/bloc/chat_panel_state.dart';
 import 'package:mrb/src/common/profile_photo.dart';
+import 'package:mrb/src/common/top_bar_secondary_widget.dart';
 import 'package:mrb/src/profile_page/view/widgets/profile_business_stats.dart';
 import 'package:mrb/themes/font_theme.dart';
 
@@ -15,17 +16,8 @@ class ChatPanelPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: CustomTheme.nightAppbarColor,
-        leading: IconButton(
-            onPressed: () {}, icon: const Icon(Icons.arrow_back_ios_new)),
-        actions: [
-          IconButton(onPressed: () {}, icon: const Icon(Icons.settings))
-        ],
-        title: const Text(
-          'Messages',
-        ),
-        centerTitle: true,
+      appBar: const CustomTopBarSecondaryWidget(
+        title: 'Messages',
       ),
       backgroundColor: CustomTheme.nightBackgroundColor,
       body: SingleChildScrollView(

@@ -3,7 +3,10 @@ import 'package:mrb/src/profile_page/view/widgets/profile_business_stats.dart';
 import 'package:mrb/themes/font_theme.dart';
 
 class ProfileConnectMessageWidget extends StatelessWidget {
-  const ProfileConnectMessageWidget({Key? key}) : super(key: key);
+  const ProfileConnectMessageWidget({Key? key, required this.userId})
+      : super(key: key);
+
+  final int userId;
 
   @override
   Widget build(BuildContext context) => Row(

@@ -91,7 +91,6 @@ class ReferralCentreLeadDisplayWidget extends StatelessWidget {
                     GestureDetector(
                       onTap: () {
                         showModalBottomSheet<dynamic>(
-                            // isScrollControlled: true,
                             backgroundColor: CustomTheme.nightBackgroundColor,
                             context: context,
                             builder: (context) =>

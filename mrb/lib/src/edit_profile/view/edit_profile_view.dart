@@ -154,12 +154,12 @@ class ProfileEditPage extends StatelessWidget {
                   ),
                   CustomOutlineButton(
                       onPressed: () {
-                        BlocProvider.of<ProfilePageBloc>(context).add(
-                            ProfilePageLoadingEvent(
-                                userEmail:
-                                    FirebaseAuth.instance.currentUser!.email!,
-                                associateEmail:
-                                    FirebaseAuth.instance.currentUser!.email!));
+                        // BlocProvider.of<ProfilePageBloc>(context).add(
+                        //     ProfilePageLoadingEvent(
+                        //         userId:
+                        //             FirebaseAuth.instance.currentUser!.email!,
+                        //         associateEmail:
+                        //             FirebaseAuth.instance.currentUser!.email!));
                         // Navigator.push(
                         //     context,
                         //     MaterialPageRoute(

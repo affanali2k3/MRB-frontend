@@ -34,7 +34,7 @@ class ProfileTabsWidget extends StatelessWidget {
                       active: state is ProfilePagePostTabState,
                       onTap: () => context
                           .read<ProfilePageBloc>()
-                          .add(ProfilePagePostTabEvent()),
+                          .add(ProfilePagePostTabEvent(userId: userId)),
                     ),
                     profileTabItem(
                       context,

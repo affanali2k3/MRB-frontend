@@ -2,7 +2,7 @@ class UserModel {
   UserModel(
       {required this.email,
       required this.id,
-      this.name,
+      required this.name,
       this.address,
       this.completedDeals,
       this.photo,
@@ -10,7 +10,7 @@ class UserModel {
       this.gender});
   final String email;
   final int id;
-  final String? name;
+  final String name;
   final String? address;
   final int? completedDeals;
   final String? photo;
