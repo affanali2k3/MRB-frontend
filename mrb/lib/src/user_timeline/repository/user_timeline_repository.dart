@@ -27,13 +27,13 @@ class UserTimelineRepository {
     }
   }
 
-  Future<void> removeLike({required String postId, required int likeId}) async {
+  Future<void> removeLike({required int postId, required int likeId}) async {
     try {
       final response = await http.delete(
           Uri.parse(
             '${GlobalVariables.url}/like/delete',
           ),
-          body: {"postId": postId, "likeId": likeId.toString()});
+          body: {"postId": postId.toString(), "likeId": likeId.toString()});
       if (kDebugMode) {
         print(response.body);
       }

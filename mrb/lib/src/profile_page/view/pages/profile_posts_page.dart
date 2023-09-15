@@ -3,8 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mrb/src/common/post_model.dart';
 import 'package:mrb/src/profile_page/bloc/profile_page_bloc.dart';
 import 'package:mrb/src/profile_page/bloc/profile_page_state.dart';
-import 'package:mrb/src/profile_page/view/widgets/profile_business_stats.dart';
-import 'package:mrb/themes/font_theme.dart';
 
 class ProfilePostsPage extends StatelessWidget {
   const ProfilePostsPage({Key? key}) : super(key: key);

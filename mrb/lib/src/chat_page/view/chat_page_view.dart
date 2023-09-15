@@ -1,4 +1,3 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mrb/src/chat_page/bloc/chat_page_bloc.dart';
@@ -86,30 +85,6 @@ class ChatPage extends StatelessWidget {
               )
             ],
           );
-          if (state is ChatPageMessagesLoadedState) {
-            print(state.messages.length);
-            return Container(
-                child: ListView.builder(
-              itemCount: state.messages.length,
-              itemBuilder: (context, index) => Container(
-                  alignment: state.messages[index].senderEmail ==
-                          FirebaseAuth.instance.currentUser!.email!
-                      ? Alignment.centerLeft
-                      : Alignment.centerRight,
-                  width: double.infinity,
-                  child: Container(
-                      padding: const EdgeInsets.all(10),
-                      color: state.messages[index].senderEmail ==
-                              FirebaseAuth.instance.currentUser!.email!
-                          ? Colors.grey
-                          : Colors.amber,
-                      child: Text(state.messages[index].message))),
-            ));
-          } else {
-            return const Center(
-              child: CircularProgressIndicator(),
-            );
-          }
         })));
   }
 }

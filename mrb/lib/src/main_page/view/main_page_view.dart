@@ -7,15 +7,15 @@ import 'package:mrb/src/agent_forms_received/view/agent_forms_received_view.dart
 import 'package:mrb/src/feed_page/bloc/feed_page_bloc.dart';
 import 'package:mrb/src/feed_page/bloc/feed_page_event.dart';
 import 'package:mrb/src/feed_page/view/feed_page_view.dart';
+import 'package:mrb/src/feed_page/view/widgets/new_post_widget.dart';
 import 'package:mrb/src/main_page/bloc/main_page_bloc.dart';
 import 'package:mrb/src/main_page/bloc/main_page_event.dart';
 import 'package:mrb/src/main_page/bloc/main_page_state.dart';
-import 'package:mrb/src/post_page/view/post_page_view.dart';
 import 'package:mrb/src/profile_page/bloc/profile_page_bloc.dart';
 import 'package:mrb/src/profile_page/bloc/profile_page_event.dart';
 import 'package:mrb/src/profile_page/view/profile_page_view.dart';
 import 'package:mrb/src/referral_centre/view/referral_centre_view.dart';
-import 'package:mrb/src/referral_centre/view/widgets/lead_post_widget.dart';
+import 'package:mrb/src/referral_post/view/referral_post_view.dart';
 import 'package:mrb/themes/font_theme.dart';
 
 enum Pages {
@@ -40,13 +40,15 @@ class MainPage extends StatelessWidget {
               elevation: 1000,
               onPressed: () {
                 if (state is FeedPageState) {
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => PostPage()));
+                  showModalBottomSheet<dynamic>(
+                      backgroundColor: CustomTheme.nightBackgroundColor,
+                      context: context,
+                      builder: (context) => FeedPageNewPostWidget());
                 } else if (state is ReferralCenterPageState) {
                   showModalBottomSheet<dynamic>(
                       backgroundColor: CustomTheme.nightBackgroundColor,
                       context: context,
-                      builder: (context) => ReferralCentreLeadPostWidget());
+                      builder: (context) => const ReferralPostPage());
                 }
               },
               child: const Icon(Icons.add),

@@ -10,14 +10,12 @@ class PostModel {
       required this.name,
       required this.likes,
       required this.likeId,
-      required this.userEmail,
       required this.isLiked,
       required this.postId});
 
-  final String postId;
+  final int postId;
   final String? text;
   final String name;
-  final String userEmail;
   final int? likeId;
   bool isLiked;
   int likes;
@@ -30,7 +28,6 @@ class PostModel {
         text: post.text,
         imagesName: post.imagesName,
         name: post.name,
-        userEmail: post.userEmail,
         isLiked: post.isLiked,
         postId: post.postId);
   }
@@ -44,7 +41,6 @@ class PostModel {
         name: json['name'],
         postId: json['postId'],
         likes: json['likes'],
-        userEmail: json['userEmail'],
         imagesName: imagesList.map((imgName) {
           return imgName.toString();
         }).toList());

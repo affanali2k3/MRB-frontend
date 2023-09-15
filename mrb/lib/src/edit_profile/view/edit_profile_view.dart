@@ -1,4 +1,3 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mrb/src/common/input_field.dart';
@@ -11,9 +10,6 @@ import 'package:mrb/src/homepage/homepage.dart';
 import 'package:mrb/src/login/cubit/login_cubit.dart';
 import 'package:mrb/src/login/cubit/login_state.dart';
 import 'package:mrb/src/login/view/login.dart';
-import 'package:mrb/src/profile_page/bloc/profile_page_bloc.dart';
-import 'package:mrb/src/profile_page/bloc/profile_page_event.dart';
-import 'package:mrb/src/profile_page/view/profile_page_view.dart';
 
 // ignore: must_be_immutable
 class ProfileEditPage extends StatelessWidget {
