@@ -5,6 +5,9 @@ import 'package:mrb/src/profile_page/view/widgets/profile_business_stats.dart';
 import 'package:mrb/src/referral_post/bloc/referral_post_bloc.dart';
 import 'package:mrb/src/referral_post/bloc/referral_post_event.dart';
 import 'package:mrb/src/referral_post/bloc/referral_post_state.dart';
+import 'package:mrb/src/referral_post_direct/bloc/referral_post_direct_bloc.dart';
+import 'package:mrb/src/referral_post_direct/bloc/referral_post_direct_event.dart';
+import 'package:mrb/src/referral_post_direct/view/referral_post_direct_view.dart';
 import 'package:mrb/themes/font_theme.dart';
 
 class ReferralPostPage extends StatelessWidget {
@@ -178,14 +181,39 @@ class ReferralPostPage extends StatelessWidget {
                 const SizedBox(
                   height: 20,
                 ),
-                Container(
-                  margin:
-                      const EdgeInsets.only(bottom: 10, left: 10, right: 10),
-                  child: CustomButton(
-                    onPressed: () {},
-                    text: 'Post Referral',
-                  ),
-                )
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Container(
+                      margin: const EdgeInsets.only(
+                          bottom: 10, left: 10, right: 10),
+                      child: CustomButton(
+                        width: null,
+                        onPressed: () {
+                          context
+                              .read<ReferralPostDirectBloc>()
+                              .add(ReferralPostDirectTopAgentsLoadingEvent());
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) =>
+                                    const ReferralPostDirectPage(),
+                              ));
+                        },
+                        text: 'Share with agents',
+                      ),
+                    ),
+                    Container(
+                      margin: const EdgeInsets.only(
+                          bottom: 10, left: 10, right: 10),
+                      child: CustomButton(
+                        width: null,
+                        onPressed: () {},
+                        text: 'Post Publicly',
+                      ),
+                    ),
+                  ],
+                ),
               ],
             ),
           ),

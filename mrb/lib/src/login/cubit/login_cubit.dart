@@ -29,15 +29,6 @@ class LoginCubit extends Cubit<LoginState> {
   Future<void> login({required String email, required String password}) async {
     try {
       await auth.signInWithEmailAndPassword(email: email, password: password);
-
-      print('Getting user data');
-      final Response response = await repository.getUser(email: email);
-      print('Got user data');
-      final UserModel user =
-          UserModel.fromJson(json.decode(response.body)['data']);
-      print(user);
-      GlobalVariables.user = user;
-      print(GlobalVariables.user);
     } on FirebaseAuthException catch (e) {
       debugPrint(e.message);
       switch (e.code) {
@@ -51,6 +42,34 @@ class LoginCubit extends Cubit<LoginState> {
           emit(LoginInvalidEmailState(error: 'User not found'));
       }
       debugPrint(e.code);
+    }
+  }
+
+  Future<bool> getUserData({required String email}) async {
+    try {
+      print('Getting user data');
+      final Response response = await repository.getUser(email: email);
+      print('Got user data');
+      final UserModel user =
+          UserModel.fromJson(json.decode(response.body)['data']);
+      print(user);
+      GlobalVariables.user = user;
+      print(GlobalVariables.user);
+      return true;
+    } on FirebaseAuthException catch (e) {
+      debugPrint(e.message);
+      switch (e.code) {
+        case 'invalid-email':
+          emit(LoginInvalidEmailState(error: 'Invalid format for email'));
+          break;
+        case 'wrong-password':
+          emit(LoginInvalidPasswordState(error: 'Invalid password'));
+          break;
+        case 'user-not-found':
+          emit(LoginInvalidEmailState(error: 'User not found'));
+      }
+      debugPrint(e.code);
+      return false;
     }
   }
 

@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:mrb/src/chat_panel_page/bloc/chat_panel_bloc.dart';
-import 'package:mrb/src/chat_panel_page/bloc/chat_panel_event.dart';
-import 'package:mrb/src/chat_panel_page/view/chat_panel_page.dart';
+import 'package:mrb/src/notifications_page/view/notification_view.dart';
 import 'package:mrb/src/profile_page/view/widgets/profile_business_stats.dart';
 import 'package:mrb/src/search_page/view/search_page_view.dart';
 import 'package:mrb/themes/font_theme.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
 class CustomTopBarWidget extends StatelessWidget {
   const CustomTopBarWidget({Key? key}) : super(key: key);
@@ -43,48 +40,40 @@ class CustomTopBarWidget extends StatelessWidget {
                     child: const Icon(
                       Icons.search,
                       color: Colors.white,
-                      size: 15,
+                      size: 30,
                     )),
               ),
               const SizedBox(
                 width: 5,
               ),
               Container(
-                padding: const EdgeInsets.all(6),
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10),
-                    color: CustomTheme.nightSecondaryColor),
-                child: GestureDetector(
-                    onTap: () {
-                      context
-                          .read<ChatPanelBloc>()
-                          .add(ChatPanelLoadingEvent());
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => ChatPanelPage(),
-                          ));
-                    },
-                    child: const Icon(
-                      Icons.message,
-                      color: Colors.white,
-                      size: 15,
-                    )),
-              ),
-              const SizedBox(
-                width: 5,
-              ),
-              Container(
-                padding: const EdgeInsets.all(6),
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10),
-                    color: CustomTheme.nightSecondaryColor),
-                child: const Icon(
-                  Icons.settings,
-                  color: Colors.white,
-                  size: 15,
-                ),
-              ),
+                  padding: const EdgeInsets.all(6),
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10),
+                      color: CustomTheme.nightSecondaryColor),
+                  child: Stack(
+                    alignment: Alignment.topRight,
+                    children: [
+                      InkWell(
+                          onTap: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) =>
+                                      const NotificationPage(),
+                                ));
+                          },
+                          child: Image.asset(
+                              'assets/icons/navbar/notification.png')),
+                      Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 4),
+                        decoration: BoxDecoration(
+                            color: const Color(0xffC82C34),
+                            borderRadius: BorderRadius.circular(6)),
+                        child: TextCustom('15', fontSize: 10),
+                      ),
+                    ],
+                  )),
             ],
           )
         ],

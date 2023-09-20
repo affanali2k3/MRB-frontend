@@ -4,6 +4,7 @@ import 'package:mrb/src/common/input_field.dart';
 import 'package:mrb/src/common/outline_button.dart';
 import 'package:mrb/src/referral_centre/bloc/referral_centre_bloc.dart';
 import 'package:mrb/src/referral_centre/bloc/referral_centre_event.dart';
+import 'package:mrb/src/referral_filters/view/referral_filters_view.dart';
 import 'package:mrb/themes/font_theme.dart';
 
 class ReferralCentreSearchWidget extends StatelessWidget {
@@ -22,33 +23,10 @@ class ReferralCentreSearchWidget extends StatelessWidget {
               Image.asset('assets/icons/referral_centre/magnifier_dark.png'),
           suffixIcon: IconButton(
             onPressed: () {
-              showDialog(
-                context: context,
-                builder: (context) {
-                  final cityController = TextEditingController();
-                  final stateController = TextEditingController();
-                  return AlertDialog(
-                    content: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        CustomTextField(
-                            controller: stateController, hintText: 'State'),
-                        CustomTextField(
-                            controller: cityController, hintText: 'City'),
-                        CustomOutlineButton(
-                            onPressed: () {
-                              Navigator.pop(context);
-                              context.read<ReferralCentreBloc>().add(
-                                  ReferralCentreLoadingEvent(
-                                      city: cityController.text,
-                                      state: stateController.text));
-                            },
-                            text: 'Done')
-                      ],
-                    ),
-                  );
-                },
-              );
+              showModalBottomSheet<dynamic>(
+                  backgroundColor: CustomTheme.nightBackgroundColor,
+                  context: context,
+                  builder: (context) => const ReferralFiltersPage());
             },
             icon: Image.asset('assets/icons/referral_centre/filter.png'),
           ),

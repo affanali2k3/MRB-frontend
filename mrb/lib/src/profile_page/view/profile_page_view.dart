@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mrb/global_variables.dart';
 import 'package:mrb/src/profile_page/bloc/profile_page_bloc.dart';
 import 'package:mrb/src/profile_page/bloc/profile_page_state.dart';
+import 'package:mrb/src/profile_page/view/pages/profile_about_page.dart';
 import 'package:mrb/src/profile_page/view/pages/profile_agent_reviews_page.dart';
 import 'package:mrb/src/profile_page/view/pages/profile_network_page.dart';
 import 'package:mrb/src/profile_page/view/pages/profile_posts_page.dart';
@@ -18,10 +19,9 @@ class ProfilePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: Color(0xff1f1f23),
+        backgroundColor: const Color(0xff1f1f23),
         body: BlocBuilder<ProfilePageBloc, ProfilePageState>(
             builder: (context, state) {
-          print(state);
           if (state is ProfilePageLoadingState) {
             return const Center(
               child: CircularProgressIndicator(),
@@ -48,6 +48,8 @@ class ProfilePage extends StatelessWidget {
                       const ProfileAgentReviewsPage(),
                     if (state is ProfilePageNetworkTabState)
                       const ProfileNetworkPage(),
+                    if (state is ProfilePageAboutTabState)
+                      const ProfileAboutPage()
                   ],
                 ),
               ),

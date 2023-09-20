@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -17,6 +18,7 @@ import 'package:mrb/src/edit_profile/repository/edit_profile_repository.dart';
 import 'package:mrb/src/login/repository/login_repository.dart';
 import 'package:mrb/src/login/view/login.dart';
 import 'package:mrb/src/main_page/bloc/main_page_bloc.dart';
+import 'package:mrb/src/main_page/view/main_page_view.dart';
 import 'package:mrb/src/network_page/bloc/network_page_bloc.dart';
 import 'package:mrb/src/network_page/repository/network_page_repository.dart';
 import 'package:mrb/src/post_comments/bloc/post_comments_bloc.dart';
@@ -26,8 +28,11 @@ import 'package:mrb/src/post_page/repository/post_page_repository.dart';
 import 'package:mrb/src/profile_page/bloc/profile_page_bloc.dart';
 import 'package:mrb/src/profile_page/repository/profile_page_repository.dart';
 import 'package:mrb/src/referral_centre/bloc/referral_centre_bloc.dart';
+import 'package:mrb/src/referral_centre/bloc/referral_centre_event.dart';
 import 'package:mrb/src/referral_centre/repository/referral_centre_repository.dart';
 import 'package:mrb/src/referral_post/bloc/referral_post_bloc.dart';
+import 'package:mrb/src/referral_post_direct/bloc/referral_post_direct_bloc.dart';
+import 'package:mrb/src/referral_post_direct/repository/referral_post_direct_repository.dart';
 import 'package:mrb/src/registor/bloc/registor_bloc.dart';
 import 'package:mrb/src/registor/repository/registor_repository.dart';
 import 'package:mrb/src/search_page/bloc/search_page_bloc.dart';
@@ -62,6 +67,7 @@ class App extends StatelessWidget {
           RepositoryProvider(create: (_) => ChatPanelRepository()),
           RepositoryProvider(create: (_) => AgentFormsReceivedRepository()),
           RepositoryProvider(create: (_) => AgentOpenFormsSentRepository()),
+          RepositoryProvider(create: (_) => ReferralPostDirectRepository()),
         ],
         child: MultiBlocProvider(
             providers: [
@@ -71,6 +77,9 @@ class App extends StatelessWidget {
               BlocProvider(
                   create: (_) =>
                       ChatPanelBloc(repository: ChatPanelRepository())),
+              BlocProvider(
+                  create: (_) => ReferralPostDirectBloc(
+                      repository: ReferralPostDirectRepository())),
               BlocProvider(
                   create: (_) => ReferralCentreBloc(
                       repository: ReferralCentreRepository())),
@@ -122,11 +131,21 @@ class App extends StatelessWidget {
                   textTheme: GoogleFonts.poppinsTextTheme(),
                   primarySwatch: Colors.blue,
                 ),
-                home: LoginPage())));
-    // home: StreamBuilder<User?>(
-    //     stream: FirebaseAuth.instance.authStateChanges(),
-    //     builder: (context, snapshot) {
-    //       return LoginPage();
-    //     }))));
+                home: StreamBuilder<User?>(
+                    stream: FirebaseAuth.instance.authStateChanges(),
+                    builder: (context, snapshot) {
+                      if (snapshot.hasData) {
+                        context
+                            .read<LoginCubit>()
+                            .getUserData(email: snapshot.data!.email!);
+
+                        context.read<ReferralCentreBloc>().add(
+                            ReferralCentreLoadingEvent(
+                                city: 'New York', state: 'California'));
+                        return const MainPage();
+                      } else {
+                        return LoginPage();
+                      }
+                    }))));
   }
 }

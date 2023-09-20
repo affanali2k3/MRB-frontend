@@ -47,6 +47,7 @@ class AgentFormsReceivedPage extends StatelessWidget {
                       itemBuilder: (context, index) {
                         return Container(
                           padding: const EdgeInsets.all(20),
+                          margin: const EdgeInsets.only(bottom: 20),
                           decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(20),
                               color: CustomTheme.nightSecondaryColor),

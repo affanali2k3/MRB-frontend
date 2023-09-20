@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:mrb/src/profile_page/view/widgets/profile_business_stats.dart';
+import 'package:mrb/themes/font_theme.dart';
 
 class ProfileCoverNameWidget extends StatelessWidget {
   const ProfileCoverNameWidget({super.key});
@@ -7,18 +9,19 @@ class ProfileCoverNameWidget extends StatelessWidget {
   Widget build(BuildContext context) => Container(
         height: 200,
         width: double.infinity,
-        color: Colors.green,
+        color: CustomTheme.nightSecondaryColor,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Container(
-              width: 90,
-              height: 90,
-              decoration: BoxDecoration(
-                  color: Colors.grey, borderRadius: BorderRadius.circular(50)),
+            const CircleAvatar(
+                radius: 48,
+                backgroundImage:
+                    AssetImage('assets/default_profile_photo.jpeg')),
+            const SizedBox(
+              height: 10,
             ),
-            const Text('Ali Makhdoom'),
-            const Text('@ali_Mak')
+            TextCustom('Ali Makhdoom'),
+            TextCustom('@ali_Mak', secondary: true)
           ],
         ),
       );
