@@ -26,7 +26,9 @@ class NotificationPage extends StatelessWidget {
                   borderRadius: BorderRadius.circular(30)),
               child: Row(
                 children: [
-                  const CustomProfilePhoto(),
+                  const CustomProfilePhoto(
+                    radius: 20,
+                  ),
                   const SizedBox(
                     width: 10,
                   ),

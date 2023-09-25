@@ -1,9 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:mrb/global_variables.dart';
+import 'package:mrb/src/common/profile_photo.dart';
+import 'package:mrb/src/network_page/model/user_model.dart';
+import 'package:mrb/src/profile_page/model/user_post_model.dart';
 import 'package:mrb/src/profile_page/view/widgets/profile_business_stats.dart';
 import 'package:mrb/themes/font_theme.dart';
 
 class CustomPostModel extends StatelessWidget {
-  const CustomPostModel({Key? key}) : super(key: key);
+  const CustomPostModel({Key? key, required this.post}) : super(key: key);
+
+  final UserPostModel post;
 
   @override
   Widget build(BuildContext context) {
@@ -17,11 +23,16 @@ class CustomPostModel extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Row(children: [
+                const CustomProfilePhoto(),
                 const SizedBox(
                   width: 10,
                 ),
                 Column(
-                  children: [TextCustom('Ahmed Ali'), TextCustom('London, UK')],
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    TextCustom(post.posterName),
+                    TextCustom('London, UK')
+                  ],
                 )
               ]),
               Container(
@@ -41,6 +52,8 @@ class CustomPostModel extends StatelessWidget {
             margin: const EdgeInsets.only(top: 10),
             height: 200,
             color: Colors.red,
+            child: Image.network(
+                '${GlobalVariables.url}/post/post-image?userId=${post.userId}&postName=${post.postName}&imageName=${post.imagesName.first}'),
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -68,13 +81,13 @@ class CustomPostModel extends StatelessWidget {
           ),
           Row(
             children: [
-              TextCustom('229 '),
-              TextCustom('Likes'),
+              TextCustom(post.likes.toString()),
+              TextCustom(' Likes'),
               const SizedBox(
                 width: 20,
               ),
-              TextCustom('200 '),
-              TextCustom('Comments'),
+              TextCustom(post.comments.toString()),
+              TextCustom(' Comments'),
             ],
           ),
           const SizedBox(

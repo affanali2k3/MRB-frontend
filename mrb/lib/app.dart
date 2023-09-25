@@ -31,6 +31,7 @@ import 'package:mrb/src/referral_centre/bloc/referral_centre_bloc.dart';
 import 'package:mrb/src/referral_centre/bloc/referral_centre_event.dart';
 import 'package:mrb/src/referral_centre/repository/referral_centre_repository.dart';
 import 'package:mrb/src/referral_post/bloc/referral_post_bloc.dart';
+import 'package:mrb/src/referral_post/repository/referral_post_repository.dart';
 import 'package:mrb/src/referral_post_direct/bloc/referral_post_direct_bloc.dart';
 import 'package:mrb/src/referral_post_direct/repository/referral_post_direct_repository.dart';
 import 'package:mrb/src/registor/bloc/registor_bloc.dart';
@@ -73,7 +74,9 @@ class App extends StatelessWidget {
             providers: [
               BlocProvider(
                   create: (_) => LoginCubit(repository: LoginRepository())),
-              BlocProvider(create: (_) => ReferralPostBloc()),
+              BlocProvider(
+                  create: (_) =>
+                      ReferralPostBloc(repository: ReferralPostRepository())),
               BlocProvider(
                   create: (_) =>
                       ChatPanelBloc(repository: ChatPanelRepository())),

@@ -47,9 +47,8 @@ class LoginCubit extends Cubit<LoginState> {
 
   Future<bool> getUserData({required String email}) async {
     try {
-      print('Getting user data');
       final Response response = await repository.getUser(email: email);
-      print('Got user data');
+      print(response.body);
       final UserModel user =
           UserModel.fromJson(json.decode(response.body)['data']);
       print(user);

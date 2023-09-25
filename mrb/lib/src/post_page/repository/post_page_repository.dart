@@ -10,7 +10,7 @@ class PostPageRepository {
   Future<void> submit(
       {required String postText,
       required List<PlatformFile>? images,
-      required String userEmail}) async {
+      required int userId}) async {
     try {
       var request = http.MultipartRequest(
           'POST', Uri.parse('${GlobalVariables.url}/post/'));
@@ -27,12 +27,18 @@ class PostPageRepository {
 
       final uniqueFolderName = DateTime.now().millisecondsSinceEpoch;
 
-      request.fields['userEmail'] = userEmail;
+      print(userId);
+
+      request.fields['userId'] = userId.toString();
       request.fields['postText'] = postText;
       request.fields['uniqueFolderName'] = uniqueFolderName.toString();
 
+      print(request.fields);
+      print(request.files);
+
       final response = await request.send();
       final responseDate = await response.stream.bytesToString();
+      print(responseDate);
 
       if (response.statusCode == 500) {
         throw Exception(json.decode(responseDate)['message']);

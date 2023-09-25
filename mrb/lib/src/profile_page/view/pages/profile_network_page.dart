@@ -29,7 +29,7 @@ class ProfileNetworkPage extends StatelessWidget {
                   child: Column(
                     children: [
                       const CustomProfilePhoto(
-                        size: 80,
+                        radius: 80,
                       ),
                       const SizedBox(
                         height: 10,

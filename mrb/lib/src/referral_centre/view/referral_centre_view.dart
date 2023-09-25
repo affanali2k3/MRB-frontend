@@ -18,7 +18,7 @@ class ReferralCentrePage extends StatelessWidget {
       body: RefreshIndicator(
         onRefresh: () async {
           context.read<ReferralCentreBloc>().add(ReferralCentreLoadingEvent(
-              city: 'New York', state: 'California'));
+              city: 'Los Angeles', state: 'California'));
         },
         child: SingleChildScrollView(
           physics: const AlwaysScrollableScrollPhysics(),

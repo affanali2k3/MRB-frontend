@@ -1,6 +1,7 @@
 import 'package:file_picker/file_picker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:mrb/global_variables.dart';
 import 'package:mrb/src/post_page/bloc/post_page_event.dart';
 import 'package:mrb/src/post_page/bloc/post_page_state.dart';
 import 'package:mrb/src/post_page/repository/post_page_repository.dart';
@@ -17,11 +18,12 @@ class PostPageBloc extends Bloc<PostPageEvent, PostPageState> {
   void _submit(PostPageSubmitEvent event, emit) async {
     try {
       emit(
-          PostPageLoadingState(postText: state.postText, images: state.images));
+          PostPageLoadingState(postText: event.postText, images: state.images));
+
       await repository.submit(
           images: state.images,
           postText: event.postText,
-          userEmail: FirebaseAuth.instance.currentUser!.email!);
+          userId: GlobalVariables.user.id);
 
       emit(PostPageSuccessState(
           postText: state.postText, images: state.images, message: 'Success'));

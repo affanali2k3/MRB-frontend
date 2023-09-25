@@ -6,6 +6,7 @@ import 'package:mrb/src/referral_centre/bloc/referral_centre_bloc.dart';
 import 'package:mrb/src/referral_centre/bloc/referral_centre_state.dart';
 import 'package:mrb/src/referral_centre/view/widgets/lead_apply_widget.dart';
 import 'package:mrb/themes/font_theme.dart';
+import 'package:timezone/timezone.dart';
 
 class ReferralCentreLeadDisplayWidget extends StatelessWidget {
   const ReferralCentreLeadDisplayWidget({Key? key}) : super(key: key);
@@ -29,9 +30,10 @@ class ReferralCentreLeadDisplayWidget extends StatelessWidget {
                 padding: const EdgeInsets.all(20),
                 width: 200,
                 decoration: BoxDecoration(
-                    color: CustomTheme.nightSecondaryColor,
+                    color: const Color(0xff2E2E2E),
                     borderRadius: BorderRadius.circular(10)),
                 child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Row(
                       children: [
@@ -40,6 +42,7 @@ class ReferralCentreLeadDisplayWidget extends StatelessWidget {
                           width: 10,
                         ),
                         Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             TextCustom('Ahmed Ali'),
                             TextCustom(
@@ -52,27 +55,53 @@ class ReferralCentreLeadDisplayWidget extends StatelessWidget {
                     const SizedBox(
                       height: 20,
                     ),
+                    Row(
+                      children: [
+                        Container(
+                          padding: const EdgeInsets.all(5),
+                          decoration: BoxDecoration(
+                              color: const Color(0xffEDFDF7),
+                              borderRadius: BorderRadius.circular(10)),
+                          child: Text(
+                              state.leads[index].isBuyer ? 'Buyer' : 'Seller'),
+                        ),
+                        const SizedBox(
+                          width: 5,
+                        ),
+                        const CircleAvatar(
+                          backgroundColor: Color(0xffD9D9D9),
+                          radius: 4,
+                        ),
+                        const SizedBox(
+                          width: 5,
+                        ),
+                        TextCustom(
+                            'Posted ${DateTime.now().difference(state.leads[index].postedAt).inMinutes}m ago')
+                      ],
+                    ),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    TextCustom(
+                        '\$${state.leads[index].price.toInt().toString()}',
+                        bold: true,
+                        fontSize: 18),
+                    const SizedBox(
+                      height: 20,
+                    ),
                     Container(
-                      width: double.infinity,
-                      alignment: Alignment.center,
-                      child: Container(
-                        padding: const EdgeInsets.all(5),
-                        decoration: BoxDecoration(
-                            color: const Color(0xffEDFDF7),
-                            borderRadius: BorderRadius.circular(10)),
-                        child: Text(
-                            state.leads[index].isBuyer ? 'Buyer' : 'Seller'),
+                      padding: const EdgeInsets.all(10),
+                      decoration: BoxDecoration(
+                          border: Border.all(color: const Color(0xff3B82F6)),
+                          borderRadius: BorderRadius.circular(20)),
+                      child: Text(
+                        state.leads[index].typeOfHouse,
+                        style: const TextStyle(color: Color(0xff3B82F6)),
                       ),
                     ),
                     const SizedBox(
                       height: 20,
                     ),
-                    const SizedBox(
-                        width: double.infinity,
-                        child: Text(
-                          'Time Span:',
-                          style: TextStyle(color: Color(0xffB8B8B8)),
-                        )),
                     Row(
                       children: [
                         Image.asset('assets/icons/referral_centre/date.png'),
@@ -80,7 +109,7 @@ class ReferralCentreLeadDisplayWidget extends StatelessWidget {
                           width: 10,
                         ),
                         Text(
-                          state.leads[index].desiredDate.toString(),
+                          'Within ${state.leads[index].timeAmount} Months',
                           style: const TextStyle(color: Color(0xffB8B8B8)),
                         )
                       ],
@@ -93,15 +122,16 @@ class ReferralCentreLeadDisplayWidget extends StatelessWidget {
                         showModalBottomSheet<dynamic>(
                             backgroundColor: CustomTheme.nightBackgroundColor,
                             context: context,
-                            builder: (context) =>
-                                ReferralCentreLeadApplyWidget());
+                            builder: (context) => ReferralCentreLeadApplyWidget(
+                                  senderAgentFormId: state.leads[index].id,
+                                ));
                       },
                       child: Container(
                         alignment: Alignment.center,
                         width: double.infinity,
                         padding: const EdgeInsets.all(10),
                         decoration: BoxDecoration(
-                            border: Border.all(color: CustomTheme.primaryColor),
+                            border: Border.all(color: const Color(0xff3B82F6)),
                             borderRadius: BorderRadius.circular(20)),
                         child: TextCustom('Apply For Lead'),
                       ),

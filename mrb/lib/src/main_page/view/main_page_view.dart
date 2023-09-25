@@ -4,6 +4,9 @@ import 'package:mrb/global_variables.dart';
 import 'package:mrb/src/agent_forms_received/bloc/agent_forms_received_bloc.dart';
 import 'package:mrb/src/agent_forms_received/bloc/agent_forms_received_event.dart';
 import 'package:mrb/src/agent_forms_received/view/agent_forms_received_view.dart';
+import 'package:mrb/src/agent_open_forms_sent/bloc/agent_forms_received_bloc.dart';
+import 'package:mrb/src/agent_open_forms_sent/bloc/agent_forms_received_event.dart';
+import 'package:mrb/src/agent_open_forms_sent/view/agent_forms_received_view.dart';
 import 'package:mrb/src/chat_panel_page/bloc/chat_panel_bloc.dart';
 import 'package:mrb/src/chat_panel_page/bloc/chat_panel_event.dart';
 import 'package:mrb/src/chat_panel_page/view/chat_panel_page.dart';
@@ -14,11 +17,9 @@ import 'package:mrb/src/feed_page/view/widgets/new_post_widget.dart';
 import 'package:mrb/src/main_page/bloc/main_page_bloc.dart';
 import 'package:mrb/src/main_page/bloc/main_page_event.dart';
 import 'package:mrb/src/main_page/bloc/main_page_state.dart';
-import 'package:mrb/src/notifications_page/view/notification_view.dart';
 import 'package:mrb/src/profile_page/bloc/profile_page_bloc.dart';
 import 'package:mrb/src/profile_page/bloc/profile_page_event.dart';
 import 'package:mrb/src/profile_page/view/profile_page_view.dart';
-import 'package:mrb/src/profile_page/view/widgets/profile_business_stats.dart';
 import 'package:mrb/src/referral_centre/view/referral_centre_view.dart';
 import 'package:mrb/src/referral_post/view/referral_post_view.dart';
 import 'package:mrb/themes/font_theme.dart';
@@ -40,7 +41,9 @@ class MainPage extends StatelessWidget {
         extendBody: true,
         floatingActionButton:
             BlocBuilder<MainPageBloc, MainPageState>(builder: (context, state) {
-          if (state is ReferralCenterPageState || state is FeedPageState) {
+          if (state is ReferralCenterPageState ||
+              state is FeedPageState ||
+              state is MainPageInitialState) {
             return FloatingActionButton(
               elevation: 1000,
               onPressed: () {
@@ -49,11 +52,13 @@ class MainPage extends StatelessWidget {
                       backgroundColor: CustomTheme.nightBackgroundColor,
                       context: context,
                       builder: (context) => FeedPageNewPostWidget());
-                } else if (state is ReferralCenterPageState) {
+                } else if (state is ReferralCenterPageState ||
+                    state is MainPageInitialState) {
                   showModalBottomSheet<dynamic>(
+                      isScrollControlled: true,
                       backgroundColor: CustomTheme.nightBackgroundColor,
                       context: context,
-                      builder: (context) => const ReferralPostPage());
+                      builder: (context) => ReferralPostPage());
                 }
               },
               backgroundColor: CustomTheme.primaryColor,
@@ -100,7 +105,10 @@ class MainPage extends StatelessWidget {
                   icon: Image.asset('assets/icons/navbar/feed.png')),
               IconButton(
                   onPressed: () {
-                    context.read<ChatPanelBloc>().add(ChatPanelLoadingEvent());
+                    context.read<AgentOpenFormsSentBloc>().add(
+                        AgentOpenFormsSentLoadingEvent(
+                            userId: GlobalVariables.user.id));
+                    // context.read<ChatPanelBloc>().add(ChatPanelLoadingEvent());
                     context.read<MainPageBloc>().add(
                         ChangePageEvent(page: Pages.notificationPage.name));
                   },
@@ -130,7 +138,7 @@ class MainPage extends StatelessWidget {
           } else if (state is NetworkPageState) {
             return const AgentFormsReceivedPage();
           } else if (state is NotificationPageState) {
-            return ChatPanelPage();
+            return const AgentOpenFormsSentPage();
           } else if (state is FeedPageState) {
             return FeedPage(
               userId: GlobalVariables.user.id,

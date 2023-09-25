@@ -18,7 +18,9 @@ class ProfilePostsPage extends StatelessWidget {
           shrinkWrap: true,
           primary: false,
           itemBuilder: (context, index) {
-            return const CustomPostModel();
+            return CustomPostModel(
+              post: state.posts[index],
+            );
           },
         ));
       } else {

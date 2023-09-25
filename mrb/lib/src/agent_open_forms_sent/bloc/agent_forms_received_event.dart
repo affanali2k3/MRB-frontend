@@ -6,6 +6,6 @@ abstract class AgentOpenFormsSentEvent extends Equatable {
 }
 
 final class AgentOpenFormsSentLoadingEvent extends AgentOpenFormsSentEvent {
-  AgentOpenFormsSentLoadingEvent({required this.userEmail});
-  final String userEmail;
+  AgentOpenFormsSentLoadingEvent({required this.userId});
+  final int userId;
 }

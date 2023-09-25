@@ -10,3 +10,13 @@ final class ReferralCentreLoadingEvent extends ReferralCentreEvent {
   final String? city;
   final String? state;
 }
+
+final class ReferralCentreApplyLeadEvent extends ReferralCentreEvent {
+  ReferralCentreApplyLeadEvent(
+      {required this.receiverAgent,
+      required this.senderAgentFormId,
+      required this.proposal});
+  final int receiverAgent;
+  final int senderAgentFormId;
+  final String proposal;
+}

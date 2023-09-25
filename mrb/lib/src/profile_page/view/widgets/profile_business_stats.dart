@@ -38,9 +38,13 @@ class ProfileBusinessStatsWidget extends StatelessWidget {
 
 // ignore: non_constant_identifier_names
 Widget TextCustom(String data,
-        {bool secondary = false, double fontSize = 14, bool bold = false}) =>
+        {bool secondary = false,
+        double fontSize = 14,
+        final bool bold = false,
+        final bool centreText = false}) =>
     Text(
       data,
+      textAlign: centreText ? TextAlign.center : null,
       style: TextStyle(
           fontSize: fontSize,
           fontWeight: bold ? FontWeight.bold : null,

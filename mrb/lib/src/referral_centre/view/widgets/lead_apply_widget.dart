@@ -1,11 +1,29 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:mrb/global_variables.dart';
 import 'package:mrb/src/common/button.dart';
 import 'package:mrb/src/common/profile_photo.dart';
 import 'package:mrb/src/profile_page/view/widgets/profile_business_stats.dart';
+import 'package:mrb/src/referral_centre/bloc/referral_centre_bloc.dart';
+import 'package:mrb/src/referral_centre/bloc/referral_centre_event.dart';
 import 'package:mrb/themes/font_theme.dart';
 
-class ReferralCentreLeadApplyWidget extends StatelessWidget {
-  ReferralCentreLeadApplyWidget({Key? key}) : super(key: key);
+class ReferralCentreLeadApplyWidget extends StatefulWidget {
+  const ReferralCentreLeadApplyWidget(
+      {Key? key, required this.senderAgentFormId})
+      : super(key: key);
+  final int senderAgentFormId;
+
+  @override
+  ReferralCentreLeadApplyWidgetState createState() =>
+      ReferralCentreLeadApplyWidgetState();
+}
+
+class ReferralCentreLeadApplyWidgetState
+    extends State<ReferralCentreLeadApplyWidget> {
+  ReferralCentreLeadApplyWidgetState({
+    Key? key,
+  });
 
   final _proposalController = TextEditingController();
 
@@ -85,9 +103,13 @@ class ReferralCentreLeadApplyWidget extends StatelessWidget {
                   height: 20,
                 ),
                 TextField(
+                  maxLength: 200,
+                  style: const TextStyle(
+                      color: CustomTheme.nightSecondaryFontColor),
                   controller: _proposalController,
                   maxLines: 10,
                   decoration: InputDecoration(
+                      counterStyle: const TextStyle(color: Color(0xffB8B8B8)),
                       hintText: 'Your proposal for the Referral...',
                       hintStyle: const TextStyle(
                           color: CustomTheme.nightSecondaryFontColor),
@@ -178,7 +200,15 @@ class ReferralCentreLeadApplyWidget extends StatelessWidget {
         Container(
           margin: const EdgeInsets.only(bottom: 10, left: 10, right: 10),
           child: CustomButton(
-            onPressed: () {},
+            onPressed: () {
+              print(_proposalController.text);
+              context.read<ReferralCentreBloc>().add(
+                  ReferralCentreApplyLeadEvent(
+                      receiverAgent: GlobalVariables.user.id,
+                      senderAgentFormId: widget.senderAgentFormId,
+                      proposal: _proposalController.text));
+              Navigator.pop(context);
+            },
             text: 'Send Proposal',
           ),
         )

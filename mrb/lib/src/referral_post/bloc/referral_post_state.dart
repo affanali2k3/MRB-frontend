@@ -10,23 +10,29 @@ class HouseTypes {
 }
 
 abstract class ReferralPostState extends Equatable {
-  const ReferralPostState(
-      {this.isBuyer = true,
-      this.houseType = HouseTypes.singleFamily,
-      this.numOfBathrooms = 1,
-      this.formType = FormType.open,
-      this.numOfBedrooms = 1});
+  const ReferralPostState({
+    this.isBuyer = true,
+    this.state = 'Alabama',
+    this.city = 'Birmingham',
+    this.houseType = HouseTypes.singleFamily,
+    this.formType = FormType.open,
+  });
   final bool isBuyer;
+  final String state;
+  final String city;
   final String houseType;
-  final int numOfBathrooms;
-  final int numOfBedrooms;
   final FormType formType;
   @override
-  List<Object?> get props => [isBuyer, houseType];
+  List<Object?> get props => [isBuyer, houseType, state, city, formType];
 }
 
 final class ReferralPostInitialState extends ReferralPostState {}
 
 final class ReferralPostChangedState extends ReferralPostState {
-  const ReferralPostChangedState({super.isBuyer, super.houseType});
+  const ReferralPostChangedState(
+      {super.isBuyer,
+      super.houseType,
+      super.state,
+      super.city,
+      super.formType});
 }

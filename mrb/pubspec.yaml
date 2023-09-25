@@ -46,6 +46,7 @@ dependencies:
   mime: ^1.0.4
   flutter_rating_bar: ^4.0.1
   google_fonts: ^5.1.0
+  timezone: ^0.9.2
 
 
 dev_dependencies:
@@ -78,6 +79,7 @@ flutter:
       - assets/icons/referral_centre/
       - assets/icons/profile_page/
       - assets/icons/feed_page/
+      - assets/icons/referrals_applied/
   # assets:
   #   - images/a_dot_burr.jpeg
   #   - images/a_dot_ham.jpeg

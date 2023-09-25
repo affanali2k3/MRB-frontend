@@ -7,8 +7,15 @@ import 'package:mrb/src/post_page/bloc/post_page_event.dart';
 import 'package:mrb/src/profile_page/view/widgets/profile_business_stats.dart';
 import 'package:mrb/themes/font_theme.dart';
 
-class FeedPageNewPostWidget extends StatelessWidget {
-  FeedPageNewPostWidget({Key? key}) : super(key: key);
+class FeedPageNewPostWidget extends StatefulWidget {
+  const FeedPageNewPostWidget({Key? key}) : super(key: key);
+
+  @override
+  FeedPageNewPostWidgetState createState() => FeedPageNewPostWidgetState();
+}
+
+class FeedPageNewPostWidgetState extends State<FeedPageNewPostWidget> {
+  FeedPageNewPostWidgetState({Key? key});
 
   final _postTextController = TextEditingController();
 
@@ -23,7 +30,9 @@ class FeedPageNewPostWidget extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Row(children: [
-                  const CustomProfilePhoto(),
+                  const CustomProfilePhoto(
+                    radius: 20,
+                  ),
                   const SizedBox(
                     width: 10,
                   ),
@@ -63,6 +72,8 @@ class FeedPageNewPostWidget extends StatelessWidget {
             TextField(
               controller: _postTextController,
               maxLines: 10,
+              style:
+                  const TextStyle(color: CustomTheme.nightSecondaryFontColor),
               decoration: InputDecoration(
                   hintText: 'What are you thinking...',
                   hintStyle: const TextStyle(
@@ -99,8 +110,11 @@ class FeedPageNewPostWidget extends StatelessWidget {
               height: 20,
             ),
             CustomButton(
-                onPressed: () => context.read<PostPageBloc>().add(
-                    PostPageSubmitEvent(postText: _postTextController.text)),
+                onPressed: () {
+                  Navigator.pop(context);
+                  context.read<PostPageBloc>().add(
+                      PostPageSubmitEvent(postText: _postTextController.text));
+                },
                 text: 'Post')
           ],
         ),

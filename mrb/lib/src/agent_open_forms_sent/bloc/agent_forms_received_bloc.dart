@@ -19,7 +19,7 @@ class AgentOpenFormsSentBloc
     try {
       emit(AgentOpenFormsSentLoadingState());
       final Response response =
-          await repository.getOpenFormsSent(userEmail: event.userEmail);
+          await repository.getOpenFormsSent(userId: event.userId);
 
       final Map<String, dynamic> decodedData = json.decode(response.body);
 

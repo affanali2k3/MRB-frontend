@@ -1,17 +1,16 @@
 import 'package:flutter/material.dart';
 
 class CustomProfilePhoto extends StatelessWidget {
-  const CustomProfilePhoto({Key? key, this.size = 40}) : super(key: key);
+  const CustomProfilePhoto({
+    Key? key,
+    this.radius = 20,
+  }) : super(key: key);
 
-  final double size;
+  final double radius;
 
   @override
-  Widget build(BuildContext context) => Container(
-        width: size,
-        height: size,
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(40),
-          color: Colors.white,
-        ),
+  Widget build(BuildContext context) => CircleAvatar(
+        radius: radius,
+        backgroundImage: const AssetImage('assets/default_profile_photo.jpeg'),
       );
 }
