@@ -2,65 +2,45 @@ import 'dart:convert';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:http/http.dart';
-import 'package:mrb/src/profile_page/bloc/profile_page_event.dart';
-import 'package:mrb/src/profile_page/bloc/profile_page_state.dart';
+import 'package:mrb/src/profile_page/blocs/profile_page_bloc/profile_page_event.dart';
+import 'package:mrb/src/profile_page/blocs/profile_page_bloc/profile_page_state.dart';
 import 'package:mrb/src/profile_page/model/user_association_model.dart';
-import 'package:mrb/src/profile_page/model/user_network_model.dart';
-import 'package:mrb/src/profile_page/model/user_post_model.dart';
 import 'package:mrb/src/profile_page/repository/profile_page_repository.dart';
 
 class ProfilePageBloc extends Bloc<ProfilePageEvent, ProfilePageState> {
   ProfilePageBloc({required this.repository})
-      : super(ProfilePageLoadingState()) {
+      : super(ProfilePageInitialState()) {
     on<ProfilePageLoadingEvent>(_getProfileData);
+    on<ProfilePageChangeTabEvent>(_changeTab);
     on<ProfilePageSendAssociateRequestEvent>(_sendAssociateRequest);
     on<ProfilePageAcceptAssociateRequestEvent>(_acceptAssociationRequest);
-    on<ProfilePagePostTabEvent>(_gotoPostTab);
-    on<ProfilePageReviewsTabEvent>(_gotoReviewTab);
-    on<ProfilePageNetworkTabEvent>(_gotoNetworkTab);
-    on<ProfilePageAboutTabEvent>(_gotoAboutTab);
   }
 
   final ProfilePageRepository repository;
 
-  void _gotoPostTab(ProfilePagePostTabEvent event, emit) async {
-    final Response response =
-        await repository.getAllPostsForUser(userId: event.userId);
-
-    print(response.body);
-
-    final List<dynamic> postsJson = json.decode(response.body)['data'];
-    final List<UserPostModel> posts = [];
-
-    for (final json in postsJson) {
-      posts.add(UserPostModel.fromJson(json));
-    }
-
-    emit(ProfilePagePostTabState(posts: posts));
+  void _changeTab(ProfilePageChangeTabEvent event, emit) {
+    final ProfilePageSuccessState successState =
+        state as ProfilePageSuccessState;
+    emit(ProfilePageSuccessState(
+        associationStatus: successState.associationStatus,
+        address: successState.address,
+        licenceState: successState.licenceState,
+        licenceNumber: successState.licenceNumber,
+        yearLicenced: successState.yearLicenced,
+        completedDeals: successState.completedDeals,
+        email: successState.email,
+        name: successState.email,
+        tab: event.profilePageTab,
+        licence: successState.licence,
+        photo: successState.photo,
+        phone: successState.phone,
+        occupation: successState.occupation,
+        gender: successState.gender));
   }
-
-  void _gotoNetworkTab(ProfilePageNetworkTabEvent event, emit) async {
-    final Response response =
-        await repository.getAllAssociatesForUser(userId: event.userId);
-
-    final List<dynamic> userNetworkJson = json.decode(response.body)['data'];
-    final List<UserNetworkModel> userNetwork = [];
-
-    for (final json in userNetworkJson) {
-      userNetwork.add(UserNetworkModel.fromJson(json));
-    }
-
-    emit(ProfilePageNetworkTabState(userNetwork: userNetwork));
-  }
-
-  void _gotoAboutTab(ProfilePageAboutTabEvent event, emit) =>
-      emit(ProfilePageAboutTabState());
-
-  void _gotoReviewTab(ProfilePageReviewsTabEvent event, emit) =>
-      emit(ProfilePageReviewsTabState());
 
   void _getProfileData(ProfilePageLoadingEvent event, emit) async {
     try {
+      emit(ProfilePageLoadingState());
       final String response =
           await repository.getUserDetails(userId: event.userId);
 
@@ -91,13 +71,14 @@ class ProfilePageBloc extends Bloc<ProfilePageEvent, ProfilePageState> {
           completedDeals: data['completedDeals'],
           email: data['email'],
           name: data['name'],
+          tab: ProfilePageTabs.profilePostsTab,
           licence: data['licence'],
           photo: photo,
           phone: data['phone'],
           occupation: data['occupation'],
           gender: data['gender']));
     } catch (e) {
-      print(e);
+      emit(ProfilePageFailedState(error: e.toString()));
     }
   }
 
@@ -116,6 +97,7 @@ class ProfilePageBloc extends Bloc<ProfilePageEvent, ProfilePageState> {
                 receiverId: event.receiverId,
                 status: 'Pending'),
             email: successState.email,
+            tab: successState.tab,
             name: successState.name,
             licence: successState.licence,
             photo: successState.photo,

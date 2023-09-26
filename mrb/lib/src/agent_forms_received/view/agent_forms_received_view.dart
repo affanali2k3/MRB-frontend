@@ -7,8 +7,8 @@ import 'package:mrb/src/agent_forms_received/bloc/agent_forms_received_state.dar
 import 'package:mrb/src/common/profile_photo.dart';
 import 'package:mrb/src/common/snack_bar.dart';
 import 'package:mrb/src/common/top_bar_widget.dart';
-import 'package:mrb/src/profile_page/bloc/profile_page_bloc.dart';
-import 'package:mrb/src/profile_page/bloc/profile_page_event.dart';
+import 'package:mrb/src/profile_page/blocs/profile_page_bloc/profile_page_bloc.dart';
+import 'package:mrb/src/profile_page/blocs/profile_page_bloc/profile_page_event.dart';
 import 'package:mrb/src/profile_page/view/profile_page_view.dart';
 import 'package:mrb/src/profile_page/view/widgets/profile_business_stats.dart';
 import 'package:mrb/themes/font_theme.dart';

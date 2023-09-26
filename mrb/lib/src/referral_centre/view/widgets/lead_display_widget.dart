@@ -6,7 +6,6 @@ import 'package:mrb/src/referral_centre/bloc/referral_centre_bloc.dart';
 import 'package:mrb/src/referral_centre/bloc/referral_centre_state.dart';
 import 'package:mrb/src/referral_centre/view/widgets/lead_apply_widget.dart';
 import 'package:mrb/themes/font_theme.dart';
-import 'package:timezone/timezone.dart';
 
 class ReferralCentreLeadDisplayWidget extends StatelessWidget {
   const ReferralCentreLeadDisplayWidget({Key? key}) : super(key: key);

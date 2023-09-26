@@ -25,7 +25,9 @@ import 'package:mrb/src/post_comments/bloc/post_comments_bloc.dart';
 import 'package:mrb/src/post_comments/repository/post_comments_repository.dart';
 import 'package:mrb/src/post_page/bloc/post_page_bloc.dart';
 import 'package:mrb/src/post_page/repository/post_page_repository.dart';
-import 'package:mrb/src/profile_page/bloc/profile_page_bloc.dart';
+import 'package:mrb/src/profile_page/blocs/profile_network_page_bloc/profile_network_page_bloc.dart';
+import 'package:mrb/src/profile_page/blocs/profile_page_bloc/profile_page_bloc.dart';
+import 'package:mrb/src/profile_page/blocs/profile_post_page_bloc.dart/profile_post_event_bloc.dart';
 import 'package:mrb/src/profile_page/repository/profile_page_repository.dart';
 import 'package:mrb/src/referral_centre/bloc/referral_centre_bloc.dart';
 import 'package:mrb/src/referral_centre/bloc/referral_centre_event.dart';
@@ -80,6 +82,12 @@ class App extends StatelessWidget {
               BlocProvider(
                   create: (_) =>
                       ChatPanelBloc(repository: ChatPanelRepository())),
+              BlocProvider(
+                  create: (_) =>
+                      ProfilePostPageBloc(repository: ProfilePageRepository())),
+              BlocProvider(
+                  create: (_) => ProfileNetworkPageBloc(
+                      repository: ProfilePageRepository())),
               BlocProvider(
                   create: (_) => ReferralPostDirectBloc(
                       repository: ReferralPostDirectRepository())),

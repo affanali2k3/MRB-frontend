@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mrb/global_variables.dart';
-import 'package:mrb/src/profile_page/bloc/profile_page_bloc.dart';
-import 'package:mrb/src/profile_page/bloc/profile_page_state.dart';
+import 'package:mrb/src/profile_page/blocs/profile_page_bloc/profile_page_bloc.dart';
+import 'package:mrb/src/profile_page/blocs/profile_page_bloc/profile_page_state.dart';
 import 'package:mrb/src/profile_page/view/pages/profile_about_page.dart';
 import 'package:mrb/src/profile_page/view/pages/profile_agent_reviews_page.dart';
 import 'package:mrb/src/profile_page/view/pages/profile_network_page.dart';
@@ -42,13 +42,13 @@ class ProfilePage extends StatelessWidget {
                     ProfileTabsWidget(
                       userId: userId,
                     ),
-                    if (state is ProfilePagePostTabState)
+                    if (state.tab == ProfilePageTabs.profilePostsTab)
                       const ProfilePostsPage(),
-                    if (state is ProfilePageReviewsTabState)
+                    if (state.tab == ProfilePageTabs.profileReviewsTab)
                       const ProfileAgentReviewsPage(),
-                    if (state is ProfilePageNetworkTabState)
+                    if (state.tab == ProfilePageTabs.profileNetworkTab)
                       const ProfileNetworkPage(),
-                    if (state is ProfilePageAboutTabState)
+                    if (state.tab == ProfilePageTabs.profileAboutTab)
                       const ProfileAboutPage()
                   ],
                 ),

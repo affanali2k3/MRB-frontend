@@ -10,7 +10,7 @@ class PostComments extends StatelessWidget {
   PostComments({super.key, required this.postId});
 
   final _commentController = TextEditingController();
-  final String postId;
+  final int postId;
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +28,7 @@ class PostComments extends StatelessWidget {
         }
         if (state is PostCommentSuccessState) {
           return Dialog(
-            child: Container(
+            child: SizedBox(
                 height: 200,
                 child: Column(children: [
                   Expanded(
@@ -50,6 +50,8 @@ class PostComments extends StatelessWidget {
                               PostCommentsSaveCommentEvent(
                                   comment: _commentController.text,
                                   postId: postId));
+
+                          _commentController.clear();
                         },
                         icon: const Icon(Icons.send))
                   ])

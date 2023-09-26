@@ -10,3 +10,9 @@ class FeedPageLoadingEvent extends FeedPageEvent {
   final int userId;
   final int pageNumber;
 }
+
+class FeedPageLikePostEvent extends FeedPageEvent {
+  FeedPageLikePostEvent({required this.userId, required this.postId});
+  final int userId;
+  final int postId;
+}

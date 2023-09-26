@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mrb/global_variables.dart';
 import 'package:mrb/src/common/profile_photo.dart';
-import 'package:mrb/src/network_page/model/user_model.dart';
+import 'package:mrb/src/feed_page/bloc/feed_page_bloc.dart';
+import 'package:mrb/src/feed_page/bloc/feed_page_event.dart';
+import 'package:mrb/src/post_comments/bloc/post_comments_bloc.dart';
+import 'package:mrb/src/post_comments/bloc/post_comments_event.dart';
+import 'package:mrb/src/post_comments/view/post_comment_view.dart';
 import 'package:mrb/src/profile_page/model/user_post_model.dart';
 import 'package:mrb/src/profile_page/view/widgets/profile_business_stats.dart';
 import 'package:mrb/themes/font_theme.dart';
@@ -61,7 +66,10 @@ class CustomPostModel extends StatelessWidget {
               Row(
                 children: [
                   IconButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      context.read<FeedPageBloc>().add(FeedPageLikePostEvent(
+                          userId: post.userId, postId: post.id));
+                    },
                     icon: Image.asset('assets/icons/post/like.png'),
                   ),
                   IconButton(
@@ -86,8 +94,24 @@ class CustomPostModel extends StatelessWidget {
               const SizedBox(
                 width: 20,
               ),
-              TextCustom(post.comments.toString()),
-              TextCustom(' Comments'),
+              GestureDetector(
+                onTap: () {
+                  context
+                      .read<PostCommentsBloc>()
+                      .add(PostCommentsLoadingEvent(postId: post.id));
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => PostComments(postId: post.id),
+                      ));
+                },
+                child: Row(
+                  children: [
+                    TextCustom(post.comments.toString()),
+                    TextCustom(' Comments'),
+                  ],
+                ),
+              ),
             ],
           ),
           const SizedBox(

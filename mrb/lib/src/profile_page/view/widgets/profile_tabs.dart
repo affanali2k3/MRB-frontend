@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:mrb/src/profile_page/bloc/profile_page_bloc.dart';
-import 'package:mrb/src/profile_page/bloc/profile_page_event.dart';
-import 'package:mrb/src/profile_page/bloc/profile_page_state.dart';
+import 'package:mrb/src/profile_page/blocs/profile_network_page_bloc/profile_network_page_bloc.dart';
+import 'package:mrb/src/profile_page/blocs/profile_network_page_bloc/profile_network_page_event.dart';
+import 'package:mrb/src/profile_page/blocs/profile_page_bloc/profile_page_bloc.dart';
+import 'package:mrb/src/profile_page/blocs/profile_page_bloc/profile_page_event.dart';
+import 'package:mrb/src/profile_page/blocs/profile_page_bloc/profile_page_state.dart';
+import 'package:mrb/src/profile_page/blocs/profile_post_page_bloc.dart/profile_post_event_bloc.dart';
+import 'package:mrb/src/profile_page/blocs/profile_post_page_bloc.dart/profile_post_page_event.dart';
 import 'package:mrb/src/profile_page/view/widgets/profile_business_stats.dart';
 import 'package:mrb/themes/font_theme.dart';
 
@@ -13,48 +17,50 @@ class ProfileTabsWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) =>
-      BlocBuilder<ProfilePageBloc, ProfilePageState>(
-          builder: (context, state) => Container(
-                margin: const EdgeInsets.symmetric(vertical: 10),
-                height: 40,
-                child: ListView(
-                  scrollDirection: Axis.horizontal,
-                  children: [
-                    profileTabItem(
-                      context,
-                      'Network',
-                      active: state is ProfilePageNetworkTabState,
-                      onTap: () => context
-                          .read<ProfilePageBloc>()
-                          .add(ProfilePageNetworkTabEvent(userId: userId)),
-                    ),
-                    profileTabItem(
-                      context,
-                      'Posts',
-                      active: state is ProfilePagePostTabState,
-                      onTap: () => context
-                          .read<ProfilePageBloc>()
-                          .add(ProfilePagePostTabEvent(userId: userId)),
-                    ),
-                    profileTabItem(
-                      context,
-                      'Reviews',
-                      active: state is ProfilePageReviewsTabState,
-                      onTap: () => context
-                          .read<ProfilePageBloc>()
-                          .add(ProfilePageReviewsTabEvent()),
-                    ),
-                    profileTabItem(
-                      context,
-                      'About Us',
-                      active: state is ProfilePageAboutTabState,
-                      onTap: () => context
-                          .read<ProfilePageBloc>()
-                          .add(ProfilePageAboutTabEvent()),
-                    ),
-                  ],
-                ),
-              ));
+      BlocBuilder<ProfilePageBloc, ProfilePageState>(builder: (context, state) {
+        final ProfilePageSuccessState successState =
+            state as ProfilePageSuccessState;
+
+        return Container(
+          margin: const EdgeInsets.symmetric(vertical: 10),
+          height: 40,
+          child: ListView(
+            scrollDirection: Axis.horizontal,
+            children: [
+              profileTabItem(context, 'Network',
+                  active: successState.tab == ProfilePageTabs.profileNetworkTab,
+                  onTap: () {
+                context.read<ProfilePageBloc>().add(ProfilePageChangeTabEvent(
+                    profilePageTab: ProfilePageTabs.profileNetworkTab));
+                context
+                    .read<ProfileNetworkPageBloc>()
+                    .add(ProfileNetworkPageLoadingEvent(userId: userId));
+              }),
+              profileTabItem(context, 'Posts',
+                  active: successState.tab == ProfilePageTabs.profilePostsTab,
+                  onTap: () {
+                context.read<ProfilePageBloc>().add(ProfilePageChangeTabEvent(
+                    profilePageTab: ProfilePageTabs.profilePostsTab));
+                context
+                    .read<ProfilePostPageBloc>()
+                    .add(ProfilePostPageLoadingEvent(userId: userId));
+              }),
+              profileTabItem(context, 'Reviews',
+                  active: successState.tab == ProfilePageTabs.profileReviewsTab,
+                  onTap: () {
+                context.read<ProfilePageBloc>().add(ProfilePageChangeTabEvent(
+                    profilePageTab: ProfilePageTabs.profileReviewsTab));
+              }),
+              profileTabItem(context, 'About Us',
+                  active: successState.tab == ProfilePageTabs.profileAboutTab,
+                  onTap: () {
+                context.read<ProfilePageBloc>().add(ProfilePageChangeTabEvent(
+                    profilePageTab: ProfilePageTabs.profileAboutTab));
+              }),
+            ],
+          ),
+        );
+      });
 }
 
 Widget profileTabItem(BuildContext context, String text,

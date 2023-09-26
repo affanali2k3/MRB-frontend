@@ -17,8 +17,10 @@ import 'package:mrb/src/feed_page/view/widgets/new_post_widget.dart';
 import 'package:mrb/src/main_page/bloc/main_page_bloc.dart';
 import 'package:mrb/src/main_page/bloc/main_page_event.dart';
 import 'package:mrb/src/main_page/bloc/main_page_state.dart';
-import 'package:mrb/src/profile_page/bloc/profile_page_bloc.dart';
-import 'package:mrb/src/profile_page/bloc/profile_page_event.dart';
+import 'package:mrb/src/profile_page/blocs/profile_page_bloc/profile_page_bloc.dart';
+import 'package:mrb/src/profile_page/blocs/profile_page_bloc/profile_page_event.dart';
+import 'package:mrb/src/profile_page/blocs/profile_post_page_bloc.dart/profile_post_event_bloc.dart';
+import 'package:mrb/src/profile_page/blocs/profile_post_page_bloc.dart/profile_post_page_event.dart';
 import 'package:mrb/src/profile_page/view/profile_page_view.dart';
 import 'package:mrb/src/referral_centre/view/referral_centre_view.dart';
 import 'package:mrb/src/referral_post/view/referral_post_view.dart';
@@ -122,6 +124,10 @@ class MainPage extends StatelessWidget {
                     context
                         .read<MainPageBloc>()
                         .add(ChangePageEvent(page: Pages.profilePage.name));
+
+                    context.read<ProfilePostPageBloc>().add(
+                        ProfilePostPageLoadingEvent(
+                            userId: GlobalVariables.user.id));
                   },
                   icon: Image.asset('assets/icons/navbar/profile.png')),
             ],

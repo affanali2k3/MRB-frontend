@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:mrb/src/profile_page/blocs/profile_page_bloc/profile_page_state.dart';
 
 abstract class ProfilePageEvent extends Equatable {
   @override
@@ -11,19 +12,10 @@ class ProfilePageLoadingEvent extends ProfilePageEvent {
   final int associateId;
 }
 
-class ProfilePagePostTabEvent extends ProfilePageEvent {
-  ProfilePagePostTabEvent({required this.userId});
-  final int userId;
+final class ProfilePageChangeTabEvent extends ProfilePageEvent {
+  ProfilePageChangeTabEvent({required this.profilePageTab});
+  final ProfilePageTabs profilePageTab;
 }
-
-class ProfilePageReviewsTabEvent extends ProfilePageEvent {}
-
-class ProfilePageNetworkTabEvent extends ProfilePageEvent {
-  ProfilePageNetworkTabEvent({required this.userId});
-  final int userId;
-}
-
-class ProfilePageAboutTabEvent extends ProfilePageEvent {}
 
 class ProfilePageSendAssociateRequestEvent extends ProfilePageEvent {
   ProfilePageSendAssociateRequestEvent(

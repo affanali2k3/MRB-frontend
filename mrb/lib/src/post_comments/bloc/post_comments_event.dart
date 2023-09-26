@@ -7,11 +7,11 @@ class PostCommentsEvent extends Equatable {
 
 class PostCommentsSaveCommentEvent extends PostCommentsEvent {
   PostCommentsSaveCommentEvent({required this.comment, required this.postId});
-  final String postId;
+  final int postId;
   final String comment;
 }
 
 class PostCommentsLoadingEvent extends PostCommentsEvent {
   PostCommentsLoadingEvent({required this.postId});
-  final String postId;
+  final int postId;
 }

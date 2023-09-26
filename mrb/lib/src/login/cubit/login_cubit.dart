@@ -6,7 +6,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:http/http.dart';
 import 'package:mrb/global_variables.dart';
-import 'package:mrb/src/login/cubit/login_event.dart';
 import 'package:mrb/src/login/cubit/login_state.dart';
 import 'package:mrb/src/login/repository/login_repository.dart';
 import 'package:mrb/src/network_page/model/user_model.dart';
@@ -92,10 +91,9 @@ class LoginCubit extends Cubit<LoginState> {
     }
   }
 
-  void logout(LoginLogoutEvent event, emit) async {
+  void logout() async {
     try {
       await auth.signOut();
-      emit(LoginLoggedOutState());
     } on FirebaseAuthException catch (e) {
       debugPrint(e.message);
     }
