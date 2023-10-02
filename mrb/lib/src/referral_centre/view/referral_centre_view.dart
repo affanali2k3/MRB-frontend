@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:mrb/global_variables.dart';
 import 'package:mrb/src/common/top_bar_widget.dart';
 import 'package:mrb/src/profile_page/view/widgets/profile_business_stats.dart';
 import 'package:mrb/src/referral_centre/bloc/referral_centre_bloc.dart';
@@ -43,7 +44,7 @@ class ReferralCentrePage extends StatelessWidget {
                 const SizedBox(
                   height: 20,
                 ),
-                const ReferralCentreLeadDisplayWidget(),
+                const ReferralCentreLeadDisplayWidget()
               ],
             ),
           ),

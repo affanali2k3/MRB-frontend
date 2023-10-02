@@ -30,6 +30,7 @@ class ProfilePageSuccessState extends ProfilePageState {
       required this.tab,
       required this.licence,
       required this.photo,
+      required this.coverPhoto,
       required this.phone,
       required this.address,
       required this.completedDeals,
@@ -39,10 +40,11 @@ class ProfilePageSuccessState extends ProfilePageState {
       required this.occupation,
       required this.gender});
   final UserAssociationModel? associationStatus;
-  final String? email;
-  final String? name;
+  final String email;
+  final String name;
   final String? licence;
   final String? photo;
+  final String? coverPhoto;
   final String? phone;
   final String? occupation;
   final String? gender;
@@ -67,6 +69,7 @@ class ProfilePageSuccessState extends ProfilePageState {
         phone,
         occupation,
         gender,
+        coverPhoto,
         tab
       ];
 }

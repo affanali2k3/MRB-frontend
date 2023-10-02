@@ -24,4 +24,14 @@ class LoginRepository {
       throw Exception(e);
     }
   }
+
+  Future<Response> getUserPreferences({required int userId}) async {
+    try {
+      final Response response = await http.get(
+          Uri.parse('${GlobalVariables.url}/preferences/get?userId=$userId'));
+      return response;
+    } catch (e) {
+      throw Exception(e);
+    }
+  }
 }

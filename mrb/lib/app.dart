@@ -32,6 +32,8 @@ import 'package:mrb/src/profile_page/repository/profile_page_repository.dart';
 import 'package:mrb/src/referral_centre/bloc/referral_centre_bloc.dart';
 import 'package:mrb/src/referral_centre/bloc/referral_centre_event.dart';
 import 'package:mrb/src/referral_centre/repository/referral_centre_repository.dart';
+import 'package:mrb/src/referral_filters/bloc/referral_filters_bloc.dart';
+import 'package:mrb/src/referral_filters/repository/referral_filters_repository.dart';
 import 'package:mrb/src/referral_post/bloc/referral_post_bloc.dart';
 import 'package:mrb/src/referral_post/repository/referral_post_repository.dart';
 import 'package:mrb/src/referral_post_direct/bloc/referral_post_direct_bloc.dart';
@@ -83,6 +85,9 @@ class App extends StatelessWidget {
                   create: (_) =>
                       ChatPanelBloc(repository: ChatPanelRepository())),
               BlocProvider(
+                  create: (_) => ReferralFiltersBloc(
+                      repository: ReferralFiltersRepository())),
+              BlocProvider(
                   create: (_) =>
                       ProfilePostPageBloc(repository: ProfilePageRepository())),
               BlocProvider(
@@ -129,7 +134,8 @@ class App extends StatelessWidget {
                       SearchPageBloc(repository: SearchPageRepository())),
               BlocProvider(create: (_) => MainPageBloc()),
               BlocProvider(
-                  create: (_) => ProfileBloc(repository: ProfileRepository())),
+                  create: (_) =>
+                      ProfileEditBloc(repository: ProfileRepository())),
               BlocProvider(
                   create: (_) =>
                       ProfilePageBloc(repository: ProfilePageRepository())),
@@ -148,11 +154,14 @@ class App extends StatelessWidget {
                       if (snapshot.hasData) {
                         context
                             .read<LoginCubit>()
-                            .getUserData(email: snapshot.data!.email!);
+                            .getUserData(email: snapshot.data!.email!)
+                            .then((value) => {
+                                  context.read<ReferralCentreBloc>().add(
+                                      ReferralCentreLoadingEvent(
+                                          city: 'New York',
+                                          state: 'California'))
+                                });
 
-                        context.read<ReferralCentreBloc>().add(
-                            ReferralCentreLoadingEvent(
-                                city: 'New York', state: 'California'));
                         return const MainPage();
                       } else {
                         return LoginPage();

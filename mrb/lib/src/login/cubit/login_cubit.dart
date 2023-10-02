@@ -9,6 +9,7 @@ import 'package:mrb/global_variables.dart';
 import 'package:mrb/src/login/cubit/login_state.dart';
 import 'package:mrb/src/login/repository/login_repository.dart';
 import 'package:mrb/src/network_page/model/user_model.dart';
+import 'package:mrb/src/referral_centre/model/user_preference_model.dart';
 
 class LoginCubit extends Cubit<LoginState> {
   LoginCubit({required this.repository}) : super(LoginLoggedOutState());
@@ -48,46 +49,44 @@ class LoginCubit extends Cubit<LoginState> {
     try {
       final Response response = await repository.getUser(email: email);
       print(response.body);
-      final UserModel user =
+      GlobalVariables.user =
           UserModel.fromJson(json.decode(response.body)['data']);
-      print(user);
-      GlobalVariables.user = user;
-      print(GlobalVariables.user);
+
+      final Response preferenceResponse =
+          await repository.getUserPreferences(userId: GlobalVariables.user.id);
+
+      print(preferenceResponse.body);
+
+      GlobalVariables.preferences = UserPreferenceModel.fromJson(
+          json.decode(preferenceResponse.body)['data']);
       return true;
-    } on FirebaseAuthException catch (e) {
-      debugPrint(e.message);
-      switch (e.code) {
-        case 'invalid-email':
-          emit(LoginInvalidEmailState(error: 'Invalid format for email'));
-          break;
-        case 'wrong-password':
-          emit(LoginInvalidPasswordState(error: 'Invalid password'));
-          break;
-        case 'user-not-found':
-          emit(LoginInvalidEmailState(error: 'User not found'));
-      }
-      debugPrint(e.code);
+    } catch (e) {
+      print(e);
       return false;
     }
   }
 
   Future<void> googleLogin() async {
-    final user = await _googleSignIn.signIn();
-    if (user == null) return;
+    try {
+      final user = await _googleSignIn.signIn();
+      if (user == null) return;
 
-    final GoogleSignInAuthentication googleAuth = await user.authentication;
+      final GoogleSignInAuthentication googleAuth = await user.authentication;
 
-    final credentials = GoogleAuthProvider.credential(
-        accessToken: googleAuth.accessToken, idToken: googleAuth.idToken);
+      final credentials = GoogleAuthProvider.credential(
+          accessToken: googleAuth.accessToken, idToken: googleAuth.idToken);
 
-    final userCredentials = await auth.signInWithCredential(credentials);
+      final userCredentials = await auth.signInWithCredential(credentials);
 
-    if (userCredentials.additionalUserInfo!.isNewUser) {
-      try {
-        repository.setProfile(email: user.email);
-      } catch (e) {
-        print(e);
+      if (userCredentials.additionalUserInfo!.isNewUser) {
+        try {
+          repository.setProfile(email: user.email);
+        } catch (e) {
+          print(e);
+        }
       }
+    } catch (e) {
+      print(e);
     }
   }
 

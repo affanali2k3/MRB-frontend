@@ -5,8 +5,8 @@ import 'package:mrb/global_variables.dart';
 class ReferralPostDirectRepository {
   Future<Response> loadTopAgents() async {
     try {
-      final Response response =
-          await http.get(Uri.parse('${GlobalVariables.url}/'));
+      final Response response = await http
+          .get(Uri.parse('${GlobalVariables.url}/recommend/getBestAgent'));
 
       return response;
     } catch (e) {
@@ -16,8 +16,8 @@ class ReferralPostDirectRepository {
 
   Future<Response> loadNetworkAgents() async {
     try {
-      final Response response =
-          await http.get(Uri.parse('${GlobalVariables.url}/'));
+      final Response response = await http
+          .get(Uri.parse('${GlobalVariables.url}/recommend/getBestAgent'));
 
       return response;
     } catch (e) {

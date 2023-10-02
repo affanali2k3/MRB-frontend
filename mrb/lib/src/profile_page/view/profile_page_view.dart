@@ -31,7 +31,9 @@ class ProfilePage extends StatelessWidget {
               child: SafeArea(
                 child: Column(
                   children: [
-                    const ProfileCoverNameWidget(),
+                    ProfileCoverNameWidget(
+                      userId: userId,
+                    ),
                     const ProfileBusinessStatsWidget(),
                     SizedBox(
                         child: userId == GlobalVariables.user.id

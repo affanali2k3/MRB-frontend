@@ -21,7 +21,7 @@ class ReferralCentreSearchWidget extends StatelessWidget {
               showModalBottomSheet<dynamic>(
                   backgroundColor: CustomTheme.nightBackgroundColor,
                   context: context,
-                  builder: (context) => const ReferralFiltersPage());
+                  builder: (context) => ReferralFiltersPage());
             },
             icon: Image.asset('assets/icons/referral_centre/filter.png'),
           ),

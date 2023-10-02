@@ -1,189 +1,131 @@
+import 'dart:typed_data';
+
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:mrb/src/common/input_field.dart';
-import 'package:mrb/src/common/outline_button.dart';
+import 'package:mime/mime.dart';
+import 'package:mrb/src/common/button.dart';
 import 'package:mrb/src/edit_profile/bloc/edit_profile_bloc.dart';
 import 'package:mrb/src/edit_profile/bloc/edit_profile_event.dart';
-import 'package:mrb/src/edit_profile/bloc/edit_profile_state.dart';
-import 'package:mrb/src/edit_profile/model/deal_model.dart';
-import 'package:mrb/src/homepage/homepage.dart';
-import 'package:mrb/src/login/cubit/login_cubit.dart';
-import 'package:mrb/src/login/cubit/login_state.dart';
-import 'package:mrb/src/login/view/login.dart';
+import 'package:mrb/themes/font_theme.dart';
 
-// ignore: must_be_immutable
-class ProfileEditPage extends StatelessWidget {
-  String jobTime = 'Part time';
-  String team = 'Team';
-  List<Deal> previousDeals = [];
-  final _name = TextEditingController();
-  final _ssn = TextEditingController();
-  final _licence = TextEditingController();
-  final _phone = TextEditingController();
-  final _occupation = TextEditingController();
-  final _gender = TextEditingController();
-  final _address = TextEditingController();
-  final _licenceState = TextEditingController();
-  final _licenceNumber = TextEditingController();
-  final _yearLicenced = TextEditingController();
-  final _numberOfCompletedDeals = TextEditingController();
+class ProfileEditPage extends StatefulWidget {
+  const ProfileEditPage({Key? key}) : super(key: key);
 
-  ProfileEditPage({super.key});
+  @override
+  ProfileEditPageState createState() => ProfileEditPageState();
+}
+
+class ProfileEditPageState extends State<ProfileEditPage> {
+  final _bioController = TextEditingController();
+
+  String? avatarMimeType;
+  Uint8List? avatarbytes;
+
+  String? coverPhotoMimeType;
+  Uint8List? coverPhotoBytes;
+
+  @override
+  void initState() {
+    super.initState();
+    _bioController.text =
+        'Lorem ipsum dolor sit amet consectetur. Pellentesque et augue amet pulvinar risus pulvinar. Viverra ornare donec mauris sit faucibus pulvinar sit amet tellus in...';
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: BlocBuilder<LoginCubit, LoginState>(builder: (context, state) {
-      if (state is LoginLoggedOutState) {
-        return LoginPage();
-      } else if (state is LoginSuccessState) {
-        return BlocBuilder<ProfileBloc, ProfileState>(
-            builder: (context, state) {
-          if (state is ProfileSetLoadingState) {
-            return const Center(
-              child: CircularProgressIndicator(),
-            );
-          } else if (state is ProfileSetFailureState) {
-            WidgetsBinding.instance.addPostFrameCallback((_) {
-              final snackBar = SnackBar(
-                content: Text(state.message),
-                action: SnackBarAction(
-                  label: 'Close',
-                  onPressed: () {
-                    ScaffoldMessenger.of(context).hideCurrentSnackBar();
-                  },
-                ),
-              );
-              ScaffoldMessenger.of(context).showSnackBar(snackBar);
-            });
+        backgroundColor: CustomTheme.nightBackgroundColor,
+        body: SafeArea(
+          minimum: const EdgeInsets.all(20),
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                Stack(alignment: Alignment.center, children: [
+                  GestureDetector(
+                    onTap: () async {
+                      FilePickerResult? result =
+                          await FilePicker.platform.pickFiles(withData: true);
+                      if (result != null) {
+                        PlatformFile file = result.files.first;
+                        final String? mimeType = lookupMimeType(file.path!);
+                        final Uint8List? buffer = file.bytes;
 
-            // return AlertDialog(content: Text(state.message));
-          } else if (state is ProfileSetSuccessState) {
-            WidgetsBinding.instance.addPostFrameCallback((_) {
-              final snackBar = SnackBar(
-                content: Text(state.message),
-                action: SnackBarAction(
-                  label: 'Close',
-                  onPressed: () {
-                    ScaffoldMessenger.of(context).hideCurrentSnackBar();
-                  },
-                ),
-              );
-              ScaffoldMessenger.of(context).showSnackBar(snackBar);
-            });
-          }
-          return SafeArea(
-            minimum: const EdgeInsets.all(20),
-            child: SingleChildScrollView(
-              child: Column(
-                mainAxisSize: MainAxisSize.max,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const SizedBox(
-                    height: 90,
+                        setState(() {
+                          coverPhotoMimeType = mimeType;
+                          coverPhotoBytes = buffer;
+                        });
+                      }
+                    },
+                    child: Container(
+                        child: coverPhotoBytes == null
+                            ? Container(
+                                height: 200,
+                                color: CustomTheme.nightSecondaryColor,
+                              )
+                            : Opacity(
+                                opacity: 0.5,
+                                child: Image.memory(
+                                  coverPhotoBytes!,
+                                  height: 200,
+                                  width: double.infinity,
+                                  fit: BoxFit.fill,
+                                ),
+                              )),
                   ),
-                  const Text(
-                    'Edit Profile',
-                    style: TextStyle(fontSize: 30),
-                  ),
-                  const SizedBox(height: 20),
-                  CustomOutlineButton(
-                      onPressed: () => context
-                          .read<ProfileBloc>()
-                          .add(ProfileAddAvatarEvent()),
-                      text: 'Add photo'),
-                  CustomTextField(controller: _name, hintText: 'Name'),
-                  CustomTextField(
-                    controller: _phone,
-                    hintText: 'Phone',
-                    maxLength: 10,
-                    keyboardInputType: TextInputType.phone,
-                  ),
-                  CustomTextField(
-                      controller: _occupation, hintText: 'Occupation'),
-                  CustomTextField(
-                      controller: _licenceState, hintText: 'Licence state'),
-                  CustomTextField(
-                      controller: _licenceNumber,
-                      hintText: 'Licence number',
-                      keyboardInputType: TextInputType.number),
-                  CustomTextField(
-                    controller: _yearLicenced,
-                    hintText: 'Year licenced',
-                    maxLength: 4,
-                    keyboardInputType: TextInputType.number,
-                  ),
-                  CustomTextField(
-                    controller: _numberOfCompletedDeals,
-                    hintText: 'Completed Deals',
-                    maxLength: 10,
-                    keyboardInputType: TextInputType.number,
-                  ),
-                  CustomTextField(
-                    controller: _gender,
-                    hintText: 'Gender',
-                  ),
-                  CustomTextField(
-                    controller: _address,
-                    hintText: 'Address',
-                  ),
-                  CustomOutlineButton(
-                    onPressed: () => context.read<ProfileBloc>().add(
-                        ProfileSetEvent(
-                            name: _name.text,
-                            ssn: _ssn.text,
-                            licence: _licence.text,
-                            address: _address.text,
-                            licenceNumber: _licenceNumber.text,
-                            licenceState: _licenceState.text,
-                            yearLicenced: _yearLicenced.text,
-                            numberOfCompletedDeals:
-                                _numberOfCompletedDeals.text,
-                            phone: _phone.text,
-                            occupation: _occupation.text,
-                            previousDeals: previousDeals,
-                            gender: _gender.text)),
-                    text: 'Set Profile',
-                    primary: false,
-                  ),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  CustomOutlineButton(
-                      onPressed: () {
-                        // BlocProvider.of<ProfilePageBloc>(context).add(
-                        //     ProfilePageLoadingEvent(
-                        //         userId:
-                        //             FirebaseAuth.instance.currentUser!.email!,
-                        //         associateEmail:
-                        //             FirebaseAuth.instance.currentUser!.email!));
-                        // Navigator.push(
-                        //     context,
-                        //     MaterialPageRoute(
-                        //         builder: (context) => const ProfilePage()));
+                  GestureDetector(
+                      onTap: () async {
+                        FilePickerResult? result =
+                            await FilePicker.platform.pickFiles(withData: true);
+                        if (result != null) {
+                          PlatformFile file = result.files.first;
+                          final String? mimeType = lookupMimeType(file.path!);
+                          final Uint8List? buffer = file.bytes;
+
+                          setState(() {
+                            avatarMimeType = mimeType;
+                            avatarbytes = buffer;
+                          });
+                        }
                       },
-                      text: 'Go to Profile'),
-                  const SizedBox(height: 20),
-                  CustomOutlineButton(
-                    onPressed: () =>
-                        context.read<ProfileBloc>().add(ProfileLogoutEvent()),
-                    text: 'Logout',
-                    primary: false,
-                  ),
-                  const SizedBox(height: 20),
-                  CustomOutlineButton(
-                      onPressed: () => Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const HomePage())),
-                      text: 'Homepage'),
-                ],
-              ),
+                      child: avatarbytes == null
+                          ? const CircleAvatar(
+                              radius: 48,
+                              backgroundImage: AssetImage(
+                                  'assets/default_profile_photo.jpeg'))
+                          : CircleAvatar(
+                              radius: 48,
+                              backgroundImage: MemoryImage(avatarbytes!))),
+                ]),
+                const SizedBox(
+                  height: 20,
+                ),
+                TextField(
+                    controller: _bioController,
+                    maxLines: 6,
+                    maxLength: 200,
+                    style: const TextStyle(
+                        color: CustomTheme.nightSecondaryFontColor),
+                    decoration: const InputDecoration(
+                      counterStyle:
+                          TextStyle(color: CustomTheme.nightSecondaryFontColor),
+                      enabledBorder: OutlineInputBorder(
+                          borderSide: BorderSide(
+                              color: CustomTheme.nightSecondaryColor)),
+                    )),
+                CustomButton(
+                    onPressed: () {
+                      context.read<ProfileEditBloc>().add(ProfileEditSetEvent(
+                          biography: _bioController.text,
+                          avatarMimeType: avatarMimeType,
+                          avatarbytes: avatarbytes,
+                          coverPhotoBytes: coverPhotoBytes,
+                          coverPhotoMimeType: coverPhotoMimeType));
+                    },
+                    text: 'Save changes')
+              ],
             ),
-          );
-        });
-      } else {
-        return LoginPage();
-      }
-    }));
+          ),
+        ));
   }
 }

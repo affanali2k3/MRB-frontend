@@ -1,39 +1,28 @@
-import 'package:equatable/equatable.dart';
-import 'package:mrb/src/edit_profile/model/deal_model.dart';
+import 'dart:typed_data';
 
-abstract class ProfileEvent extends Equatable {
+import 'package:equatable/equatable.dart';
+
+abstract class ProfileEditEvent extends Equatable {
   @override
   List<Object> get props => [];
 }
 
-class ProfileAddAvatarEvent extends ProfileEvent {}
+class ProfileEditAddAvatarEvent extends ProfileEditEvent {}
 
-class ProfileLogoutEvent extends ProfileEvent {}
+class ProfileEditLogoutEvent extends ProfileEditEvent {}
 
-class ProfileSetEvent extends ProfileEvent {
-  ProfileSetEvent(
-      {required this.name,
-      required this.ssn,
-      required this.licence,
-      required this.phone,
-      required this.occupation,
-      required this.gender,
-      required this.licenceNumber,
-      required this.licenceState,
-      required this.address,
-      required this.numberOfCompletedDeals,
-      this.previousDeals,
-      required this.yearLicenced});
-  final String name;
-  final String ssn;
-  final String licence;
-  final String phone;
-  final String address;
-  final String occupation;
-  final String gender;
-  final String licenceState;
-  final String licenceNumber;
-  final String yearLicenced;
-  final String numberOfCompletedDeals;
-  final List<Deal>? previousDeals;
+class ProfileEditSetEvent extends ProfileEditEvent {
+  ProfileEditSetEvent(
+      {required this.biography,
+      required this.avatarMimeType,
+      required this.avatarbytes,
+      required this.coverPhotoBytes,
+      required this.coverPhotoMimeType});
+  final String biography;
+
+  final String? avatarMimeType;
+  final Uint8List? avatarbytes;
+
+  final String? coverPhotoMimeType;
+  final Uint8List? coverPhotoBytes;
 }

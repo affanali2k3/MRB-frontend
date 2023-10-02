@@ -2,91 +2,31 @@ import 'dart:typed_data';
 
 import 'package:equatable/equatable.dart';
 
-abstract class ProfileState extends Equatable {
-  const ProfileState({
-    this.mimeType,
-    this.bytes,
-    required this.name,
-    required this.ssn,
-    required this.phone,
-    required this.occupation,
-    required this.gender,
-    required this.licence,
-  });
-  final String? mimeType;
-  final Uint8List? bytes;
-  final String name;
-  final String ssn;
-  final String licence;
-  final String phone;
-  final String occupation;
-  final String gender;
+abstract class ProfileEditState extends Equatable {
+  final String? avatarMimeType;
+  final Uint8List? avatarbytes;
+
+  final String? coverPhotoMimeType;
+  final Uint8List? coverPhotoBytes;
+
+  const ProfileEditState(
+      {this.avatarMimeType,
+      this.avatarbytes,
+      this.coverPhotoBytes,
+      this.coverPhotoMimeType});
+
   @override
   List<Object?> get props =>
-      [mimeType, bytes, name, ssn, licence, phone, occupation, gender];
+      [avatarMimeType, avatarbytes, coverPhotoBytes, coverPhotoMimeType];
 }
 
-class ProfileSetSuccessState extends ProfileState {
-  const ProfileSetSuccessState({
-    required this.message,
-    required super.name,
-    required super.ssn,
-    required super.phone,
-    required super.occupation,
-    required super.gender,
-    required super.licence,
-     super.bytes,
-    super.mimeType
-  });
-  final String message;
-}
+class ProfileEditInitialState extends ProfileEditState {}
 
-class ProfileSetLoadingState extends ProfileState {
-  const ProfileSetLoadingState(
-      {required super.name,
-      required super.ssn,
-      required super.phone,
-      required super.occupation,
-      required super.gender,
-      required super.licence,
-      super.bytes,
-      super.mimeType});
-}
+class ProfileEditSetSuccessState extends ProfileEditState {}
 
-class ProfileSetFailureState extends ProfileState {
-  const ProfileSetFailureState(
-      {required this.message,
-      required super.name,
-      required super.ssn,
-      required super.phone,
-      required super.occupation,
-      required super.gender,
-      required super.licence,
-      super.bytes,
-      super.mimeType});
-  final String message;
-}
+class ProfileEditSetLoadingState extends ProfileEditState {}
 
-class ProfileInitial extends ProfileState {
-  const ProfileInitial({
-    required super.name,
-    required super.ssn,
-    required super.phone,
-    required super.occupation,
-    required super.gender,
-    required super.licence,
-  });
-}
-
-class ProfileSetAvatarState extends ProfileState {
-  const ProfileSetAvatarState({
-    super.mimeType,
-    super.bytes,
-    required super.name,
-    required super.ssn,
-    required super.phone,
-    required super.occupation,
-    required super.gender,
-    required super.licence,
-  });
+class ProfileEditSetFailureState extends ProfileEditState {
+  ProfileEditSetFailureState({required this.error});
+  final String error;
 }

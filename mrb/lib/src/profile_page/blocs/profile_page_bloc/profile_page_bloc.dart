@@ -29,10 +29,11 @@ class ProfilePageBloc extends Bloc<ProfilePageEvent, ProfilePageState> {
         yearLicenced: successState.yearLicenced,
         completedDeals: successState.completedDeals,
         email: successState.email,
-        name: successState.email,
+        name: successState.name,
         tab: event.profilePageTab,
         licence: successState.licence,
         photo: successState.photo,
+        coverPhoto: successState.coverPhoto,
         phone: successState.phone,
         occupation: successState.occupation,
         gender: successState.gender));
@@ -60,8 +61,6 @@ class ProfilePageBloc extends Bloc<ProfilePageEvent, ProfilePageState> {
 
       final data = responseJson['data'];
 
-      final photo = responseJson['photo'];
-
       emit(ProfilePageSuccessState(
           associationStatus: associationStatus,
           address: data['address'],
@@ -73,7 +72,8 @@ class ProfilePageBloc extends Bloc<ProfilePageEvent, ProfilePageState> {
           name: data['name'],
           tab: ProfilePageTabs.profilePostsTab,
           licence: data['licence'],
-          photo: photo,
+          photo: data['photo'],
+          coverPhoto: data['coverPhoto'],
           phone: data['phone'],
           occupation: data['occupation'],
           gender: data['gender']));
@@ -99,6 +99,7 @@ class ProfilePageBloc extends Bloc<ProfilePageEvent, ProfilePageState> {
             email: successState.email,
             tab: successState.tab,
             name: successState.name,
+            coverPhoto: successState.coverPhoto,
             licence: successState.licence,
             photo: successState.photo,
             phone: successState.phone,

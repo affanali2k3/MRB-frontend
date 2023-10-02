@@ -25,12 +25,20 @@ class ReferralPostDirectBloc
 
       final Response response = await repository.loadTopAgents();
 
+      print(response.body);
+
       final List<dynamic> responseJson = json.decode(response.body)['data'];
 
       final List<AgentModel> topAgents = [];
 
-      for (final Map<String, dynamic> json in responseJson) {}
+      print(topAgents);
+
+      for (final Map<String, dynamic> json in responseJson) {
+        topAgents.add(AgentModel.fromJson(json));
+      }
+      print(topAgents);
     } catch (e) {
+      print(e);
       emit(ReferralPostDirectTopAgentsFailedState());
     }
   }

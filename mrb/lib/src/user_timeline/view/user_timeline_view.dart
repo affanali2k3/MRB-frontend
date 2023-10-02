@@ -51,8 +51,7 @@ class UserTimelinePage extends StatelessWidget {
                               onPressed: () {
                                 context.read<UserTimelineBloc>().add(
                                     UserTimelinePostLikeEvent(
-                                        index: index,
-                                        postId: state.posts[index].postId));
+                                        index: index, postId: 2.toString()));
                               },
                               icon: Icon(Icons.thumb_up,
                                   color: state.posts[index].isLiked
