@@ -7,17 +7,16 @@ abstract class ChatPageEvent extends Equatable {
 
 class ChatPageSendMessageEvent extends ChatPageEvent {
   ChatPageSendMessageEvent(
-      {required this.senderEmail,
-      required this.receiverEmail,
+      {required this.senderId,
+      required this.receiverId,
       required this.message});
-  final String senderEmail;
-  final String receiverEmail;
+  final int senderId;
+  final int receiverId;
   final String message;
 }
 
 class ChatPageLoadMessagesEvent extends ChatPageEvent {
-  ChatPageLoadMessagesEvent(
-      {required this.userOneEmail, required this.userTwoEmail});
-  final String userOneEmail;
-  final String userTwoEmail;
+  ChatPageLoadMessagesEvent({required this.userOneId, required this.userTwoId});
+  final int userOneId;
+  final int userTwoId;
 }

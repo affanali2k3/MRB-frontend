@@ -64,9 +64,11 @@ class ProfilePageRepository {
   Future<void> acceptAssociation(
       {required int senderId, required int receiverId}) async {
     try {
-      final response = await http.patch(
-          Uri.parse('${GlobalVariables.url}/associate/accept'),
-          body: {"senderId": senderId, "receiverId": receiverId});
+      final Response response = await http
+          .patch(Uri.parse('${GlobalVariables.url}/associate/accept'), body: {
+        "senderId": senderId.toString(),
+        "receiverId": receiverId.toString()
+      });
       print(response.body);
     } catch (e) {
       throw Exception(e);

@@ -21,7 +21,7 @@ class ChatPageBloc extends Bloc<ChatPageEvent, ChatPageState> {
   void _getChats(ChatPageLoadMessagesEvent event, emit) async {
     try {
       final Response response = await repository.getAllChat(
-          userOneEmail: event.userOneEmail, userTwoEmail: event.userTwoEmail);
+          userOneId: event.userOneId, userTwoId: event.userTwoId);
 
       final responseJson = json.decode(response.body);
       final List<dynamic> responseJsonData = responseJson['data'];
@@ -46,14 +46,16 @@ class ChatPageBloc extends Bloc<ChatPageEvent, ChatPageState> {
         "senderEmail": FirebaseAuth.instance.currentUser?.email,
         "receiverEmail": "singh@rempower.com"
       });
-      await repository.saveMessage(
-          receiverEmail: event.receiverEmail,
-          senderEmail: event.senderEmail,
+      final Response response = await repository.saveMessage(
+          receiverId: event.receiverId,
+          senderId: event.senderId,
           message: event.message);
+
+      print(response.body);
       List<MessageModel> messages = List.from(state.messages);
       messages.add(MessageModel(
-          senderEmail: event.senderEmail,
-          receiverEmail: event.receiverEmail,
+          senderId: event.senderId,
+          receiverId: event.receiverId,
           message: event.message));
 
       emit(ChatPageMessagesLoadedState(messages: messages));

@@ -13,4 +13,22 @@ class ChatPanelRepository {
       throw Exception(e);
     }
   }
+
+  Future<Response> createChat(
+      {required final int senderId,
+      required final int receiverId,
+      required final String message}) async {
+    try {
+      final Response response = await http
+          .post(Uri.parse('${GlobalVariables.url}/chat/chat/create'), body: {
+        'senderId': senderId.toString(),
+        'receiverId': receiverId.toString(),
+        'message': message
+      });
+
+      return response;
+    } catch (e) {
+      throw Exception(e);
+    }
+  }
 }

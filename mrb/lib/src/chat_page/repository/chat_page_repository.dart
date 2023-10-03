@@ -4,11 +4,13 @@ import 'package:mrb/global_variables.dart';
 
 class ChatPageRepository {
   Future<Response> getAllChat(
-      {required String userOneEmail, required String userTwoEmail}) async {
+      {required int userOneId, required int userTwoId}) async {
     try {
-      final Response response = await http.post(
-          Uri.parse('${GlobalVariables.url}/chat/getAll'),
-          body: {"userOneEmail": userOneEmail, "userTwoEmail": userTwoEmail});
+      final Response response = await http
+          .post(Uri.parse('${GlobalVariables.url}/chat/getAll'), body: {
+        "userOneId": userOneId.toString(),
+        "userTwoId": userTwoId.toString()
+      });
       return response;
     } catch (e) {
       throw Exception(e);
@@ -16,14 +18,14 @@ class ChatPageRepository {
   }
 
   Future<Response> saveMessage(
-      {required String senderEmail,
-      required String receiverEmail,
+      {required int senderId,
+      required int receiverId,
       required String message}) async {
     try {
-      final Response response = await http
-          .post(Uri.parse('${GlobalVariables.url}/chat/save'), body: {
-        "senderEmail": senderEmail,
-        "receiverEmail": receiverEmail,
+      final Response response =
+          await http.post(Uri.parse('${GlobalVariables.url}/chat/save'), body: {
+        "senderId": senderId.toString(),
+        "receiverId": receiverId.toString(),
         "message": message
       });
       return response;

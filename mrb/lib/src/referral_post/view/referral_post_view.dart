@@ -4,6 +4,7 @@ import 'package:mrb/assets/us_states.dart';
 import 'package:mrb/src/common/button.dart';
 import 'package:mrb/src/common/dropdown.dart';
 import 'package:mrb/src/profile_page/view/widgets/profile_business_stats.dart';
+import 'package:mrb/src/referral_filters/bloc/referral_filters_state.dart';
 import 'package:mrb/src/referral_post/bloc/referral_post_bloc.dart';
 import 'package:mrb/src/referral_post/bloc/referral_post_event.dart';
 import 'package:mrb/src/referral_post/bloc/referral_post_state.dart';
@@ -295,14 +296,24 @@ class ReferralPostViewState extends State<ReferralPostPage> {
             formType == FormType.direct
                 ? CustomButton(
                     onPressed: () {
-                      context
-                          .read<ReferralPostDirectBloc>()
-                          .add(ReferralPostDirectTopAgentsLoadingEvent());
+                      context.read<ReferralPostDirectBloc>().add(
+                          ReferralPostDirectTopAgentsLoadingEvent(
+                              state: state,
+                              clientType: isBuyer
+                                  ? ClientType.buyer
+                                  : ClientType.seller));
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) =>
-                                const ReferralPostDirectPage(),
+                            builder: (context) => ReferralPostDirectPage(
+                              city: city,
+                              desiredAt: DateTime.now(),
+                              price: double.parse(_costController.text),
+                              clientState: state,
+                              clientType: isBuyer
+                                  ? ClientType.buyer
+                                  : ClientType.seller,
+                            ),
                           ));
                     },
                     text: 'Share with agents',

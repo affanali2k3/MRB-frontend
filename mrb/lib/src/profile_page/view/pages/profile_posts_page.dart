@@ -13,16 +13,17 @@ class ProfilePostsPage extends StatelessWidget {
         builder: (context, state) {
       if (state is ProfilePostPageSuccessState) {
         return SingleChildScrollView(
+            padding: const EdgeInsets.all(20),
             child: ListView.builder(
-          itemCount: state.posts.length,
-          shrinkWrap: true,
-          primary: false,
-          itemBuilder: (context, index) {
-            return CustomPostModel(
-              post: state.posts[index],
-            );
-          },
-        ));
+              itemCount: state.posts.length,
+              shrinkWrap: true,
+              primary: false,
+              itemBuilder: (context, index) {
+                return CustomPostModel(
+                  post: state.posts[index],
+                );
+              },
+            ));
       } else {
         return const SizedBox();
       }

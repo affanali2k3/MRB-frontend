@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:mrb/src/referral_post_direct/model/agent_model.dart';
 
 abstract class ReferralPostDirectState extends Equatable {
   @override
@@ -16,7 +17,10 @@ final class ReferralPostDirectTopAgentsLoadingState
     extends ReferralPostDirectTopAgentsState {}
 
 final class ReferralPostDirectTopAgentsSuccessState
-    extends ReferralPostDirectTopAgentsState {}
+    extends ReferralPostDirectTopAgentsState {
+  ReferralPostDirectTopAgentsSuccessState({required this.agents});
+  final List<AgentModel> agents;
+}
 
 final class ReferralPostDirectTopAgentsFailedState
     extends ReferralPostDirectTopAgentsState {}
@@ -25,7 +29,10 @@ final class ReferralPostDirectYourNetworkLoadingState
     extends ReferralPostDirectYourNetworkState {}
 
 final class ReferralPostDirectYourNetworkSuccessState
-    extends ReferralPostDirectYourNetworkState {}
+    extends ReferralPostDirectYourNetworkState {
+  ReferralPostDirectYourNetworkSuccessState({required this.agents});
+  final List<AgentModel> agents;
+}
 
 final class ReferralPostDirectYourNetworkFailedState
     extends ReferralPostDirectYourNetworkState {}

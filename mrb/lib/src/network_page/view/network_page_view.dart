@@ -1,9 +1,8 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:mrb/global_variables.dart';
 import 'package:mrb/src/chat_page/bloc/chat_page_bloc.dart';
 import 'package:mrb/src/chat_page/bloc/chat_page_event.dart';
-import 'package:mrb/src/chat_page/view/chat_page_view.dart';
 import 'package:mrb/src/common/outline_button.dart';
 import 'package:mrb/src/network_page/bloc/network_page_bloc.dart';
 import 'package:mrb/src/network_page/bloc/network_page_event.dart';
@@ -33,18 +32,17 @@ class NetworkPage extends StatelessWidget {
                         onPressed: () {
                           BlocProvider.of<ChatPageBloc>(context).add(
                               ChatPageLoadMessagesEvent(
-                                  userOneEmail:
-                                      FirebaseAuth.instance.currentUser!.email!,
-                                  userTwoEmail: state.associates[index].email));
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => ChatPage(
-                                  senderEmail:
-                                      FirebaseAuth.instance.currentUser!.email!,
-                                  receiverEmail: state.associates[index].email,
-                                ),
-                              ));
+                                  userOneId: GlobalVariables.user.id,
+                                  userTwoId: state.associates[index].id));
+                          // Navigator.push(
+                          //     context,
+                          //     MaterialPageRoute(
+                          //       builder: (context) => ChatPage(
+                          //         senderEmail:
+                          //             FirebaseAuth.instance.currentUser!.email!,
+                          //         receiverEmail: state.associates[index].email,
+                          //       ),
+                          //     ));
                         },
                         text: 'Chat')
                   ]));

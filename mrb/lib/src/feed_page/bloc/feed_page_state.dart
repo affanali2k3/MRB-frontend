@@ -1,6 +1,5 @@
 import 'package:equatable/equatable.dart';
 import 'package:mrb/src/profile_page/model/user_post_model.dart';
-import 'package:mrb/src/user_timeline/model/post_model.dart';
 
 class FeedPageState extends Equatable {
   @override

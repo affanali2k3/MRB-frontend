@@ -10,6 +10,7 @@ import 'package:mrb/src/chat_panel_page/repository/chat_panel_repository.dart';
 class ChatPanelBloc extends Bloc<ChatPanelEvent, ChatPanelState> {
   ChatPanelBloc({required this.repository}) : super(ChatPanelInitialState()) {
     on<ChatPanelLoadingEvent>(_getChats);
+    on<ChatPanelCreateChatEvent>(_createChat);
   }
 
   final ChatPanelRepository repository;
@@ -31,6 +32,19 @@ class ChatPanelBloc extends Bloc<ChatPanelEvent, ChatPanelState> {
     } catch (e) {
       print('Error $e');
       emit(ChatPanelFailedState(error: e.toString()));
+    }
+  }
+
+  void _createChat(ChatPanelCreateChatEvent event, emit) async {
+    try {
+      final Response response = await repository.createChat(
+          senderId: event.senderId,
+          receiverId: event.receiverId,
+          message: event.message);
+
+      print(response.body);
+    } catch (e) {
+      print(e);
     }
   }
 }

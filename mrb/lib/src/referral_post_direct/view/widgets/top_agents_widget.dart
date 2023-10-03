@@ -1,23 +1,42 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:mrb/global_variables.dart';
 import 'package:mrb/src/common/button.dart';
 import 'package:mrb/src/common/profile_photo.dart';
 import 'package:mrb/src/profile_page/view/widgets/profile_business_stats.dart';
+import 'package:mrb/src/referral_filters/bloc/referral_filters_state.dart';
 import 'package:mrb/src/referral_post_direct/bloc/referral_post_direct_bloc.dart';
+import 'package:mrb/src/referral_post_direct/bloc/referral_post_direct_event.dart';
 import 'package:mrb/src/referral_post_direct/bloc/referral_post_direct_state.dart';
+import 'package:mrb/src/sender_agent_form/bloc/sender_agent_form_state.dart';
 
 class ReferralPostDirectTopAgentsWidget extends StatelessWidget {
-  const ReferralPostDirectTopAgentsWidget({Key? key}) : super(key: key);
+  const ReferralPostDirectTopAgentsWidget(
+      {Key? key,
+      required this.clientState,
+      required this.city,
+      required this.desiredAt,
+      required this.clientType,
+      required this.price})
+      : super(key: key);
+
+  final String clientState;
+  final String city;
+  final DateTime desiredAt;
+  final ClientType clientType;
+  final double price;
 
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<ReferralPostDirectBloc, ReferralPostDirectState>(
         builder: (context, state) {
+      final ReferralPostDirectTopAgentsSuccessState successState =
+          state as ReferralPostDirectTopAgentsSuccessState;
       return ListView.builder(
         shrinkWrap: true,
         primary: false,
-        itemCount: 3,
+        itemCount: successState.agents.length,
         itemBuilder: (context, index) => Column(
           children: [
             Row(
@@ -25,15 +44,20 @@ class ReferralPostDirectTopAgentsWidget extends StatelessWidget {
               children: [
                 Row(
                   children: [
-                    const CustomProfilePhoto(),
+                    CustomProfilePhoto(
+                      photo: successState.agents[index].photo,
+                      userId: successState.agents[index].userId,
+                    ),
                     const SizedBox(
                       width: 5,
                     ),
                     Column(
                       children: [
-                        TextCustom('Stuart Arnold '),
+                        TextCustom(successState.agents[index].name),
                         RatingBarIndicator(
-                          rating: 2.75,
+                          rating: successState
+                              .agents[index].agentToAgentRatingScore
+                              .toDouble(),
                           itemBuilder: (context, index) => const Icon(
                             Icons.star,
                             color: Colors.amber,
@@ -66,20 +90,47 @@ class ReferralPostDirectTopAgentsWidget extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Column(
-                  children: [TextCustom('204'), TextCustom('Active Years')],
+                  children: [
+                    TextCustom(successState.agents[index].yearsOfExperience
+                        .toString()),
+                    TextCustom('Active Years')
+                  ],
                 ),
                 Column(
-                  children: [TextCustom('204'), TextCustom('Active Years')],
+                  children: [
+                    TextCustom(successState.agents[index].referralsReceived
+                        .toString()),
+                    TextCustom('Refs Sent')
+                  ],
                 ),
                 Column(
-                  children: [TextCustom('204'), TextCustom('Active Years')],
+                  children: [
+                    TextCustom(
+                        successState.agents[index].referralsSent.toString()),
+                    TextCustom('Refs Received')
+                  ],
                 ),
               ],
             ),
             const SizedBox(
               height: 20,
             ),
-            CustomButton(onPressed: () {}, text: 'Send'),
+            CustomButton(
+                onPressed: () {
+                  context
+                      .read<ReferralPostDirectBloc>()
+                      .add(ReferralPostSendReferralToAgentEvent(
+                        senderAgent: GlobalVariables.user.id,
+                        city: city,
+                        desiredDate: desiredAt,
+                        clientType: clientType,
+                        formType: FormType.direct,
+                        price: price,
+                        receiverAgent: state.agents[index].userId,
+                        state: clientState,
+                      ));
+                },
+                text: 'Send'),
             const SizedBox(
               height: 20,
             ),

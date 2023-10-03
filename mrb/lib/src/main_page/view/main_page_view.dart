@@ -3,10 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mrb/global_variables.dart';
 import 'package:mrb/src/agent_forms_received/bloc/agent_forms_received_bloc.dart';
 import 'package:mrb/src/agent_forms_received/bloc/agent_forms_received_event.dart';
-import 'package:mrb/src/agent_forms_received/view/agent_forms_received_view.dart';
-import 'package:mrb/src/agent_open_forms_sent/bloc/agent_forms_received_bloc.dart';
-import 'package:mrb/src/agent_open_forms_sent/bloc/agent_forms_received_event.dart';
-import 'package:mrb/src/agent_open_forms_sent/view/agent_forms_received_view.dart';
 import 'package:mrb/src/chat_panel_page/bloc/chat_panel_bloc.dart';
 import 'package:mrb/src/chat_panel_page/bloc/chat_panel_event.dart';
 import 'package:mrb/src/chat_panel_page/view/chat_panel_page.dart';
@@ -14,6 +10,7 @@ import 'package:mrb/src/feed_page/bloc/feed_page_bloc.dart';
 import 'package:mrb/src/feed_page/bloc/feed_page_event.dart';
 import 'package:mrb/src/feed_page/view/feed_page_view.dart';
 import 'package:mrb/src/feed_page/view/widgets/new_post_widget.dart';
+import 'package:mrb/src/forms_main_page/view/forms_main_page_view.dart';
 import 'package:mrb/src/main_page/bloc/main_page_bloc.dart';
 import 'package:mrb/src/main_page/bloc/main_page_event.dart';
 import 'package:mrb/src/main_page/bloc/main_page_state.dart';
@@ -107,10 +104,10 @@ class MainPage extends StatelessWidget {
                   icon: Image.asset('assets/icons/navbar/feed.png')),
               IconButton(
                   onPressed: () {
-                    context.read<AgentOpenFormsSentBloc>().add(
-                        AgentOpenFormsSentLoadingEvent(
-                            userId: GlobalVariables.user.id));
-                    // context.read<ChatPanelBloc>().add(ChatPanelLoadingEvent());
+                    // context.read<AgentOpenFormsSentBloc>().add(
+                    //     AgentOpenFormsSentLoadingEvent(
+                    //         userId: GlobalVariables.user.id));
+                    context.read<ChatPanelBloc>().add(ChatPanelLoadingEvent());
                     context.read<MainPageBloc>().add(
                         ChangePageEvent(page: Pages.notificationPage.name));
                   },
@@ -142,9 +139,9 @@ class MainPage extends StatelessWidget {
               userId: GlobalVariables.user.id,
             );
           } else if (state is NetworkPageState) {
-            return const AgentFormsReceivedPage();
+            return const FormsMainPage();
           } else if (state is NotificationPageState) {
-            return const AgentOpenFormsSentPage();
+            return ChatPanelPage();
           } else if (state is FeedPageState) {
             return FeedPage(
               userId: GlobalVariables.user.id,

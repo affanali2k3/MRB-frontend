@@ -12,6 +12,8 @@ import 'package:mrb/src/chat_page/bloc/chat_page_bloc.dart';
 import 'package:mrb/src/chat_page/repository/chat_page_repository.dart';
 import 'package:mrb/src/feed_page/bloc/feed_page_bloc.dart';
 import 'package:mrb/src/feed_page/repository/feed_page_repository.dart';
+import 'package:mrb/src/forms_main_page/direct_forms_received_bloc/bloc/direct_forms_received_bloc.dart';
+import 'package:mrb/src/forms_main_page/direct_forms_received_bloc/repository/direct_forms_repository.dart';
 import 'package:mrb/src/login/cubit/login_cubit.dart';
 import 'package:mrb/src/edit_profile/bloc/edit_profile_bloc.dart';
 import 'package:mrb/src/edit_profile/repository/edit_profile_repository.dart';
@@ -139,6 +141,9 @@ class App extends StatelessWidget {
               BlocProvider(
                   create: (_) =>
                       ProfilePageBloc(repository: ProfilePageRepository())),
+              BlocProvider(
+                  create: (_) => DirectFormsReceivedBloc(
+                      repository: DirectFormsRepository())),
               BlocProvider(
                   create: (_) => RegistorBloc(repository: RegistorRepository()))
             ],

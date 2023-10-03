@@ -14,6 +14,7 @@ class ReferralPostDirectBloc
     on<ReferralPostDirectChangeTabEvent>(_changeTab);
     on<ReferralPostDirectTopAgentsLoadingEvent>(_loadTopAgents);
     on<ReferralPostDirectYourNetworkLoadingEvent>(_loadNetworkAgents);
+    on<ReferralPostSendReferralToAgentEvent>(_sendReferralToAgent);
   }
 
   final ReferralPostDirectRepository repository;
@@ -23,7 +24,8 @@ class ReferralPostDirectBloc
     try {
       emit(ReferralPostDirectTopAgentsLoadingState());
 
-      final Response response = await repository.loadTopAgents();
+      final Response response = await repository.loadTopAgents(
+          state: event.state, clientType: event.clientType);
 
       print(response.body);
 
@@ -37,6 +39,8 @@ class ReferralPostDirectBloc
         topAgents.add(AgentModel.fromJson(json));
       }
       print(topAgents);
+
+      emit(ReferralPostDirectTopAgentsSuccessState(agents: topAgents));
     } catch (e) {
       print(e);
       emit(ReferralPostDirectTopAgentsFailedState());
@@ -48,15 +52,45 @@ class ReferralPostDirectBloc
     try {
       emit(ReferralPostDirectTopAgentsLoadingState());
 
-      final Response response = await repository.loadTopAgents();
+      final Response response = await repository.loadTopAgents(
+          state: event.state, clientType: event.clientType);
 
       final List<dynamic> responseJson = json.decode(response.body)['data'];
 
       final List<AgentModel> topAgents = [];
 
-      for (final Map<String, dynamic> json in responseJson) {}
+      for (final Map<String, dynamic> json in responseJson) {
+        topAgents.add(AgentModel.fromJson(json));
+      }
+      emit(ReferralPostDirectYourNetworkSuccessState(agents: topAgents));
     } catch (e) {
-      emit(ReferralPostDirectTopAgentsFailedState());
+      emit(ReferralPostDirectYourNetworkFailedState());
+    }
+  }
+
+  void _sendReferralToAgent(
+      ReferralPostSendReferralToAgentEvent event, emit) async {
+    try {
+      final Response response = await repository.sendReferralToAgent(
+          state: event.state,
+          clientType: event.clientType,
+          city: event.city,
+          senderAgent: event.senderAgent,
+          receiverAgent: event.receiverAgent,
+          price: event.price,
+          formType: event.formType,
+          desiredDate: event.desiredDate);
+
+      print(response.body);
+
+      // emit(ReferralPostDirectYourNetworkSuccessState(agents: state.));
+    } catch (e) {
+      print(e);
+      if (state is ReferralPostDirectTopAgentsSuccessState) {
+        emit(ReferralPostDirectTopAgentsFailedState());
+      } else {
+        emit(ReferralPostDirectYourNetworkFailedState());
+      }
     }
   }
 

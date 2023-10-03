@@ -16,6 +16,7 @@ class SearchPageSearchWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextField(
+      style: TextStyle(color: CustomTheme.nightSecondaryFontColor),
       onSubmitted: (String value) => context
           .read<SearchPageBloc>()
           .add(SearchPageSearchEvent(searchQuery: value)),

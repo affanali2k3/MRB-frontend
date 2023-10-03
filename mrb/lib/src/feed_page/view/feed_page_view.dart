@@ -6,7 +6,6 @@ import 'package:mrb/src/common/top_bar_widget.dart';
 import 'package:mrb/src/feed_page/bloc/feed_page_bloc.dart';
 import 'package:mrb/src/feed_page/bloc/feed_page_event.dart';
 import 'package:mrb/src/feed_page/bloc/feed_page_state.dart';
-import 'package:mrb/src/profile_page/view/widgets/profile_business_stats.dart';
 import 'package:mrb/themes/font_theme.dart';
 
 // ignore: must_be_immutable

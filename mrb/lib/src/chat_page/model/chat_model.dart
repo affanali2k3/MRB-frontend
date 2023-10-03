@@ -1,14 +1,14 @@
 class MessageModel {
   MessageModel(
-      {required this.senderEmail,
-      required this.receiverEmail,
+      {required this.senderId,
+      required this.receiverId,
       required this.message});
-  final String senderEmail;
-  final String receiverEmail;
+  final int senderId;
+  final int receiverId;
   final String message;
 
   static MessageModel fromJson(json) => MessageModel(
-      senderEmail: json['senderEmail'],
-      receiverEmail: json['receiverEmail'],
+      senderId: json['senderId'],
+      receiverId: json['receiverId'],
       message: json['message']);
 }

@@ -6,7 +6,6 @@ import 'package:mrb/src/feed_page/bloc/feed_page_event.dart';
 import 'package:mrb/src/feed_page/bloc/feed_page_state.dart';
 import 'package:mrb/src/feed_page/repository/feed_page_repository.dart';
 import 'package:mrb/src/profile_page/model/user_post_model.dart';
-import 'package:mrb/src/user_timeline/model/post_model.dart';
 
 class FeedPageBloc extends Bloc<FeedPageEvent, FeedPageState> {
   FeedPageBloc({required this.repository}) : super(FeedPageInitialState()) {

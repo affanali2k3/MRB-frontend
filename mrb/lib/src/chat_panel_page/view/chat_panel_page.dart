@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:mrb/global_variables.dart';
+import 'package:mrb/src/chat_page/bloc/chat_page_bloc.dart';
+import 'package:mrb/src/chat_page/bloc/chat_page_event.dart';
 import 'package:mrb/src/chat_page/view/chat_page_view.dart';
 import 'package:mrb/src/chat_panel_page/bloc/chat_panel_bloc.dart';
 import 'package:mrb/src/chat_panel_page/bloc/chat_panel_state.dart';
@@ -60,12 +63,16 @@ class ChatPanelPage extends StatelessWidget {
                     primary: false,
                     itemBuilder: (context, index) => GestureDetector(
                       onTap: () {
+                        context.read<ChatPageBloc>().add(
+                            ChatPageLoadMessagesEvent(
+                                userOneId: GlobalVariables.user.id,
+                                userTwoId: state.chats[index].userTwoId));
                         Navigator.push(
                             context,
                             MaterialPageRoute(
                               builder: (context) => ChatPage(
-                                  senderEmail: 'senderEmail',
-                                  receiverEmail: 'receiverEmailr'),
+                                  senderId: GlobalVariables.user.id,
+                                  receiverId: state.chats[index].userTwoId),
                             ));
                       },
                       child: Container(

@@ -10,6 +10,8 @@ import 'package:mrb/src/login/cubit/login_state.dart';
 import 'package:mrb/src/login/repository/login_repository.dart';
 import 'package:mrb/src/network_page/model/user_model.dart';
 import 'package:mrb/src/referral_centre/model/user_preference_model.dart';
+import 'package:socket_io_client/socket_io_client.dart';
+import 'package:socket_io_client/socket_io_client.dart' as IO;
 
 class LoginCubit extends Cubit<LoginState> {
   LoginCubit({required this.repository}) : super(LoginLoggedOutState());
@@ -56,6 +58,12 @@ class LoginCubit extends Cubit<LoginState> {
           await repository.getUserPreferences(userId: GlobalVariables.user.id);
 
       print(preferenceResponse.body);
+
+      GlobalVariables.socket = IO.io(GlobalVariables.url);
+
+      GlobalVariables.socket.onConnect((_) {
+        print('connected');
+      });
 
       GlobalVariables.preferences = UserPreferenceModel.fromJson(
           json.decode(preferenceResponse.body)['data']);

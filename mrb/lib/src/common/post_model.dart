@@ -19,7 +19,7 @@ class CustomPostModel extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.all(20),
+      margin: const EdgeInsets.symmetric(vertical: 20),
       padding: const EdgeInsets.all(20),
       decoration: const BoxDecoration(color: CustomTheme.nightTertiaryColor),
       child: Column(
@@ -55,10 +55,16 @@ class CustomPostModel extends StatelessWidget {
           ),
           Container(
             margin: const EdgeInsets.only(top: 10),
-            height: 200,
-            color: Colors.red,
-            child: Image.network(
-                '${GlobalVariables.url}/post/post-image?userId=${post.userId}&postName=${post.postName}&imageName=${post.imagesName.first}'),
+            child: post.imagesName.isEmpty
+                ? null
+                : Image.network(
+                    '${GlobalVariables.url}/post/post-image?userId=${post.userId}&postName=${post.postName}&imageName=${post.imagesName.first}'),
+          ),
+          const SizedBox(
+            height: 20,
+          ),
+          Row(
+            children: [TextCustom(post.text)],
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -90,7 +96,7 @@ class CustomPostModel extends StatelessWidget {
           Row(
             children: [
               TextCustom(post.likes.toString()),
-              TextCustom(' Likes'),
+              TextCustom(' Likes', secondary: true),
               const SizedBox(
                 width: 20,
               ),
@@ -108,7 +114,7 @@ class CustomPostModel extends StatelessWidget {
                 child: Row(
                   children: [
                     TextCustom(post.comments.toString()),
-                    TextCustom(' Comments'),
+                    TextCustom(' Comments', secondary: true),
                   ],
                 ),
               ),
