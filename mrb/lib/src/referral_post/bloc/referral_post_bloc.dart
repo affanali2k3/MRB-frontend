@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mrb/assets/us_states.dart';
 import 'package:mrb/src/referral_post/bloc/referral_post_event.dart';
@@ -20,6 +19,7 @@ class ReferralPostBloc extends Bloc<ReferralPostEvent, ReferralPostState> {
 
   void _openFormPost(ReferralPostOpenFormPostEvent event, emit) async {
     try {
+      emit(ReferralPostingState());
       await repository.createOpenForm(
           city: event.city,
           state: event.state,
@@ -28,8 +28,9 @@ class ReferralPostBloc extends Bloc<ReferralPostEvent, ReferralPostState> {
           houseType: event.houseType,
           formType: event.formType,
           timeAmount: event.timeAmount);
+      emit(ReferralPostSuccessState());
     } catch (e) {
-      debugPrint(e.toString());
+      emit(ReferralPostFailedState(error: e.toString()));
     }
   }
 

@@ -71,6 +71,9 @@ class ReferralCentreRepository {
             "formType": FormType.open.name,
             "senderAgentFormId": senderAgentFormId.toString(),
             "proposal": proposal
+          },
+          headers: {
+            "authorization": GlobalVariables.authorization
           });
       print(response.body);
       return response;

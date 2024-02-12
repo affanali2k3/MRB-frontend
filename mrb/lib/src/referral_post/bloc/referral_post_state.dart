@@ -36,3 +36,12 @@ final class ReferralPostChangedState extends ReferralPostState {
       super.city,
       super.formType});
 }
+
+final class ReferralPostingState extends ReferralPostState {}
+
+final class ReferralPostSuccessState extends ReferralPostState {}
+
+final class ReferralPostFailedState extends ReferralPostState {
+  const ReferralPostFailedState({required this.error});
+  final String error;
+}

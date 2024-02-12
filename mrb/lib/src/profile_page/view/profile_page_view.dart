@@ -20,8 +20,13 @@ class ProfilePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
         backgroundColor: const Color(0xff1f1f23),
-        body: BlocBuilder<ProfilePageBloc, ProfilePageState>(
-            builder: (context, state) {
+        body: BlocConsumer<ProfilePageBloc, ProfilePageState>(
+            listener: (context, state) {
+          if (state is ProfilePageFailedState) {
+            ScaffoldMessenger.of(context)
+                .showSnackBar(SnackBar(content: Text("Error: ${state.error}")));
+          }
+        }, builder: (context, state) {
           if (state is ProfilePageLoadingState) {
             return const Center(
               child: CircularProgressIndicator(),

@@ -3,20 +3,24 @@ import 'package:http/http.dart';
 import 'package:mrb/global_variables.dart';
 
 class ProfilePageRepository {
-  Future<String> getUserDetails({required int userId}) async {
+  Future<Response> getUserDetails({required int userId}) async {
     try {
-      var response = await http
-          .get(Uri.parse('${GlobalVariables.url}/user/get/?userId=$userId'));
-      return response.body;
+      final Response response = await http.get(
+          Uri.parse(
+            '${GlobalVariables.url}/user/get/?userId=$userId',
+          ),
+          headers: {"authorization": GlobalVariables.authorization});
+      return response;
     } catch (e) {
-      return "null";
+      throw Exception(e);
     }
   }
 
   Future<Response> getAllAssociatesForUser({required int userId}) async {
     try {
       final Response response = await http.get(
-          Uri.parse('${GlobalVariables.url}/associate/get-all?userId=$userId'));
+          Uri.parse('${GlobalVariables.url}/associate/get-all?userId=$userId'),
+          headers: {"authorization": GlobalVariables.authorization});
       return response;
     } catch (e) {
       throw Exception(e);
@@ -25,8 +29,10 @@ class ProfilePageRepository {
 
   Future<Response> getAllPostsForUser({required int userId}) async {
     try {
-      final Response response = await http
-          .get(Uri.parse('${GlobalVariables.url}/post/get-all?userId=$userId'));
+      final Response response = await http.get(
+          Uri.parse('${GlobalVariables.url}/post/get-all?userId=$userId'),
+          headers: {"authorization": GlobalVariables.authorization});
+      ;
       return response;
     } catch (e) {
       throw Exception(e);
@@ -40,7 +46,10 @@ class ProfilePageRepository {
           .post(Uri.parse('${GlobalVariables.url}/associate/send'), body: {
         "senderId": senderId.toString(),
         "receiverId": receiverId.toString()
+      }, headers: {
+        "authorization": GlobalVariables.authorization
       });
+
       return response;
     } catch (e) {
       throw Exception(e);
@@ -54,7 +63,10 @@ class ProfilePageRepository {
           .post(Uri.parse('${GlobalVariables.url}/associate/status'), body: {
         "userId": userId.toString(),
         "associateId": associateId.toString()
+      }, headers: {
+        "authorization": GlobalVariables.authorization
       });
+
       return response;
     } catch (e) {
       throw Exception(e);
@@ -68,7 +80,10 @@ class ProfilePageRepository {
           .patch(Uri.parse('${GlobalVariables.url}/associate/accept'), body: {
         "senderId": senderId.toString(),
         "receiverId": receiverId.toString()
+      }, headers: {
+        "authorization": GlobalVariables.authorization
       });
+
       print(response.body);
     } catch (e) {
       throw Exception(e);

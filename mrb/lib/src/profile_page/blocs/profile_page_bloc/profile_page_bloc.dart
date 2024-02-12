@@ -42,7 +42,7 @@ class ProfilePageBloc extends Bloc<ProfilePageEvent, ProfilePageState> {
   void _getProfileData(ProfilePageLoadingEvent event, emit) async {
     try {
       emit(ProfilePageLoadingState());
-      final String response =
+      final Response response =
           await repository.getUserDetails(userId: event.userId);
 
       final Response status = await repository.getAssociationStatus(
@@ -57,9 +57,11 @@ class ProfilePageBloc extends Bloc<ProfilePageEvent, ProfilePageState> {
         associationStatus = UserAssociationModel.fromJson(associationStausJson);
       }
 
-      final responseJson = json.decode(response);
+      final responseJson = json.decode(response.body);
 
       final data = responseJson['data'];
+
+      print(response.body);
 
       emit(ProfilePageSuccessState(
           associationStatus: associationStatus,

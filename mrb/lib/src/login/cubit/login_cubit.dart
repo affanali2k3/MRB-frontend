@@ -28,9 +28,10 @@ class LoginCubit extends Cubit<LoginState> {
     emit(LoginLoggedOutState());
   }
 
-  Future<void> login({required String email, required String password}) async {
+  void login({required String email, required String password}) async {
     try {
       await auth.signInWithEmailAndPassword(email: email, password: password);
+      emit(LoginSuccessState());
     } on FirebaseAuthException catch (e) {
       debugPrint(e.message);
       switch (e.code) {
@@ -43,21 +44,18 @@ class LoginCubit extends Cubit<LoginState> {
         case 'user-not-found':
           emit(LoginInvalidEmailState(error: 'User not found'));
       }
-      debugPrint(e.code);
+      emit(LoginFailedState());
     }
   }
 
-  Future<bool> getUserData({required String email}) async {
+  void getUserData({required String email}) async {
     try {
       final Response response = await repository.getUser(email: email);
-      print(response.body);
       GlobalVariables.user =
           UserModel.fromJson(json.decode(response.body)['data']);
 
       final Response preferenceResponse =
           await repository.getUserPreferences(userId: GlobalVariables.user.id);
-
-      print(preferenceResponse.body);
 
       GlobalVariables.socket = IO.io(GlobalVariables.url);
 
@@ -67,14 +65,14 @@ class LoginCubit extends Cubit<LoginState> {
 
       GlobalVariables.preferences = UserPreferenceModel.fromJson(
           json.decode(preferenceResponse.body)['data']);
-      return true;
+
+      emit(LoginSuccessfullyGotDataState());
     } catch (e) {
-      print(e);
-      return false;
+      emit(LoginFailedGettingDataState(error: e.toString()));
     }
   }
 
-  Future<void> googleLogin() async {
+  void googleLogin() async {
     try {
       final user = await _googleSignIn.signIn();
       if (user == null) return;

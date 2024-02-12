@@ -3,8 +3,8 @@ import 'dart:convert';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:http/http.dart';
 import 'package:mrb/global_variables.dart';
-import 'package:mrb/src/referral_centre/bloc/referral_centre_event.dart';
-import 'package:mrb/src/referral_centre/bloc/referral_centre_state.dart';
+import 'package:mrb/src/referral_centre/bloc/referral_centre_bloc/referral_centre_event.dart';
+import 'package:mrb/src/referral_centre/bloc/referral_centre_bloc/referral_centre_state.dart';
 import 'package:mrb/src/referral_centre/model/leads_model.dart';
 import 'package:mrb/src/referral_centre/repository/referral_centre_repository.dart';
 
@@ -13,7 +13,6 @@ class ReferralCentreBloc
   ReferralCentreBloc({required this.repository})
       : super(ReferralCentreInitialState()) {
     on<ReferralCentreLoadingEvent>(_searchDefaultLeads);
-    on<ReferralCentreApplyLeadEvent>(_applyForLead);
   }
 
   final ReferralCentreRepository repository;
@@ -34,20 +33,9 @@ class ReferralCentreBloc
 
       emit(ReferralCentreSuccessState(leads: leads));
     } catch (e) {
+      print(e);
       emit(ReferralCentreFailedState(error: e.toString()));
-    }
-  }
-
-  void _applyForLead(ReferralCentreApplyLeadEvent event, emit) async {
-    try {
-      print(event.proposal);
-      final Response response = await repository.applyForLead(
-          senderAgentFormId: event.senderAgentFormId,
-          receiverAgentId: event.receiverAgent,
-          proposal: event.proposal);
-      print(response.body);
-    } catch (e) {
-      emit(ReferralCentreFailedState(error: e.toString()));
+      // throw Exception(e);
     }
   }
 }

@@ -5,8 +5,10 @@ import 'package:mrb/global_variables.dart';
 class DirectFormsRepository {
   Future<Response> loadForms({required final int userId}) async {
     try {
-      final Response response = await http.get(Uri.parse(
-          '${GlobalVariables.url}/senderAgentForm/getFormsReceived/$userId'));
+      final Response response = await http.get(
+          Uri.parse(
+              '${GlobalVariables.url}/senderAgentForm/get-forms-received?userId=$userId'),
+          headers: {"authorization": GlobalVariables.authorization});
 
       return response;
     } catch (e) {

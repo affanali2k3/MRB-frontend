@@ -24,10 +24,12 @@ class AgentFormsReceivedBloc
       final Response response =
           await repository.getReceivedForms(userId: GlobalVariables.user.id);
 
+      print(response.body);
+
       final Map<String, dynamic> decodedData = json.decode(response.body);
 
       final String responseMessage = decodedData['message'];
-      final List<dynamic> receivedFormsJson = decodedData['data'];
+      final List<dynamic> receivedFormsJson = decodedData['openFormsProposal'];
 
       final List<FormReceivedModel> receivedForms = [];
 

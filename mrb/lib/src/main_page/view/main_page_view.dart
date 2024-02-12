@@ -50,14 +50,14 @@ class MainPage extends StatelessWidget {
                   showModalBottomSheet<dynamic>(
                       backgroundColor: CustomTheme.nightBackgroundColor,
                       context: context,
-                      builder: (context) => FeedPageNewPostWidget());
+                      builder: (context) => const FeedPageNewPostWidget());
                 } else if (state is ReferralCenterPageState ||
                     state is MainPageInitialState) {
                   showModalBottomSheet<dynamic>(
                       isScrollControlled: true,
                       backgroundColor: CustomTheme.nightBackgroundColor,
                       context: context,
-                      builder: (context) => ReferralPostPage());
+                      builder: (context) => const ReferralPostPage());
                 }
               },
               backgroundColor: CustomTheme.primaryColor,

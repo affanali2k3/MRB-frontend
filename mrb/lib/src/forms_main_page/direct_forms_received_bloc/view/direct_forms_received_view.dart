@@ -4,7 +4,6 @@ import 'package:mrb/src/common/profile_photo.dart';
 import 'package:mrb/src/forms_main_page/direct_forms_received_bloc/bloc/direct_forms_received_bloc.dart';
 import 'package:mrb/src/forms_main_page/direct_forms_received_bloc/bloc/direct_forms_received_state.dart';
 import 'package:mrb/src/profile_page/view/widgets/profile_business_stats.dart';
-import 'package:mrb/themes/font_theme.dart';
 
 class DirectFormsReceivedPage extends StatelessWidget {
   const DirectFormsReceivedPage({Key? key}) : super(key: key);

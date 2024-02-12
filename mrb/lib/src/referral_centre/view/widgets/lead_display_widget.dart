@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mrb/src/common/profile_photo.dart';
 import 'package:mrb/src/profile_page/view/widgets/profile_business_stats.dart';
-import 'package:mrb/src/referral_centre/bloc/referral_centre_bloc.dart';
-import 'package:mrb/src/referral_centre/bloc/referral_centre_state.dart';
+import 'package:mrb/src/referral_centre/bloc/referral_centre_bloc/referral_centre_bloc.dart';
+import 'package:mrb/src/referral_centre/bloc/referral_centre_bloc/referral_centre_state.dart';
 import 'package:mrb/src/referral_centre/view/widgets/lead_apply_widget.dart';
 import 'package:mrb/themes/font_theme.dart';
 

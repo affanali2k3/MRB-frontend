@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:mrb/global_variables.dart';
 import 'package:mrb/src/chat_panel_page/bloc/chat_panel_bloc.dart';
 import 'package:mrb/src/chat_panel_page/repository/chat_panel_repository.dart';
 import 'package:mrb/src/agent_forms_received/bloc/agent_forms_received_bloc.dart';
@@ -17,6 +18,7 @@ import 'package:mrb/src/forms_main_page/direct_forms_received_bloc/repository/di
 import 'package:mrb/src/login/cubit/login_cubit.dart';
 import 'package:mrb/src/edit_profile/bloc/edit_profile_bloc.dart';
 import 'package:mrb/src/edit_profile/repository/edit_profile_repository.dart';
+import 'package:mrb/src/login/cubit/login_state.dart';
 import 'package:mrb/src/login/repository/login_repository.dart';
 import 'package:mrb/src/login/view/login.dart';
 import 'package:mrb/src/main_page/bloc/main_page_bloc.dart';
@@ -31,8 +33,10 @@ import 'package:mrb/src/profile_page/blocs/profile_network_page_bloc/profile_net
 import 'package:mrb/src/profile_page/blocs/profile_page_bloc/profile_page_bloc.dart';
 import 'package:mrb/src/profile_page/blocs/profile_post_page_bloc.dart/profile_post_event_bloc.dart';
 import 'package:mrb/src/profile_page/repository/profile_page_repository.dart';
-import 'package:mrb/src/referral_centre/bloc/referral_centre_bloc.dart';
-import 'package:mrb/src/referral_centre/bloc/referral_centre_event.dart';
+import 'package:mrb/src/referral_centre/bloc/referral_apply_bloc/referral_apply_bloc_bloc.dart';
+import 'package:mrb/src/referral_centre/bloc/referral_centre_bloc/referral_centre_bloc.dart';
+import 'package:mrb/src/referral_centre/bloc/referral_centre_bloc/referral_centre_event.dart';
+import 'package:mrb/src/referral_centre/bloc/referral_centre_bloc/referral_centre_state.dart';
 import 'package:mrb/src/referral_centre/repository/referral_centre_repository.dart';
 import 'package:mrb/src/referral_filters/bloc/referral_filters_bloc.dart';
 import 'package:mrb/src/referral_filters/repository/referral_filters_repository.dart';
@@ -83,6 +87,9 @@ class App extends StatelessWidget {
               BlocProvider(
                   create: (_) =>
                       ReferralPostBloc(repository: ReferralPostRepository())),
+              BlocProvider(
+                  create: (_) => ReferralApplyBloc(
+                      repository: ReferralCentreRepository())),
               BlocProvider(
                   create: (_) =>
                       ChatPanelBloc(repository: ChatPanelRepository())),
@@ -147,30 +154,61 @@ class App extends StatelessWidget {
               BlocProvider(
                   create: (_) => RegistorBloc(repository: RegistorRepository()))
             ],
-            child: MaterialApp(
-                debugShowCheckedModeBanner: false,
-                theme: ThemeData(
-                  textTheme: GoogleFonts.poppinsTextTheme(),
-                  primarySwatch: Colors.blue,
-                ),
-                home: StreamBuilder<User?>(
-                    stream: FirebaseAuth.instance.authStateChanges(),
-                    builder: (context, snapshot) {
-                      if (snapshot.hasData) {
-                        context
-                            .read<LoginCubit>()
-                            .getUserData(email: snapshot.data!.email!)
-                            .then((value) => {
-                                  context.read<ReferralCentreBloc>().add(
-                                      ReferralCentreLoadingEvent(
-                                          city: 'New York',
-                                          state: 'California'))
-                                });
-
-                        return const MainPage();
-                      } else {
-                        return LoginPage();
+            child: MultiBlocListener(
+                listeners: [
+                  BlocListener<LoginCubit, LoginState>(
+                    listener: (context, state) {
+                      if (state is LoginSuccessfullyGotDataState) {
+                        context.read<ReferralCentreBloc>().add(
+                            ReferralCentreLoadingEvent(
+                                city: 'New York', state: 'California'));
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => const MainPage()));
+                      } else if (state is LoginFailedGettingDataState) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(content: Text("Error = $state")));
                       }
-                    }))));
+                    },
+                  ),
+                  BlocListener<ReferralCentreBloc, ReferralCentreState>(
+                    listener: (context, state) {
+                      if (state is ReferralCentreFailedState) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(content: Text("Error = $state")));
+
+                        Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => LoginPage(),
+                            ));
+                      }
+                    },
+                  ),
+                ],
+                child: MaterialApp(
+                    debugShowCheckedModeBanner: false,
+                    theme: ThemeData(
+                      textTheme: GoogleFonts.poppinsTextTheme(),
+                      primarySwatch: Colors.blue,
+                    ),
+                    home: StreamBuilder<User?>(
+                        stream: FirebaseAuth.instance.authStateChanges(),
+                        builder: (context, snapshot) {
+                          if (snapshot.hasData) {
+                            FirebaseAuth.instance.currentUser!
+                                .getIdToken()
+                                .then((value) {
+                              debugPrint("ID = $value");
+                              GlobalVariables.authorization = value as String;
+
+                              context
+                                  .read<LoginCubit>()
+                                  .getUserData(email: snapshot.data!.email!);
+                            });
+                          }
+                          return LoginPage();
+                        })))));
   }
 }

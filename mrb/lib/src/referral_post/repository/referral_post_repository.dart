@@ -15,6 +15,9 @@ final class ReferralPostRepository {
     try {
       final Response response = await http.post(
           Uri.parse('${GlobalVariables.url}/senderAgentForm/create'),
+          headers: {
+            "authorization": GlobalVariables.authorization
+          },
           body: {
             'senderAgent': GlobalVariables.user.id.toString(),
             'formType': formType.name,

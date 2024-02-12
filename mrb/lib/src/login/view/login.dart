@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mrb/global_variables.dart';
@@ -6,8 +7,7 @@ import 'package:mrb/src/login/cubit/login_cubit.dart';
 import 'package:mrb/src/login/cubit/login_state.dart';
 import 'package:mrb/src/main_page/view/main_page_view.dart';
 import 'package:mrb/src/profile_page/view/widgets/profile_business_stats.dart';
-import 'package:mrb/src/referral_centre/bloc/referral_centre_bloc.dart';
-import 'package:mrb/src/referral_centre/bloc/referral_centre_event.dart';
+import 'package:mrb/src/referral_centre/view/referral_centre_view.dart';
 import 'package:mrb/themes/font_theme.dart';
 import 'package:socket_io_client/socket_io_client.dart' as IO;
 
@@ -20,7 +20,26 @@ class LoginPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
         backgroundColor: CustomTheme.nightBackgroundColor,
-        body: BlocBuilder<LoginCubit, LoginState>(builder: (context, state) {
+        body: BlocConsumer<LoginCubit, LoginState>(
+            listener: (context, state) async {
+          if (state is LoginSuccessState) {
+            GlobalVariables.authorization =
+                await FirebaseAuth.instance.currentUser!.getIdToken() as String;
+
+            if (!context.mounted) return;
+
+            context.read<LoginCubit>().getUserData(email: _email.text);
+          } else if (state is LoginSuccessfullyGotDataState) {
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const MainPage(),
+                ));
+          } else {
+            ScaffoldMessenger.of(context)
+                .showSnackBar(SnackBar(content: Text("State is $state")));
+          }
+        }, builder: (context, state) {
           return Container(
             margin: const EdgeInsets.all(20),
             child: Column(
@@ -66,26 +85,7 @@ class LoginPage extends StatelessWidget {
                     onPressed: () {
                       context
                           .read<LoginCubit>()
-                          .login(email: _email.text, password: _password.text)
-                          .then((value) {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => const MainPage()));
-
-                        context.read<ReferralCentreBloc>().add(
-                            ReferralCentreLoadingEvent(
-                                city: 'New York', state: 'California'));
-                      }).onError((error, stackTrace) {
-                        print(error);
-                      });
-
-                      GlobalVariables.socket =
-                          IO.io('http://192.168.1.10:8080', <String, dynamic>{
-                        'transports': ['websocket']
-                      });
-                      GlobalVariables.socket
-                          .emit('user-connected', _email.text);
+                          .login(email: _email.text, password: _password.text);
                     },
                     text: 'Continue'),
                 const SizedBox(

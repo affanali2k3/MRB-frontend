@@ -6,8 +6,10 @@ import 'package:mrb/src/sender_agent_form/bloc/sender_agent_form_state.dart';
 class AgentFormsReceivedRepository {
   Future<Response> getReceivedForms({required int userId}) async {
     try {
-      final Response response = await http.get(Uri.parse(
-          '${GlobalVariables.url}/receiverAgentForm/open-forms-received?userId=$userId'));
+      final Response response = await http.get(
+          Uri.parse(
+              '${GlobalVariables.url}/receiverAgentForm/forms-proposal-received?userId=$userId'),
+          headers: {"authorization": GlobalVariables.authorization});
       return response;
     } catch (e) {
       throw Exception(e);
