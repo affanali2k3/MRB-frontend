@@ -8,9 +8,9 @@ import 'package:http_parser/http_parser.dart';
 class ProfileRepository {
   Future<void> setProfile(
       {required final int userId,
-      required String avatarMimeType,
+      required String? avatarMimeType,
       required Uint8List? avatarBytes,
-      required String coverMimeType,
+      required String? coverMimeType,
       required Uint8List? coverBytes,
       required final String biography}) async {
     try {
@@ -20,7 +20,7 @@ class ProfileRepository {
       request.fields['id'] = userId.toString();
       request.fields['biography'] = biography;
 
-      if (avatarBytes != null) {
+      if (avatarBytes != null && avatarMimeType != null) {
         final MultipartFile avatar = http.MultipartFile.fromBytes(
             'avatar', avatarBytes,
             contentType: MediaType.parse(avatarMimeType),
@@ -28,7 +28,7 @@ class ProfileRepository {
 
         request.files.add(avatar);
       }
-      if (coverBytes != null) {
+      if (coverBytes != null && coverMimeType != null) {
         final MultipartFile coverPhoto = http.MultipartFile.fromBytes(
             'coverPhoto', coverBytes,
             contentType: MediaType.parse(coverMimeType),
@@ -36,6 +36,8 @@ class ProfileRepository {
 
         request.files.add(coverPhoto);
       }
+
+      request.headers["authorization"] = GlobalVariables.authorization;
 
       final StreamedResponse response = await request.send();
       final String responseData = await response.stream.bytesToString();

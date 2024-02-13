@@ -21,8 +21,8 @@ class ProfileEditBloc extends Bloc<ProfileEditEvent, ProfileEditState> {
           biography: event.biography,
           avatarBytes: event.avatarbytes,
           coverBytes: event.coverPhotoBytes,
-          coverMimeType: event.coverPhotoMimeType!,
-          avatarMimeType: event.avatarMimeType!);
+          coverMimeType: event.coverPhotoMimeType,
+          avatarMimeType: event.avatarMimeType);
 
       emit(ProfileEditSetSuccessState());
     } catch (e) {

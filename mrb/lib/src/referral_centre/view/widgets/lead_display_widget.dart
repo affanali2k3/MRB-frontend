@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:mrb/global_variables.dart';
 import 'package:mrb/src/common/profile_photo.dart';
 import 'package:mrb/src/profile_page/view/widgets/profile_business_stats.dart';
 import 'package:mrb/src/referral_centre/bloc/referral_centre_bloc/referral_centre_bloc.dart';
@@ -125,15 +126,19 @@ class ReferralCentreLeadDisplayWidget extends StatelessWidget {
                                   senderAgentFormId: state.leads[index].id,
                                 ));
                       },
-                      child: Container(
-                        alignment: Alignment.center,
-                        width: double.infinity,
-                        padding: const EdgeInsets.all(10),
-                        decoration: BoxDecoration(
-                            border: Border.all(color: const Color(0xff3B82F6)),
-                            borderRadius: BorderRadius.circular(20)),
-                        child: TextCustom('Apply For Lead'),
-                      ),
+                      child: state.leads[index].senderAgent ==
+                              GlobalVariables.user.id
+                          ? TextCustom("Posted By You")
+                          : Container(
+                              alignment: Alignment.center,
+                              width: double.infinity,
+                              padding: const EdgeInsets.all(10),
+                              decoration: BoxDecoration(
+                                  border: Border.all(
+                                      color: const Color(0xff3B82F6)),
+                                  borderRadius: BorderRadius.circular(20)),
+                              child: TextCustom('Apply For Lead'),
+                            ),
                     )
                   ],
                 ),

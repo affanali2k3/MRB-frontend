@@ -12,6 +12,11 @@ class ReferralFiltersBloc
     extends Bloc<ReferralFiltersEvent, ReferralFiltersState> {
   ReferralFiltersBloc({required this.repository})
       : super(ReferralFiltersInitialState()) {
+    emit(ReferralFiltersChangedState(
+      clientType: GlobalVariables.preferences.clientType == "buyer"
+          ? ClientType.buyer
+          : ClientType.seller,
+    ));
     on<ReferralFiltersChangeClientTypeEvent>(_changeClientType);
     on<ReferralFiltersChangeHouseTypeEvent>(_changeHouseType);
     on<ReferralFiltersApplyFilterEvent>(_applyFilters);

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mrb/assets/us_states.dart';
+import 'package:mrb/global_variables.dart';
 import 'package:mrb/src/common/button.dart';
 import 'package:mrb/src/common/dropdown.dart';
 import 'package:mrb/src/profile_page/view/widgets/profile_business_stats.dart';
@@ -33,10 +34,24 @@ class ReferralFiltersPageState extends State<ReferralFiltersPage> {
   void initState() {
     super.initState();
 
-    _minTimeController.text = '0';
-    _maxTimeController.text = '100';
-    _minCostController.text = '0';
-    _maxCostController.text = '1000000';
+    if (GlobalVariables.preferences.state != null) {
+      setState(() {
+        state = GlobalVariables.preferences.state as String;
+      });
+    }
+    if (GlobalVariables.preferences.city != null) {
+      city = GlobalVariables.preferences.city as String;
+      setState(() {
+        city = GlobalVariables.preferences.city as String;
+      });
+    }
+
+    _minTimeController.text =
+        GlobalVariables.preferences.minTimeAmount.toString();
+    _maxTimeController.text =
+        GlobalVariables.preferences.maxTimeAmount.toString();
+    _minCostController.text = GlobalVariables.preferences.minCost.toString();
+    _maxCostController.text = GlobalVariables.preferences.maxCost.toString();
   }
 
   @override

@@ -19,6 +19,7 @@ class ReferralFiltersRepository {
       final Response response = await http.patch(
           Uri.parse('${GlobalVariables.url}/preferences/update'),
           headers: {
+            "authorization": GlobalVariables.authorization,
             "content-type": "application/json",
           },
           body: json.encode({
