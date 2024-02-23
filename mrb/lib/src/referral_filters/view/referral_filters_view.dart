@@ -46,12 +46,30 @@ class ReferralFiltersPageState extends State<ReferralFiltersPage> {
       });
     }
 
-    _minTimeController.text =
-        GlobalVariables.preferences.minTimeAmount.toString();
-    _maxTimeController.text =
-        GlobalVariables.preferences.maxTimeAmount.toString();
-    _minCostController.text = GlobalVariables.preferences.minCost.toString();
-    _maxCostController.text = GlobalVariables.preferences.maxCost.toString();
+    if (GlobalVariables.preferences.minTimeAmount != null) {
+      _minTimeController.text =
+          GlobalVariables.preferences.minTimeAmount.toString();
+    } else {
+      _minTimeController.text = "0";
+    }
+
+    if (GlobalVariables.preferences.maxTimeAmount != null) {
+      _maxTimeController.text =
+          GlobalVariables.preferences.maxTimeAmount.toString();
+    } else {
+      _maxTimeController.text = "12";
+    }
+    if (GlobalVariables.preferences.minCost != null) {
+      _minCostController.text = GlobalVariables.preferences.minCost.toString();
+    } else {
+      _minCostController.text = "0";
+    }
+
+    if (GlobalVariables.preferences.maxCost != null) {
+      _maxCostController.text = GlobalVariables.preferences.maxCost.toString();
+    } else {
+      _maxCostController.text = "100000";
+    }
   }
 
   @override
