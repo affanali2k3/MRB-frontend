@@ -51,12 +51,21 @@ class LoginCubit extends Cubit<LoginState> {
   void getUserData({required String email}) async {
     try {
       final Response response = await repository.getUser(email: email);
+
+      if (response.statusCode == 500) {
+        emit(LoginUserNotExistState());
+        return;
+      }
+
+      print('User ${response.body}');
       GlobalVariables.user =
           UserModel.fromJson(json.decode(response.body)['data']);
 
+      print('User data ${GlobalVariables.user}');
       final Response preferenceResponse =
           await repository.getUserPreferences(userId: GlobalVariables.user.id);
 
+      print('Pref Response ${preferenceResponse.body}');
       GlobalVariables.socket = IO.io(GlobalVariables.url);
 
       GlobalVariables.socket.onConnect((_) {
@@ -65,9 +74,11 @@ class LoginCubit extends Cubit<LoginState> {
 
       GlobalVariables.preferences = UserPreferenceModel.fromJson(
           json.decode(preferenceResponse.body)['data']);
+      print('Pref Response data ${GlobalVariables.preferences}');
 
       emit(LoginSuccessfullyGotDataState());
     } catch (e) {
+      print('Backend error ${e.toString()}');
       emit(LoginFailedGettingDataState(error: e.toString()));
     }
   }

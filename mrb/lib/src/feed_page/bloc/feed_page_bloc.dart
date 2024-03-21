@@ -36,6 +36,8 @@ class FeedPageBloc extends Bloc<FeedPageEvent, FeedPageState> {
           )
           .toList();
 
+      print("Exec..");
+
       if (state is FeedPageSuccessState) {
         final List<UserPostModel> posts =
             List.from((state as FeedPageSuccessState).posts);

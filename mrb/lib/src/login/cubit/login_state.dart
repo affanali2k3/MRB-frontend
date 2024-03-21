@@ -2,6 +2,8 @@ abstract class LoginState {}
 
 class LoginLoggedOutState extends LoginState {}
 
+class LoginUserNotExistState extends LoginState {}
+
 class LoginInvalidEmailState extends LoginState {
   LoginInvalidEmailState({required this.error});
   final String error;

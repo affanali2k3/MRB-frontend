@@ -29,6 +29,8 @@ import 'package:mrb/src/post_comments/bloc/post_comments_bloc.dart';
 import 'package:mrb/src/post_comments/repository/post_comments_repository.dart';
 import 'package:mrb/src/post_page/bloc/post_page_bloc.dart';
 import 'package:mrb/src/post_page/repository/post_page_repository.dart';
+import 'package:mrb/src/profile_completion_page/bloc/profile_completion_bloc.dart';
+import 'package:mrb/src/profile_completion_page/repository/profile_completion_repository.dart';
 import 'package:mrb/src/profile_page/blocs/profile_network_page_bloc/profile_network_page_bloc.dart';
 import 'package:mrb/src/profile_page/blocs/profile_page_bloc/profile_page_bloc.dart';
 import 'package:mrb/src/profile_page/blocs/profile_post_page_bloc.dart/profile_post_event_bloc.dart';
@@ -52,6 +54,7 @@ import 'package:mrb/src/sender_agent_form/bloc/sender_agent_form_bloc.dart';
 import 'package:mrb/src/sender_agent_form/repository/sender_agent_form_repository.dart';
 import 'package:mrb/src/sent_client_referrals/bloc/sent_client_referrals_bloc.dart';
 import 'package:mrb/src/sent_client_referrals/repository/sent_client_referrals_repository.dart';
+import 'package:mrb/src/splash_screen/view/splash_screen_view.dart';
 import 'package:mrb/src/user_timeline/bloc/user_timeline_bloc.dart';
 import 'package:mrb/src/user_timeline/repository/user_timeline_repository.dart';
 
@@ -87,6 +90,9 @@ class App extends StatelessWidget {
               BlocProvider(
                   create: (_) =>
                       ReferralPostBloc(repository: ReferralPostRepository())),
+              BlocProvider(
+                  create: (_) => ProfileCompletionBloc(
+                      repository: ProfileCompletionRepository())),
               BlocProvider(
                   create: (_) => ReferralApplyBloc(
                       repository: ReferralCentreRepository())),
@@ -193,22 +199,24 @@ class App extends StatelessWidget {
                       textTheme: GoogleFonts.poppinsTextTheme(),
                       primarySwatch: Colors.blue,
                     ),
-                    home: StreamBuilder<User?>(
-                        stream: FirebaseAuth.instance.authStateChanges(),
-                        builder: (context, snapshot) {
-                          if (snapshot.hasData) {
-                            FirebaseAuth.instance.currentUser!
-                                .getIdToken()
-                                .then((value) {
-                              debugPrint("ID = $value");
-                              GlobalVariables.authorization = value as String;
+                    home: Scaffold(
+                      body: StreamBuilder<User?>(
+                          stream: FirebaseAuth.instance.authStateChanges(),
+                          builder: (context, snapshot) {
+                            if (snapshot.hasData) {
+                              FirebaseAuth.instance.currentUser!
+                                  .getIdToken()
+                                  .then((value) {
+                                debugPrint("ID = $value");
+                                GlobalVariables.authorization = value as String;
 
-                              context
-                                  .read<LoginCubit>()
-                                  .getUserData(email: snapshot.data!.email!);
-                            });
-                          }
-                          return LoginPage();
-                        })))));
+                                context
+                                    .read<LoginCubit>()
+                                    .getUserData(email: snapshot.data!.email!);
+                              });
+                            }
+                            return const SplashScreenPage();
+                          }),
+                    )))));
   }
 }

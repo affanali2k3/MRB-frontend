@@ -8,4 +8,5 @@ class GlobalVariables {
   static late String authorization;
   static late UserPreferenceModel preferences;
   static late IO.Socket socket;
+  static late bool showSplashScreen;
 }

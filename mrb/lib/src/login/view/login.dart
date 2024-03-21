@@ -6,8 +6,11 @@ import 'package:mrb/src/common/button.dart';
 import 'package:mrb/src/login/cubit/login_cubit.dart';
 import 'package:mrb/src/login/cubit/login_state.dart';
 import 'package:mrb/src/main_page/view/main_page_view.dart';
+import 'package:mrb/src/profile_completion_page/view/profile_completion_view.dart';
 import 'package:mrb/src/profile_page/view/widgets/profile_business_stats.dart';
 import 'package:mrb/src/referral_centre/view/referral_centre_view.dart';
+import 'package:mrb/src/registor/view/registor_view.dart';
+import 'package:mrb/src/splash_screen/view/splash_screen_view.dart';
 import 'package:mrb/themes/font_theme.dart';
 import 'package:socket_io_client/socket_io_client.dart' as IO;
 
@@ -22,6 +25,13 @@ class LoginPage extends StatelessWidget {
         backgroundColor: CustomTheme.nightBackgroundColor,
         body: BlocConsumer<LoginCubit, LoginState>(
             listener: (context, state) async {
+          if (state is LoginUserNotExistState) {
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const ProfileCompletionPage(),
+                ));
+          }
           if (state is LoginSuccessState) {
             GlobalVariables.authorization =
                 await FirebaseAuth.instance.currentUser!.getIdToken() as String;
@@ -33,7 +43,7 @@ class LoginPage extends StatelessWidget {
             Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => const MainPage(),
+                  builder: (context) => const ProfileCompletionPage(),
                 ));
           } else {
             ScaffoldMessenger.of(context)
@@ -149,6 +159,34 @@ class LoginPage extends StatelessWidget {
                             style: TextStyle(fontSize: 16),
                           )
                         ]))),
+                const SizedBox(
+                  height: 20,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Text(
+                      "Dont have an account?",
+                      style: TextStyle(color: CustomTheme.nightFontColor),
+                    ),
+                    const SizedBox(
+                      width: 5,
+                    ),
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const RegisterPage(),
+                            ));
+                      },
+                      child: const Text(
+                        'Register',
+                        style: TextStyle(color: CustomTheme.primaryColor),
+                      ),
+                    )
+                  ],
+                )
               ],
             ),
           );

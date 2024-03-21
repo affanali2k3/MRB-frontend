@@ -12,7 +12,7 @@ class RegistorBloc extends Bloc<RegistorEvent, RegistorState> {
 
   RegistorRepository repository;
 
-  Future<bool> _signUpUser(RegistorSignUpEvent event, emit) async {
+  void _signUpUser(RegistorSignUpEvent event, emit) async {
     try {
       final userCredentials = await FirebaseAuth.instance
           .createUserWithEmailAndPassword(
@@ -23,22 +23,25 @@ class RegistorBloc extends Bloc<RegistorEvent, RegistorState> {
       }
       repository.setProfile(email: event.email);
       emit(RegistorSuccessState());
-      return true;
     } on FirebaseAuthException catch (e) {
       debugPrint(e.message);
       switch (e.code) {
         case 'email-already-in-use':
-          emit(RegistorWrongEmailState(
-              error: 'Account for this email already exists'));
+          emit(RegistorFailedState(
+              error: 'Account for this email already exists',
+              type: "ACCOUNT_EXISTS"));
           break;
         case 'invalid-email':
-          emit(RegistorWrongEmailState(error: 'Invalid email format'));
+          emit(RegistorFailedState(
+              error: 'Invalid email format', type: "INVALID_EMAIL"));
           break;
         case 'weak-password':
-          emit(RegistorWrongPasswordState(error: 'Weak Password'));
+          emit(RegistorFailedState(
+              error: 'Weak Password', type: "WEAK_PASSWORD"));
           break;
+        default:
+          emit(RegistorFailedState(error: "Error occured", type: e.code));
       }
-      return false;
     }
   }
 }

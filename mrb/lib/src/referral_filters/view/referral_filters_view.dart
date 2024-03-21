@@ -70,6 +70,10 @@ class ReferralFiltersPageState extends State<ReferralFiltersPage> {
     } else {
       _maxCostController.text = "100000";
     }
+
+    if (!usStatesAndCities.containsKey(state)) {
+      state = "Alabama";
+    }
   }
 
   @override

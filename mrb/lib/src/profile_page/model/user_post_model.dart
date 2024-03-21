@@ -3,12 +3,12 @@ class UserPostModel {
   final int likes;
   final int comments;
   final String posterName;
-  final String postName;
+  final String? postName;
   final int? likeId;
-  final String text;
+  final String? text;
   final int userId;
   final DateTime createdAt;
-  final List<dynamic> imagesName;
+  final List<dynamic>? imagesName;
 
   UserPostModel(
       {required this.id,

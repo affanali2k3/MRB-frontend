@@ -55,16 +55,18 @@ class CustomPostModel extends StatelessWidget {
           ),
           Container(
             margin: const EdgeInsets.only(top: 10),
-            child: post.imagesName.isEmpty
-                ? null
-                : Image.network(
-                    '${GlobalVariables.url}/post/post-image?userId=${post.userId}&postName=${post.postName}&imageName=${post.imagesName.first}'),
+            child: post.imagesName == null
+                ? const SizedBox()
+                : post.imagesName!.isEmpty
+                    ? null
+                    : Image.network(
+                        '${GlobalVariables.url}/post/post-image?userId=${post.userId}&postName=${post.postName}&imageName=${post.imagesName!.first}'),
           ),
           const SizedBox(
             height: 20,
           ),
           Row(
-            children: [TextCustom(post.text)],
+            children: [TextCustom(post.text ?? "No text")],
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
