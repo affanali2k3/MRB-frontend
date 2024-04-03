@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:mrb/global_variables.dart';
 import 'package:mrb/src/profile_page/blocs/profile_page_bloc/profile_page_bloc.dart';
 import 'package:mrb/src/profile_page/blocs/profile_page_bloc/profile_page_state.dart';
 import 'package:mrb/src/profile_page/view/pages/profile_about_page.dart';
@@ -8,9 +7,9 @@ import 'package:mrb/src/profile_page/view/pages/profile_agent_reviews_page.dart'
 import 'package:mrb/src/profile_page/view/pages/profile_network_page.dart';
 import 'package:mrb/src/profile_page/view/pages/profile_posts_page.dart';
 import 'package:mrb/src/profile_page/view/widgets/profile_business_stats.dart';
-import 'package:mrb/src/profile_page/view/widgets/profile_connect_message.dart';
 import 'package:mrb/src/profile_page/view/widgets/profile_cover_name.dart';
 import 'package:mrb/src/profile_page/view/widgets/profile_tabs.dart';
+import 'package:mrb/themes/font_theme.dart';
 
 class ProfilePage extends StatelessWidget {
   const ProfilePage({super.key, required this.userId});
@@ -19,7 +18,7 @@ class ProfilePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: const Color(0xff1f1f23),
+        backgroundColor: CustomTheme.nightBackgroundColor,
         body: BlocConsumer<ProfilePageBloc, ProfilePageState>(
             listener: (context, state) {
           if (state is ProfilePageFailedState) {
@@ -40,12 +39,6 @@ class ProfilePage extends StatelessWidget {
                       userId: userId,
                     ),
                     const ProfileBusinessStatsWidget(),
-                    SizedBox(
-                        child: userId == GlobalVariables.user.id
-                            ? null
-                            : ProfileConnectMessageWidget(
-                                userId: userId,
-                              )),
                     ProfileTabsWidget(
                       userId: userId,
                     ),

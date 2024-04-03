@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:mrb/src/common/outline_button.dart';
 import 'package:mrb/src/login/cubit/login_cubit.dart';
 import 'package:mrb/src/login/view/login.dart';
 import 'package:mrb/src/profile_completion_page/view/profile_completion_view.dart';
@@ -47,12 +46,16 @@ class RegisterPageState extends State<RegisterPage> {
               const SizedBox(
                 height: 20,
               ),
+              Image.asset('assets/logo.png'),
+              const SizedBox(
+                height: 10,
+              ),
               const Text(
                 'Welcome to MRB',
-                style: TextStyle(fontSize: 30, fontWeight: FontWeight.normal),
+                style: TextStyle(fontSize: 26, fontWeight: FontWeight.bold),
               ),
               const SizedBox(
-                height: 20,
+                height: 50,
               ),
               TextField(
                 decoration: InputDecoration(

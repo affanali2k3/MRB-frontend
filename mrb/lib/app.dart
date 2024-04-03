@@ -160,46 +160,46 @@ class App extends StatelessWidget {
               BlocProvider(
                   create: (_) => RegistorBloc(repository: RegistorRepository()))
             ],
-            child: MultiBlocListener(
-                listeners: [
-                  BlocListener<LoginCubit, LoginState>(
-                    listener: (context, state) {
-                      if (state is LoginSuccessfullyGotDataState) {
-                        context.read<ReferralCentreBloc>().add(
-                            ReferralCentreLoadingEvent(
-                                city: 'New York', state: 'California'));
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => const MainPage()));
-                      } else if (state is LoginFailedGettingDataState) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(content: Text("Error = $state")));
-                      }
-                    },
-                  ),
-                  BlocListener<ReferralCentreBloc, ReferralCentreState>(
-                    listener: (context, state) {
-                      if (state is ReferralCentreFailedState) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(content: Text("Error = $state")));
+            child: MaterialApp(
+                debugShowCheckedModeBanner: false,
+                theme: ThemeData(
+                  textTheme: GoogleFonts.poppinsTextTheme(),
+                  primarySwatch: Colors.blue,
+                ),
+                home: MultiBlocListener(
+                    listeners: [
+                      BlocListener<LoginCubit, LoginState>(
+                        listener: (context, state) {
+                          if (state is LoginSuccessfullyGotDataState) {
+                            context.read<ReferralCentreBloc>().add(
+                                ReferralCentreLoadingEvent(
+                                    city: 'New York', state: 'California'));
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => MainPage()));
+                          } else if (state is LoginFailedGettingDataState) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(content: Text("Error = $state")));
+                          }
+                        },
+                      ),
+                      BlocListener<ReferralCentreBloc, ReferralCentreState>(
+                        listener: (context, state) {
+                          if (state is ReferralCentreFailedState) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(content: Text("Error = $state")));
 
-                        Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => LoginPage(),
-                            ));
-                      }
-                    },
-                  ),
-                ],
-                child: MaterialApp(
-                    debugShowCheckedModeBanner: false,
-                    theme: ThemeData(
-                      textTheme: GoogleFonts.poppinsTextTheme(),
-                      primarySwatch: Colors.blue,
-                    ),
-                    home: Scaffold(
+                            Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => LoginPage(),
+                                ));
+                          }
+                        },
+                      ),
+                    ],
+                    child: Scaffold(
                       body: StreamBuilder<User?>(
                           stream: FirebaseAuth.instance.authStateChanges(),
                           builder: (context, snapshot) {
@@ -207,7 +207,7 @@ class App extends StatelessWidget {
                               FirebaseAuth.instance.currentUser!
                                   .getIdToken()
                                   .then((value) {
-                                debugPrint("ID = $value");
+                                // debugPrint("ID = $value");
                                 GlobalVariables.authorization = value as String;
 
                                 context

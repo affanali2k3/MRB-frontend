@@ -20,9 +20,9 @@ class LoginCubit extends Cubit<LoginState> {
   final LoginRepository repository;
   final GoogleSignIn _googleSignIn = GoogleSignIn();
 
-  void changeLoginState({emit = Emitter}) {
-    emit(LoginSuccessState());
-  }
+  // void changeLoginState({emit = Emitter}) {
+  //   emit(LoginSuccessState(type: Lo));
+  // }
 
   void changeLogoutState({emit = Emitter}) {
     emit(LoginLoggedOutState());
@@ -31,20 +31,26 @@ class LoginCubit extends Cubit<LoginState> {
   void login({required String email, required String password}) async {
     try {
       await auth.signInWithEmailAndPassword(email: email, password: password);
-      emit(LoginSuccessState());
+      emit(LoginSuccessState(type: LoginTypes.email));
     } on FirebaseAuthException catch (e) {
       debugPrint(e.message);
       switch (e.code) {
         case 'invalid-email':
-          emit(LoginInvalidEmailState(error: 'Invalid format for email'));
+          emit(LoginFailedState(
+              type: LoginPageErrors.invalidEmailFormat,
+              error: 'Invalid format for email'));
           break;
         case 'wrong-password':
-          emit(LoginInvalidPasswordState(error: 'Invalid password'));
+          emit(LoginFailedState(
+              type: LoginPageErrors.invalidPassword,
+              error: 'Invalid password'));
           break;
         case 'user-not-found':
-          emit(LoginInvalidEmailState(error: 'User not found'));
+          emit(LoginFailedState(
+              type: LoginPageErrors.userNotFound, error: 'User not found'));
+        default:
+          emit(LoginFailedState(type: LoginPageErrors.other, error: e.code));
       }
-      emit(LoginFailedState());
     }
   }
 
@@ -57,15 +63,12 @@ class LoginCubit extends Cubit<LoginState> {
         return;
       }
 
-      print('User ${response.body}');
       GlobalVariables.user =
           UserModel.fromJson(json.decode(response.body)['data']);
 
-      print('User data ${GlobalVariables.user}');
       final Response preferenceResponse =
           await repository.getUserPreferences(userId: GlobalVariables.user.id);
 
-      print('Pref Response ${preferenceResponse.body}');
       GlobalVariables.socket = IO.io(GlobalVariables.url);
 
       GlobalVariables.socket.onConnect((_) {
@@ -74,7 +77,6 @@ class LoginCubit extends Cubit<LoginState> {
 
       GlobalVariables.preferences = UserPreferenceModel.fromJson(
           json.decode(preferenceResponse.body)['data']);
-      print('Pref Response data ${GlobalVariables.preferences}');
 
       emit(LoginSuccessfullyGotDataState());
     } catch (e) {
@@ -93,17 +95,21 @@ class LoginCubit extends Cubit<LoginState> {
       final credentials = GoogleAuthProvider.credential(
           accessToken: googleAuth.accessToken, idToken: googleAuth.idToken);
 
-      final userCredentials = await auth.signInWithCredential(credentials);
+      await auth.signInWithCredential(credentials);
 
-      if (userCredentials.additionalUserInfo!.isNewUser) {
-        try {
-          repository.setProfile(email: user.email);
-        } catch (e) {
-          print(e);
-        }
-      }
+      // if (userCredentials.additionalUserInfo!.isNewUser) {
+      //   try {
+      //     repository.setProfile(email: user.email);
+      //   } catch (e) {
+      //     print(e);
+      //   }
+      // }
+
+      emit(LoginSuccessState(type: LoginTypes.google));
     } catch (e) {
       print(e);
+      emit(LoginFailedState(
+          error: e.toString(), type: LoginPageErrors.googleLoginError));
     }
   }
 

@@ -8,24 +8,32 @@ class ReferralCentreSearchWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextField(
+      enabled: false,
       decoration: InputDecoration(
-          hintText: 'Search leads',
+          contentPadding: const EdgeInsets.all(12),
+          hintText: 'Search here',
           hintStyle:
               const TextStyle(color: CustomTheme.nightSecondaryFontColor),
           filled: true,
           fillColor: CustomTheme.nightTertiaryColor,
-          prefixIcon:
-              Image.asset('assets/icons/referral_centre/magnifier_dark.png'),
+          prefixIcon: Image.asset('assets/icons/referral_centre/search.png'),
           suffixIcon: IconButton(
             onPressed: () {
               showModalBottomSheet<dynamic>(
                   backgroundColor: CustomTheme.nightBackgroundColor,
                   context: context,
-                  builder: (context) => ReferralFiltersPage());
+                  builder: (context) => const ReferralFiltersPage());
             },
-            icon: Image.asset('assets/icons/referral_centre/filter.png'),
+            icon: Container(
+                padding: const EdgeInsets.all(10),
+                decoration: BoxDecoration(
+                    color: CustomTheme.primaryColor,
+                    borderRadius: BorderRadius.circular(6)),
+                child: Image.asset('assets/icons/referral_centre/filters.png')),
           ),
-          border: OutlineInputBorder(borderRadius: BorderRadius.circular(30))),
+          border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(10),
+              borderSide: BorderSide.none)),
     );
   }
 }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mrb/src/login/view/login.dart';
 import 'package:mrb/src/registor/view/registor_view.dart';
+import 'package:mrb/themes/font_theme.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SplashScreenPage extends StatefulWidget {
@@ -14,7 +15,7 @@ class SplashScreenState extends State<SplashScreenPage> {
   String heading = "Exclusive Real Estate Leads Await";
   String text =
       "Embark on your journey to find the perfect home with our comprehensive real estate leads service";
-  String image = "assets/default_profile_photo.jpeg";
+  String image = "assets/splash-screen-2.png";
   int page = 1;
   late bool showSplashScreen;
 
@@ -49,9 +50,19 @@ class SplashScreenState extends State<SplashScreenPage> {
                 const SizedBox(
                   height: 20,
                 ),
-                const Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [Text('Skip')]),
+                Row(mainAxisAlignment: MainAxisAlignment.end, children: [
+                  GestureDetector(
+                    onTap: () => Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const RegisterPage(),
+                        )),
+                    child: const Text(
+                      'Skip',
+                      style: TextStyle(fontSize: 18),
+                    ),
+                  )
+                ]),
                 const SizedBox(
                   height: 20,
                 ),
@@ -73,11 +84,27 @@ class SplashScreenState extends State<SplashScreenPage> {
                 const SizedBox(
                   height: 20,
                 ),
-                Container(
-                  color: Colors.blue,
-                  width: 10,
-                  height: 2,
-                ),
+                Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+                  Container(
+                    decoration: BoxDecoration(
+                        color:
+                            page == 1 ? CustomTheme.primaryColor : Colors.grey,
+                        borderRadius: BorderRadius.circular(4)),
+                    width: page == 1 ? 20 : 5,
+                    height: 4,
+                  ),
+                  const SizedBox(
+                    width: 5,
+                  ),
+                  Container(
+                    decoration: BoxDecoration(
+                        color:
+                            page == 1 ? Colors.grey : CustomTheme.primaryColor,
+                        borderRadius: BorderRadius.circular(4)),
+                    width: page == 1 ? 5 : 20,
+                    height: 4,
+                  )
+                ]),
                 const SizedBox(
                   height: 20,
                 ),
@@ -87,11 +114,16 @@ class SplashScreenState extends State<SplashScreenPage> {
                 child: Stack(
               alignment: Alignment.bottomCenter,
               children: [
-                Image.asset(
-                  image,
-                  fit: BoxFit.cover,
-                  width: double.infinity,
-                  height: double.infinity,
+                ClipRRect(
+                  borderRadius: const BorderRadius.only(
+                      topLeft: Radius.circular(40),
+                      topRight: Radius.circular(40)),
+                  child: Image.asset(
+                    image,
+                    fit: BoxFit.fill,
+                    width: double.infinity,
+                    height: double.infinity,
+                  ),
                 ),
                 InkWell(
                   onTap: () async {
@@ -107,7 +139,7 @@ class SplashScreenState extends State<SplashScreenPage> {
                         heading = "List your referral";
                         text =
                             "Get verified buyers of your referral with an easy to manage dashboard";
-                        image = "assets/facebook.png";
+                        image = "assets/splash-screen-1.png";
                         page = 2;
                       });
                     }
@@ -119,7 +151,10 @@ class SplashScreenState extends State<SplashScreenPage> {
                     decoration: BoxDecoration(
                         color: Colors.white,
                         borderRadius: BorderRadius.circular(20)),
-                    child: const Text('Get Started'),
+                    child: const Text(
+                      'Get Started',
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
                   ),
                 )
               ],

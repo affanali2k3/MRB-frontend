@@ -40,7 +40,10 @@ class ReferralPostDirectPage extends StatelessWidget {
                   const SizedBox(
                     height: 20,
                   ),
-                  const CustomTopBarWidget(),
+                  // const CustomTopBarWidget(
+                  //   height: 200,
+                  //   key: ,
+                  // ),
                   const SizedBox(
                     height: 40,
                   ),

@@ -17,7 +17,7 @@ class CustomButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Material(
-        elevation: 8.0,
+        // elevation: 8.0,
         borderRadius: BorderRadius.circular(
             20), // Set the same radius as in the Container's BoxDecoration
         child: InkWell(
@@ -30,7 +30,7 @@ class CustomButton extends StatelessWidget {
               borderRadius: BorderRadius.circular(
                   20), // Maintain the specified BorderRadius
               color: primary ? CustomTheme.primaryColor : Colors.white,
-              border: Border.all(),
+              // border: Border.all(),
             ),
             child: Container(
               height: 50,
@@ -39,7 +39,9 @@ class CustomButton extends StatelessWidget {
               padding: const EdgeInsets.all(14),
               child: Text(
                 text,
-                style: TextStyle(color: primary ? Colors.white : Colors.black),
+                style: TextStyle(
+                    color: primary ? Colors.white : Colors.black,
+                    fontWeight: FontWeight.bold),
               ),
             ),
           ),

@@ -43,7 +43,9 @@ class FeedPage extends StatelessWidget {
                     const SizedBox(
                       height: 20,
                     ),
-                    const CustomTopBarWidget(),
+                    // const CustomTopBarWidget(
+                    //   height: 200,
+                    // ),
                     const SizedBox(
                       height: 20,
                     ),

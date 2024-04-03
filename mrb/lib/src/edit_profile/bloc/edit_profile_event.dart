@@ -16,13 +16,21 @@ class ProfileEditSetEvent extends ProfileEditEvent {
       {required this.biography,
       required this.avatarMimeType,
       required this.avatarbytes,
-      required this.coverPhotoBytes,
-      required this.coverPhotoMimeType});
+      required this.address,
+      required this.licenseNumber,
+      required this.licenseState,
+      required this.licenseYear,
+      required this.name,
+      required this.phone});
   final String biography;
+
+  final String name;
+  final String phone;
+  final String address;
+  final String? licenseState;
+  final String licenseNumber;
+  final int? licenseYear;
 
   final String? avatarMimeType;
   final Uint8List? avatarbytes;
-
-  final String? coverPhotoMimeType;
-  final Uint8List? coverPhotoBytes;
 }

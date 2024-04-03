@@ -51,18 +51,32 @@ class ReferralCentreLeadApplyWidgetState
             SingleChildScrollView(
               child: Container(
                 // height: (screenHeight * 0.8),
-                padding: const EdgeInsets.all(20),
+                padding: const EdgeInsets.all(10),
                 child: Column(
                   children: [
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        TextCustom('Apply for Referral', fontSize: 18),
+                        const Text(
+                          'Apply for Lead',
+                          style: TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
+                              color: CustomTheme.primaryColor),
+                        ),
                         IconButton(
                             onPressed: () => Navigator.pop(context),
                             icon: Image.asset(
                                 'assets/icons/referral_centre/close.png'))
                       ],
+                    ),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    Container(
+                      height: 1.5,
+                      width: double.infinity,
+                      color: const Color(0xffEBEBEB),
                     ),
                     const SizedBox(
                       height: 20,
@@ -75,48 +89,167 @@ class ReferralCentreLeadApplyWidgetState
                       child: Column(
                         children: [
                           Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              const CustomProfilePhoto(),
-                              const SizedBox(
-                                width: 10,
+                              Row(
+                                children: [
+                                  const CustomProfilePhoto(),
+                                  const SizedBox(
+                                    width: 10,
+                                  ),
+                                  Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      TextCustom('Ahmad Ali'),
+                                      TextCustom('California, CA',
+                                          secondary: true),
+                                    ],
+                                  ),
+                                ],
                               ),
                               Column(
                                 children: [
-                                  TextCustom('Ahmad Ali'),
-                                  TextCustom('California, CA', secondary: true),
+                                  Container(
+                                    padding: const EdgeInsets.all(5),
+                                    decoration: BoxDecoration(
+                                        color: const Color(0xffEDFDF7),
+                                        borderRadius:
+                                            BorderRadius.circular(10)),
+                                    child: const Text('Seller'),
+                                  ),
+                                  Row(children: [
+                                    Image.asset(
+                                        'assets/icons/referral_centre/date.png'),
+                                    const SizedBox(
+                                      width: 5,
+                                    ),
+                                    const Text('Within 2 Months',
+                                        style: TextStyle(
+                                            fontSize: 12,
+                                            color:
+                                                CustomTheme.tertiaryFontColor)),
+                                  ]),
                                 ],
-                              ),
-                              const SizedBox(
-                                width: 10,
-                              ),
-                              Container(
-                                padding: const EdgeInsets.all(5),
-                                decoration: BoxDecoration(
-                                    color: const Color(0xffEDFDF7),
-                                    borderRadius: BorderRadius.circular(10)),
-                                child: const Text('Seller'),
-                              ),
-                              const SizedBox(
-                                width: 10,
                               ),
                             ],
                           ),
-                          const SizedBox(
-                            height: 10,
-                          ),
-                          Row(children: [
-                            Image.asset(
-                                'assets/icons/referral_centre/date.png'),
-                            const SizedBox(
-                              width: 5,
-                            ),
-                            TextCustom('Within 2 Months', secondary: true),
-                          ]),
                         ],
                       ),
                     ),
                     const SizedBox(
                       height: 20,
+                    ),
+                    Container(
+                      height: 1.5,
+                      width: double.infinity,
+                      color: const Color(0xffEBEBEB),
+                    ),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    const Row(
+                      children: [
+                        Text(
+                          'About Lead',
+                          style: TextStyle(
+                              fontSize: 17, fontWeight: FontWeight.bold),
+                        )
+                      ],
+                    ),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    const Text(
+                        "Lorem ipsum dolor sit amet, consectetur adipiscing elit,aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco labo... Read more"),
+                    const SizedBox(
+                      height: 30,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Column(
+                          children: [
+                            const Text(
+                              'Lead Location',
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold, fontSize: 14),
+                            ),
+                            const SizedBox(
+                              height: 10,
+                            ),
+                            Row(children: [
+                              Image.asset(
+                                  'assets/icons/referral_centre/location.png'),
+                              const SizedBox(
+                                width: 5,
+                              ),
+                              const Text(
+                                'California, CA',
+                                style: TextStyle(
+                                    color: CustomTheme.tertiaryFontColor),
+                              )
+                            ])
+                          ],
+                        ),
+                        const Column(
+                          children: [
+                            Text(
+                              'Budget',
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold, fontSize: 14),
+                            ),
+                            SizedBox(
+                              height: 10,
+                            ),
+                            Text(
+                              '\$ 100,000',
+                              style: TextStyle(
+                                  color: CustomTheme.tertiaryFontColor),
+                            )
+                          ],
+                        ),
+                        const Column(
+                          children: [
+                            Text(
+                              'Property Type',
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold, fontSize: 14),
+                            ),
+                            SizedBox(
+                              height: 10,
+                            ),
+                            Text(
+                              'Family House',
+                              style: TextStyle(
+                                  color: CustomTheme.tertiaryFontColor),
+                            )
+                          ],
+                        ),
+                      ],
+                    ),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    Container(
+                      height: 1.5,
+                      width: double.infinity,
+                      color: const Color(0xffEBEBEB),
+                    ),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    const Row(
+                      children: [
+                        Text(
+                          'Proposal',
+                          style: TextStyle(
+                              fontSize: 17, fontWeight: FontWeight.bold),
+                        )
+                      ],
+                    ),
+                    const SizedBox(
+                      height: 10,
                     ),
                     TextField(
                       maxLength: 200,
@@ -131,45 +264,46 @@ class ReferralCentreLeadApplyWidgetState
                           hintStyle: const TextStyle(
                               color: CustomTheme.nightSecondaryFontColor),
                           filled: true,
-                          fillColor: CustomTheme.nightAppbarColor,
+                          fillColor: const Color.fromRGBO(116, 116, 116, 0.08),
                           border: OutlineInputBorder(
-                              borderSide: BorderSide.none,
+                              borderSide: const BorderSide(
+                                  color: Color.fromRGBO(184, 184, 184, 1)),
                               borderRadius: BorderRadius.circular(20))),
                     ),
                     const SizedBox(
                       height: 20,
                     ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        RichText(
-                          text: const TextSpan(
-                              text: 'Applying As ',
-                              style:
-                                  TextStyle(color: CustomTheme.nightFontColor),
-                              children: [
-                                TextSpan(
-                                    text: 'John Doe',
-                                    style: TextStyle(
-                                        color: CustomTheme.nightFontColor,
-                                        fontWeight: FontWeight.bold))
-                              ]),
-                        ),
-                        Container(
-                          padding: const EdgeInsets.all(10),
-                          decoration: BoxDecoration(
-                              border: Border.all(
-                                  color: CustomTheme.nightSecondaryFontColor),
-                              borderRadius: BorderRadius.circular(10)),
-                          child: Row(children: [
-                            Image.asset(
-                              'assets/icons/referral_centre/document.png',
-                            ),
-                            TextCustom('Attachment', secondary: true)
-                          ]),
-                        ),
-                      ],
-                    ),
+                    // Row(
+                    //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    //   children: [
+                    //     RichText(
+                    //       text: const TextSpan(
+                    //           text: 'Applying As ',
+                    //           style:
+                    //               TextStyle(color: CustomTheme.nightFontColor),
+                    //           children: [
+                    //             TextSpan(
+                    //                 text: 'John Doe',
+                    //                 style: TextStyle(
+                    //                     color: CustomTheme.nightFontColor,
+                    //                     fontWeight: FontWeight.bold))
+                    //           ]),
+                    //     ),
+                    //     Container(
+                    //       padding: const EdgeInsets.all(10),
+                    //       decoration: BoxDecoration(
+                    //           border: Border.all(
+                    //               color: CustomTheme.nightSecondaryFontColor),
+                    //           borderRadius: BorderRadius.circular(10)),
+                    //       child: Row(children: [
+                    //         Image.asset(
+                    //           'assets/icons/referral_centre/document.png',
+                    //         ),
+                    //         TextCustom('Attachment', secondary: true)
+                    //       ]),
+                    //     ),
+                    //   ],
+                    // ),
                     const SizedBox(
                       height: 20,
                     ),

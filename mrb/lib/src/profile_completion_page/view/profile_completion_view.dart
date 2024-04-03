@@ -1,10 +1,16 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mrb/assets/us_states.dart';
 import 'package:mrb/src/common/dropdown.dart';
+import 'package:mrb/src/login/cubit/login_cubit.dart';
+import 'package:mrb/src/login/cubit/login_state.dart';
+import 'package:mrb/src/main_page/view/main_page_view.dart';
 import 'package:mrb/src/profile_completion_page/bloc/profile_completion_bloc.dart';
+import 'package:mrb/src/referral_centre/bloc/referral_centre_bloc/referral_centre_bloc.dart';
+import 'package:mrb/src/referral_centre/bloc/referral_centre_bloc/referral_centre_event.dart';
 import 'package:mrb/themes/font_theme.dart';
 
 class ProfileCompletionPage extends StatefulWidget {
@@ -25,26 +31,60 @@ class ProfileCompletionPageState extends State<ProfileCompletionPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: BlocListener<ProfileCompletionBloc, ProfileCompletionState>(
-            listener: (context, state) {
-              if (state is ProfileCompletionFailedState) {
-                print("Snacky ${state.hashCode}");
-                ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                  content: Text(state.error),
-                ));
-              }
-              if (state is ProfileCompletionSuccessState) {
-                print("Snacky B ${state.hashCode}");
+        body: MultiBlocListener(
+            listeners: [
+          BlocListener<ProfileCompletionBloc, ProfileCompletionState>(
+              listener: (context, state) {
+            if (state is ProfileCompletionFailedState) {
+              print("Snacky ${state.hashCode}");
+              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                content: Text(state.error),
+              ));
+            }
+            if (state is ProfileCompletionSuccessState) {
+              print("Snacky B ${state.hashCode}");
+              ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                content: Text("Sucessfully created"),
+              ));
+
+              if (FirebaseAuth.instance.currentUser == null) {
                 ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                  content: Text("Sucessfully created"),
+                  content: Text("Not logged in."),
                 ));
+                return;
+              }
+
+              context.read<LoginCubit>().getUserData(
+                  email: FirebaseAuth.instance.currentUser!.email!);
+            }
+          }),
+          BlocListener<LoginCubit, LoginState>(
+            listener: (context, state) {
+              if (state is LoginSuccessfullyGotDataState) {
+                context.read<ReferralCentreBloc>().add(
+                    ReferralCentreLoadingEvent(
+                        city: 'New York', state: 'California'));
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => MainPage()));
+              } else if (state is LoginFailedGettingDataState) {
+                ScaffoldMessenger.of(context)
+                    .showSnackBar(SnackBar(content: Text("Error = $state")));
               }
             },
+          ),
+        ],
             child: SafeArea(
               minimum: const EdgeInsets.all(20),
               child: SingleChildScrollView(
                 child: Column(
                   children: [
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [Image.asset("assets/logo.png")],
+                    ),
                     const SizedBox(
                       height: 20,
                     ),

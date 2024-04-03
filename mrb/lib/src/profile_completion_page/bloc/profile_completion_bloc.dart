@@ -19,6 +19,7 @@ class ProfileCompletionBloc
 
   void _submitProfile(ProfileCompletionSubmitEvent event, emit) async {
     try {
+      print('blocc');
       emit(ProfileCompletionLoadingState());
       final Response response = await repository.submit(event: event);
       print(response.body);

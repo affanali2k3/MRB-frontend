@@ -7,28 +7,45 @@ class ProfileBusinessStatsWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Container(
         padding: const EdgeInsets.all(20),
-        child: Row(
+        child: const Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
             Column(
               children: [
-                TextCustom('204'),
-                TextCustom('Referrals', secondary: true),
-                TextCustom('Sent', secondary: true)
+                Text(
+                  '59',
+                  style: TextStyle(
+                      color: CustomTheme.primaryColor,
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold),
+                ),
+                Text('Ref Sent'),
               ],
             ),
             Column(
               children: [
-                TextCustom('204'),
-                TextCustom('Referrals', secondary: true),
-                TextCustom('Received', secondary: true)
+                Text(
+                  '250',
+                  style: TextStyle(
+                      color: CustomTheme.primaryColor,
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold),
+                ),
+                Text('Ref Received'),
+                // TextCustom('Received', secondary: true)
               ],
             ),
             Column(
               children: [
-                TextCustom('204'),
-                TextCustom('Deals', secondary: true),
-                TextCustom('Completed', secondary: true)
+                Text(
+                  '259',
+                  style: TextStyle(
+                      color: CustomTheme.primaryColor,
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold),
+                ),
+                Text('Ref Completed'),
+                // TextCustom('Completed', secondary: true)
               ],
             )
           ],

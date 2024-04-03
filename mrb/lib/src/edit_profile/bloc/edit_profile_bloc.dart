@@ -14,20 +14,46 @@ class ProfileEditBloc extends Bloc<ProfileEditEvent, ProfileEditState> {
 
   void _setProfile(ProfileEditSetEvent event, emit) async {
     try {
-      emit(ProfileEditSetLoadingState());
+      emit(ProfileEditLoadingState());
+
+      print(event.licenseState);
+
+      if (event.name.length < 2) {
+        emit(ProfileEditFailedState(
+            error: 'Name should be longer than 2 characters'));
+        return;
+      }
+
+      if (event.licenseState == null ||
+          event.licenseState == "Primary License State") {
+        emit(ProfileEditFailedState(error: 'Please select a license state'));
+        return;
+      }
+      if (event.licenseNumber == "") {
+        emit(ProfileEditFailedState(error: 'Please enter license Number'));
+        return;
+      }
+      if (event.licenseYear == null) {
+        emit(ProfileEditFailedState(error: 'Please select license year'));
+        return;
+      }
 
       await repository.setProfile(
           userId: GlobalVariables.user.id,
           biography: event.biography,
           avatarBytes: event.avatarbytes,
-          coverBytes: event.coverPhotoBytes,
-          coverMimeType: event.coverPhotoMimeType,
+          name: event.name,
+          phone: event.phone,
+          address: event.address,
+          licenseNumber: event.licenseNumber,
+          licenseState: event.licenseState!,
+          licenseYear: event.licenseYear!,
           avatarMimeType: event.avatarMimeType);
 
-      emit(ProfileEditSetSuccessState());
+      emit(ProfileEditSuccessState());
     } catch (e) {
       print(e);
-      emit(ProfileEditSetFailureState(error: e.toString()));
+      emit(ProfileEditFailedState(error: e.toString()));
     }
   }
 }

@@ -12,13 +12,11 @@ class ProfileNetworkPage extends StatelessWidget {
     return BlocBuilder<ProfileNetworkPageBloc, ProfileNetworkPageState>(
         builder: (context, state) {
       if (state is ProfileNetworkPageSuccessState) {
-        return SingleChildScrollView(
-          child: ListView.builder(
-              itemCount: state.userNetwork.length,
-              primary: false,
-              shrinkWrap: true,
-              itemBuilder: (context, index) =>
-                  CustomAgentWidget(agent: state.userNetwork[index])),
+        return ListView(
+          primary: false,
+          shrinkWrap: true,
+          children: List.generate(state.userNetwork.length,
+              (index) => (CustomAgentWidget(agent: state.userNetwork[index]))),
         );
       } else {
         return const SizedBox();

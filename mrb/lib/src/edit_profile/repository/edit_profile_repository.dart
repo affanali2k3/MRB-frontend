@@ -7,18 +7,27 @@ import 'package:http_parser/http_parser.dart';
 
 class ProfileRepository {
   Future<void> setProfile(
-      {required final int userId,
+      {required int userId,
       required String? avatarMimeType,
       required Uint8List? avatarBytes,
-      required String? coverMimeType,
-      required Uint8List? coverBytes,
-      required final String biography}) async {
+      required String name,
+      required String address,
+      required String licenseNumber,
+      required int licenseYear,
+      required String licenseState,
+      required String phone,
+      required String biography}) async {
     try {
       MultipartRequest request = http.MultipartRequest(
           'PATCH', Uri.parse('${GlobalVariables.url}/user/update'));
 
       request.fields['id'] = userId.toString();
       request.fields['biography'] = biography;
+      request.fields['name'] = name;
+      request.fields['phone'] = phone;
+      request.fields['address'] = address;
+      request.fields['licenseState'] = licenseState;
+      request.fields['licenseYear'] = licenseYear.toString();
 
       if (avatarBytes != null && avatarMimeType != null) {
         final MultipartFile avatar = http.MultipartFile.fromBytes(
@@ -27,14 +36,6 @@ class ProfileRepository {
             filename: 'avatar.png');
 
         request.files.add(avatar);
-      }
-      if (coverBytes != null && coverMimeType != null) {
-        final MultipartFile coverPhoto = http.MultipartFile.fromBytes(
-            'coverPhoto', coverBytes,
-            contentType: MediaType.parse(coverMimeType),
-            filename: 'coverPhoto.png');
-
-        request.files.add(coverPhoto);
       }
 
       request.headers["authorization"] = GlobalVariables.authorization;

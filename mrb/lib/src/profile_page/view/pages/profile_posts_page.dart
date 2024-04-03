@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mrb/src/common/post_model.dart';
 import 'package:mrb/src/profile_page/blocs/profile_post_page_bloc.dart/profile_post_event_bloc.dart';
 import 'package:mrb/src/profile_page/blocs/profile_post_page_bloc.dart/profile_post_page_state.dart';
+import 'package:mrb/themes/font_theme.dart';
 
 class ProfilePostsPage extends StatelessWidget {
   const ProfilePostsPage({Key? key}) : super(key: key);
@@ -13,17 +14,19 @@ class ProfilePostsPage extends StatelessWidget {
         builder: (context, state) {
       if (state is ProfilePostPageSuccessState) {
         return SingleChildScrollView(
-            padding: const EdgeInsets.all(20),
-            child: ListView.builder(
-              itemCount: state.posts.length,
-              shrinkWrap: true,
-              primary: false,
-              itemBuilder: (context, index) {
-                return CustomPostModel(
-                  post: state.posts[index],
-                );
-              },
-            ));
+            child: Container(
+          color: CustomTheme.lightBlueBackgroundColor,
+          child: ListView.builder(
+            itemCount: state.posts.length,
+            shrinkWrap: true,
+            primary: false,
+            itemBuilder: (context, index) {
+              return CustomPostModel(
+                post: state.posts[index],
+              );
+            },
+          ),
+        ));
       } else {
         return const SizedBox();
       }

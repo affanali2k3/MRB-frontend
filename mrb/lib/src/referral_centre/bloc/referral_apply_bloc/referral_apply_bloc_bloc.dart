@@ -25,7 +25,6 @@ class ReferralApplyBloc extends Bloc<ReferralApplyEvent, ReferralApplyState> {
       if (response.statusCode == 500) {
         throw Exception("Auth token not provided");
       }
-      print(response.body);
       emit(ReferralApplySuccessState());
     } catch (e) {
       emit(ReferralApplyFailedState(error: e.toString()));

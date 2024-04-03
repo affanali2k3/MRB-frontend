@@ -49,8 +49,8 @@ class ProfileConnectMessageWidget extends StatelessWidget {
                   return;
                 },
                 child: Container(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 40, vertical: 10),
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 40, vertical: 5),
                     decoration: BoxDecoration(
                         border: (state as ProfilePageSuccessState)
                                     .associationStatus ==
@@ -62,7 +62,7 @@ class ProfileConnectMessageWidget extends StatelessWidget {
                                 null
                             ? CustomTheme.primaryColor
                             : null,
-                        borderRadius: BorderRadius.circular(5)),
+                        borderRadius: BorderRadius.circular(20)),
                     child: associationStatusButton(
                         context, state.associationStatus))),
             const SizedBox(
@@ -84,11 +84,26 @@ class ProfileConnectMessageWidget extends StatelessWidget {
               },
               child: Container(
                   padding:
-                      const EdgeInsets.symmetric(horizontal: 40, vertical: 10),
+                      const EdgeInsets.symmetric(horizontal: 40, vertical: 5),
                   decoration: BoxDecoration(
-                      color: CustomTheme.primaryColor,
-                      borderRadius: BorderRadius.circular(5)),
-                  child: TextCustom('Message')),
+                      color: Colors.white,
+                      border: Border.all(color: CustomTheme.primaryColor),
+                      borderRadius: BorderRadius.circular(20)),
+                  child: Row(
+                    children: [
+                      Image.asset('assets/icons/profile_page/message.png'),
+                      const SizedBox(
+                        width: 5,
+                      ),
+                      const Text(
+                        'Message',
+                        style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                            color: CustomTheme.primaryColor),
+                      ),
+                    ],
+                  )),
             ),
           ],
         );
@@ -98,15 +113,27 @@ class ProfileConnectMessageWidget extends StatelessWidget {
 Widget associationStatusButton(
     BuildContext context, final UserAssociationModel? associationStatus) {
   if (associationStatus == null) {
-    return TextCustom('Connect');
+    return const Text(
+      'Connect',
+      style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+    );
   }
 
   if (associationStatus.senderId == GlobalVariables.user.id &&
       associationStatus.status == 'Pending') {
-    return TextCustom('Pending');
+    return const Text(
+      'Pending',
+      style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+    );
   } else if (associationStatus.receiverId == GlobalVariables.user.id &&
       associationStatus.status == 'Pending') {
-    return TextCustom('Accept');
+    return const Text(
+      'Accept',
+      style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+    );
   }
-  return TextCustom('Friends');
+  return const Text(
+    'Friends',
+    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+  );
 }

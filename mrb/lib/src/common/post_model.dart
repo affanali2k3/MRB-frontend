@@ -1,4 +1,6 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mrb/global_variables.dart';
 import 'package:mrb/src/common/profile_photo.dart';
@@ -19,39 +21,65 @@ class CustomPostModel extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.symmetric(vertical: 20),
-      padding: const EdgeInsets.all(20),
+      margin: const EdgeInsets.only(bottom: 20, left: 5, right: 5),
+      padding: const EdgeInsets.all(5),
       decoration: const BoxDecoration(color: CustomTheme.nightTertiaryColor),
       child: Column(
         children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Row(children: [
-                const CustomProfilePhoto(),
-                const SizedBox(
-                  width: 10,
+          Padding(
+            padding: const EdgeInsets.all(20),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Row(children: [
+                  const CustomProfilePhoto(),
+                  const SizedBox(
+                    width: 10,
+                  ),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        post.posterName,
+                        style: const TextStyle(
+                            fontSize: 16, fontWeight: FontWeight.bold),
+                      ),
+                      Row(
+                        children: [
+                          Image.asset('assets/icons/post/time.png'),
+                          const SizedBox(
+                            width: 5,
+                          ),
+                          const Text(
+                            '21 minutes ago',
+                            style: TextStyle(
+                                color: CustomTheme.tertiaryFontColor,
+                                fontSize: 12),
+                          )
+                        ],
+                      )
+                    ],
+                  )
+                ]),
+                Container(
+                  decoration: BoxDecoration(
+                      color: CustomTheme.nightSecondaryColor,
+                      borderRadius: BorderRadius.circular(40)),
+                  child: IconButton(
+                      onPressed: () {},
+                      icon: const Icon(
+                        Icons.more_horiz,
+                        color: Colors.black,
+                      )),
                 ),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    TextCustom(post.posterName),
-                    TextCustom('London, UK')
-                  ],
-                )
-              ]),
-              Container(
-                decoration: BoxDecoration(
-                    color: CustomTheme.nightSecondaryColor,
-                    borderRadius: BorderRadius.circular(40)),
-                child: IconButton(
-                    onPressed: () {},
-                    icon: const Icon(
-                      Icons.more_horiz,
-                      color: Colors.white,
-                    )),
-              ),
-            ],
+              ],
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(left: 20, right: 20),
+            child: Row(
+              children: [TextCustom(post.text ?? "No text")],
+            ),
           ),
           Container(
             margin: const EdgeInsets.only(top: 10),
@@ -65,78 +93,88 @@ class CustomPostModel extends StatelessWidget {
           const SizedBox(
             height: 20,
           ),
-          Row(
-            children: [TextCustom(post.text ?? "No text")],
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 10),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Row(
+                  children: [
+                    Image.asset('assets/icons/post/likes.png'),
+                    const SizedBox(
+                      width: 5,
+                    ),
+                    TextCustom(post.likes.toString()),
+                  ],
+                ),
+                GestureDetector(
+                  onTap: () {
+                    context
+                        .read<PostCommentsBloc>()
+                        .add(PostCommentsLoadingEvent(postId: post.id));
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => PostComments(postId: post.id),
+                        ));
+                  },
+                  child: Text('${post.comments.toString()} comments'),
+                ),
+              ],
+            ),
+          ),
+          const SizedBox(
+            height: 10,
+          ),
+          Container(
+            height: 2,
+            width: double.infinity,
+            color: const Color(0xffEBEBEB),
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Row(
-                children: [
-                  IconButton(
-                    onPressed: () {
-                      context.read<FeedPageBloc>().add(FeedPageLikePostEvent(
-                          userId: post.userId, postId: post.id));
-                    },
-                    icon: Image.asset('assets/icons/post/like.png'),
-                  ),
-                  IconButton(
-                    onPressed: () {},
-                    icon: Image.asset('assets/icons/post/comment.png'),
-                  ),
-                  IconButton(
-                    onPressed: () {},
-                    icon: Image.asset('assets/icons/post/share.png'),
-                  ),
-                ],
+              IconButton(
+                onPressed: () {
+                  context.read<FeedPageBloc>().add(FeedPageLikePostEvent(
+                      userId: post.userId, postId: post.id));
+                },
+                icon: Column(
+                  children: [
+                    Image.asset('assets/icons/post/like.png'),
+                    const Text('Like')
+                  ],
+                ),
               ),
               IconButton(
-                  onPressed: () {},
-                  icon: Image.asset('assets/icons/post/save.png'))
-            ],
-          ),
-          Row(
-            children: [
-              TextCustom(post.likes.toString()),
-              TextCustom(' Likes', secondary: true),
-              const SizedBox(
-                width: 20,
-              ),
-              GestureDetector(
-                onTap: () {
-                  context
-                      .read<PostCommentsBloc>()
-                      .add(PostCommentsLoadingEvent(postId: post.id));
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => PostComments(postId: post.id),
-                      ));
-                },
-                child: Row(
+                onPressed: () {},
+                icon: Column(
                   children: [
-                    TextCustom(post.comments.toString()),
-                    TextCustom(' Comments', secondary: true),
+                    Image.asset('assets/icons/post/comment.png'),
+                    const Text('Comment')
+                  ],
+                ),
+              ),
+              IconButton(
+                onPressed: () {},
+                icon: Column(
+                  children: [
+                    Image.asset('assets/icons/post/share.png'),
+                    const Text('Share')
+                  ],
+                ),
+              ),
+              IconButton(
+                onPressed: () {},
+                icon: Column(
+                  children: [
+                    Image.asset('assets/icons/post/send.png'),
+                    const Text('Send')
                   ],
                 ),
               ),
             ],
           ),
-          const SizedBox(
-            height: 20,
-          ),
-          TextField(
-            decoration: InputDecoration(
-                filled: true,
-                fillColor: CustomTheme.nightSecondaryColor,
-                focusColor: CustomTheme.nightSecondaryColor,
-                hintStyle: const TextStyle(color: Colors.white),
-                hintText: 'Your Comment..',
-                border: OutlineInputBorder(
-                    borderSide: const BorderSide(
-                        color: CustomTheme.nightSecondaryColor),
-                    borderRadius: BorderRadius.circular(20))),
-          )
         ],
       ),
     );

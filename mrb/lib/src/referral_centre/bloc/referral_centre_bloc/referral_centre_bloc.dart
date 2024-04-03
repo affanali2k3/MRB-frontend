@@ -21,7 +21,6 @@ class ReferralCentreBloc
     try {
       final Response response = await repository.searchDefaultLeads(
           preferences: GlobalVariables.preferences);
-      print(response.body);
 
       final List<dynamic> leadsJson = json.decode(response.body)['data'];
 

@@ -9,6 +9,9 @@ class UserModel {
       required this.address,
       required this.completedDeals,
       required this.phone,
+      required this.licenseState,
+      required this.licenseNumber,
+      required this.licenseYear,
       required this.gender});
   final String email;
   final int id;
@@ -20,6 +23,9 @@ class UserModel {
   final int? completedDeals;
   final String? phone;
   final String? gender;
+  final String? licenseState;
+  final int? licenseYear;
+  final String? licenseNumber;
 
   static UserModel fromJson(Map<String, dynamic> json) {
     return UserModel(
@@ -28,6 +34,9 @@ class UserModel {
         name: json['name'],
         biography: json['biography'],
         coverPhoto: json['coverPhoto'],
+        licenseState: json['licenseState'],
+        licenseYear: json['licenseYear'],
+        licenseNumber: json['licenseNumber'],
         photo: json['photo'],
         address: json['address'],
         completedDeals: json['completedDeals'],

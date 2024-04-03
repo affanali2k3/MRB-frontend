@@ -8,14 +8,6 @@ class ReferralCentreRepository {
   Future<Response> searchDefaultLeads(
       {required UserPreferenceModel preferences}) async {
     try {
-      print(preferences.state);
-      print(preferences.city);
-      print(preferences.maxCost);
-      print(preferences.minCost);
-      print(preferences.clientType);
-      print(preferences.houseType);
-      print(preferences.minTimeAmount);
-      print(preferences.maxTimeAmount);
       String state = '';
       String city = '';
       String maxCost = '';
@@ -52,7 +44,6 @@ class ReferralCentreRepository {
 
       final Response response = await http.get(Uri.parse(
           '${GlobalVariables.url}/referral-center/search?$state&$city&$minCost&$maxCost&$clientType&$houseType&$minTimeAmount&$maxTimeAmount'));
-      print(response.body);
       return response;
     } catch (e) {
       throw Exception(e);
@@ -75,7 +66,6 @@ class ReferralCentreRepository {
           headers: {
             "authorization": GlobalVariables.authorization
           });
-      print(response.body);
       return response;
     } catch (e) {
       throw Exception(e);

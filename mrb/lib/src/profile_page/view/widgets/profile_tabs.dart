@@ -25,6 +25,7 @@ class ProfileTabsWidget extends StatelessWidget {
           margin: const EdgeInsets.symmetric(vertical: 10),
           height: 40,
           child: ListView(
+            shrinkWrap: true,
             scrollDirection: Axis.horizontal,
             children: [
               profileTabItem(context, 'Network',
@@ -68,13 +69,13 @@ Widget profileTabItem(BuildContext context, String text,
     GestureDetector(
       onTap: onTap,
       child: Container(
-        padding: const EdgeInsets.all(10),
-        margin: const EdgeInsets.only(right: 15),
-        decoration: BoxDecoration(
-            color: active ? CustomTheme.primaryColor : null,
-            border: Border.all(
-                color: active ? CustomTheme.primaryColor : Colors.white),
-            borderRadius: BorderRadius.circular(6)),
-        child: TextCustom(text),
-      ),
+          padding: const EdgeInsets.fromLTRB(35, 10, 35, 5),
+          decoration: BoxDecoration(
+              border: Border(
+                  bottom: BorderSide(
+                      width: 2,
+                      color: active
+                          ? CustomTheme.primaryColor
+                          : CustomTheme.primaryColorLight))),
+          child: TextCustom(text)),
     );

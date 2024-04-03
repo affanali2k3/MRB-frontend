@@ -13,7 +13,7 @@ class PostPageRepository {
       required int userId}) async {
     try {
       var request = http.MultipartRequest(
-          'POST', Uri.parse('${GlobalVariables.url}/post/'));
+          'POST', Uri.parse('${GlobalVariables.url}/post/create'));
 
       if (images != null) {
         for (final image in images) {
