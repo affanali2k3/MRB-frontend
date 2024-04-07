@@ -1,4 +1,6 @@
 import 'package:equatable/equatable.dart';
+import 'package:mrb/src/network_page/model/user_model.dart';
+import 'package:mrb/src/profile_page/model/user_analytics_model.dart';
 import 'package:mrb/src/profile_page/model/user_association_model.dart';
 
 enum ProfilePageTabs {
@@ -23,53 +25,16 @@ class ProfilePageFailedState extends ProfilePageState {
 }
 
 class ProfilePageSuccessState extends ProfilePageState {
-  ProfilePageSuccessState(
-      {required this.associationStatus,
-      required this.email,
-      required this.name,
-      required this.tab,
-      required this.licence,
-      required this.photo,
-      required this.coverPhoto,
-      required this.phone,
-      required this.address,
-      required this.completedDeals,
-      required this.licenceState,
-      required this.licenceNumber,
-      required this.yearLicenced,
-      required this.occupation,
-      required this.gender});
+  ProfilePageSuccessState({
+    required this.associationStatus,
+    required this.analytics,
+    required this.user,
+    required this.tab,
+  });
   final UserAssociationModel? associationStatus;
-  final String email;
-  final String name;
-  final String? licence;
-  final String? photo;
-  final String? coverPhoto;
-  final String? phone;
-  final String? occupation;
-  final String? gender;
-  final String? licenceState;
-  final String? licenceNumber;
-  final int? yearLicenced;
-  final int? completedDeals;
-  final String? address;
+  final UserAnalyticsModel analytics;
+  final UserModel user;
   final ProfilePageTabs tab;
   @override
-  List<Object?> get props => [
-        associationStatus,
-        completedDeals,
-        licenceNumber,
-        licenceState,
-        address,
-        completedDeals,
-        email,
-        name,
-        licence,
-        photo,
-        phone,
-        occupation,
-        gender,
-        coverPhoto,
-        tab
-      ];
+  List<Object?> get props => [associationStatus, tab, user, analytics];
 }

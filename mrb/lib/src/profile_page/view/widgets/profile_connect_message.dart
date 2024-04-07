@@ -8,7 +8,6 @@ import 'package:mrb/src/profile_page/blocs/profile_page_bloc/profile_page_bloc.d
 import 'package:mrb/src/profile_page/blocs/profile_page_bloc/profile_page_event.dart';
 import 'package:mrb/src/profile_page/blocs/profile_page_bloc/profile_page_state.dart';
 import 'package:mrb/src/profile_page/model/user_association_model.dart';
-import 'package:mrb/src/profile_page/view/widgets/profile_business_stats.dart';
 import 'package:mrb/themes/font_theme.dart';
 
 class ProfileConnectMessageWidget extends StatelessWidget {

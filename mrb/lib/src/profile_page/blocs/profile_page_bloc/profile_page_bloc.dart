@@ -2,8 +2,10 @@ import 'dart:convert';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:http/http.dart';
+import 'package:mrb/src/network_page/model/user_model.dart';
 import 'package:mrb/src/profile_page/blocs/profile_page_bloc/profile_page_event.dart';
 import 'package:mrb/src/profile_page/blocs/profile_page_bloc/profile_page_state.dart';
+import 'package:mrb/src/profile_page/model/user_analytics_model.dart';
 import 'package:mrb/src/profile_page/model/user_association_model.dart';
 import 'package:mrb/src/profile_page/repository/profile_page_repository.dart';
 
@@ -22,33 +24,30 @@ class ProfilePageBloc extends Bloc<ProfilePageEvent, ProfilePageState> {
     final ProfilePageSuccessState successState =
         state as ProfilePageSuccessState;
     emit(ProfilePageSuccessState(
-        associationStatus: successState.associationStatus,
-        address: successState.address,
-        licenceState: successState.licenceState,
-        licenceNumber: successState.licenceNumber,
-        yearLicenced: successState.yearLicenced,
-        completedDeals: successState.completedDeals,
-        email: successState.email,
-        name: successState.name,
-        tab: event.profilePageTab,
-        licence: successState.licence,
-        photo: successState.photo,
-        coverPhoto: successState.coverPhoto,
-        phone: successState.phone,
-        occupation: successState.occupation,
-        gender: successState.gender));
+      analytics: successState.analytics,
+      associationStatus: successState.associationStatus,
+      user: successState.user,
+      tab: event.profilePageTab,
+    ));
   }
 
   void _getProfileData(ProfilePageLoadingEvent event, emit) async {
     try {
       emit(ProfilePageLoadingState());
-      final Response response =
+      final Response user =
           await repository.getUserDetails(userId: event.userId);
 
       final Response status = await repository.getAssociationStatus(
           userId: event.userId, associateId: event.associateId);
 
+      final Response analytics =
+          await repository.getUserAnalytics(userId: event.userId);
+
       final associationStausJson = json.decode(status.body)['data'];
+      final userData = UserModel.fromJson(json.decode(user.body)['data']);
+      final analyticsData =
+          UserAnalyticsModel.fromJson(json.decode(analytics.body)['data']);
+
       final UserAssociationModel? associationStatus;
 
       if (associationStausJson == null) {
@@ -57,28 +56,14 @@ class ProfilePageBloc extends Bloc<ProfilePageEvent, ProfilePageState> {
         associationStatus = UserAssociationModel.fromJson(associationStausJson);
       }
 
-      final responseJson = json.decode(response.body);
-
-      final data = responseJson['data'];
-
-      print(response.body);
+      // print(response.body);
 
       emit(ProfilePageSuccessState(
-          associationStatus: associationStatus,
-          address: data['address'],
-          licenceState: data['licenceState'],
-          licenceNumber: data['licenceNumber'],
-          yearLicenced: data['yearLicenced'],
-          completedDeals: data['completedDeals'],
-          email: data['email'],
-          name: data['name'],
-          tab: ProfilePageTabs.profilePostsTab,
-          licence: data['licence'],
-          photo: data['photo'],
-          coverPhoto: data['coverPhoto'],
-          phone: data['phone'],
-          occupation: data['occupation'],
-          gender: data['gender']));
+        associationStatus: associationStatus,
+        user: userData,
+        analytics: analyticsData,
+        tab: ProfilePageTabs.profilePostsTab,
+      ));
     } catch (e) {
       emit(ProfilePageFailedState(error: e.toString()));
     }
@@ -94,24 +79,14 @@ class ProfilePageBloc extends Bloc<ProfilePageEvent, ProfilePageState> {
       if (response.statusCode == 500) {
       } else if (response.statusCode == 200) {
         emit(ProfilePageSuccessState(
-            associationStatus: UserAssociationModel(
-                senderId: event.senderId,
-                receiverId: event.receiverId,
-                status: 'Pending'),
-            email: successState.email,
-            tab: successState.tab,
-            name: successState.name,
-            coverPhoto: successState.coverPhoto,
-            licence: successState.licence,
-            photo: successState.photo,
-            phone: successState.phone,
-            address: successState.address,
-            completedDeals: successState.completedDeals,
-            licenceState: successState.licenceState,
-            licenceNumber: successState.licenceNumber,
-            yearLicenced: successState.yearLicenced,
-            occupation: successState.occupation,
-            gender: successState.gender));
+          associationStatus: UserAssociationModel(
+              senderId: event.senderId,
+              receiverId: event.receiverId,
+              status: 'Pending'),
+          analytics: successState.analytics,
+          user: successState.user,
+          tab: successState.tab,
+        ));
       }
     } catch (e) {
       print(e);

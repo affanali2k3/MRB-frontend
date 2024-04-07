@@ -54,9 +54,21 @@ class LoginCubit extends Cubit<LoginState> {
     }
   }
 
+  void getUser({required String email}) async {
+    try {
+      final Response response = await repository.getUser(email: email);
+      GlobalVariables.user =
+          UserModel.fromJson(json.decode(response.body)['data']);
+    } catch (e) {
+      return;
+    }
+  }
+
   void getUserData({required String email}) async {
     try {
       final Response response = await repository.getUser(email: email);
+
+      print(response.body);
 
       if (response.statusCode == 500) {
         emit(LoginUserNotExistState());

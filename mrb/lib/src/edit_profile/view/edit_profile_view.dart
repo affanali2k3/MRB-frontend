@@ -58,6 +58,7 @@ class ProfileEditPageState extends State<ProfileEditPage> {
           ScaffoldMessenger.of(context).showSnackBar(
               const SnackBar(content: Text("Succesfully set profile")));
           Navigator.pop(context);
+          Navigator.pop(context);
         } else if (state is ProfileEditFailedState) {
           ScaffoldMessenger.of(context)
               .showSnackBar(SnackBar(content: Text("Error: ${state.error}")));
@@ -70,31 +71,41 @@ class ProfileEditPageState extends State<ProfileEditPage> {
             child: SingleChildScrollView(
               child: Column(
                 children: [
-                  Stack(alignment: Alignment.center, children: [
-                    GestureDetector(
-                        onTap: () async {
-                          FilePickerResult? result = await FilePicker.platform
-                              .pickFiles(withData: true);
-                          if (result != null) {
-                            PlatformFile file = result.files.first;
-                            final String? mimeType = lookupMimeType(file.path!);
-                            final Uint8List? buffer = file.bytes;
+                  GestureDetector(
+                      onTap: () async {
+                        FilePickerResult? result =
+                            await FilePicker.platform.pickFiles(withData: true);
+                        if (result != null) {
+                          PlatformFile file = result.files.first;
+                          final String? mimeType = lookupMimeType(file.path!);
+                          final Uint8List? buffer = file.bytes;
 
-                            setState(() {
-                              avatarMimeType = mimeType;
-                              avatarbytes = buffer;
-                            });
-                          }
-                        },
-                        child: avatarbytes == null
-                            ? const CircleAvatar(
+                          setState(() {
+                            avatarMimeType = mimeType;
+                            avatarbytes = buffer;
+                          });
+                        }
+                      },
+                      child: avatarbytes == null
+                          ? ClipRRect(
+                              borderRadius: BorderRadius.circular(200),
+                              child: CircleAvatar(
                                 radius: 68,
-                                backgroundImage: AssetImage(
-                                    'assets/default_profile_photo.jpeg'))
-                            : CircleAvatar(
-                                radius: 68,
-                                backgroundImage: MemoryImage(avatarbytes!))),
-                  ]),
+                                child: Image.network(
+                                    '${GlobalVariables.url}/user/avatar?userId=${GlobalVariables.user.id}&avatarName=avatar',
+                                    fit: BoxFit.fill, errorBuilder:
+                                        (BuildContext context, Object exception,
+                                            StackTrace? stackTrace) {
+                                  return const CircleAvatar(
+                                      radius: 68,
+                                      backgroundImage: AssetImage(
+                                          'assets/default_profile_photo.jpeg'));
+                                }),
+                              ),
+                            )
+                          : CircleAvatar(
+                              radius: 68,
+                              backgroundImage: MemoryImage(avatarbytes!))),
                   const SizedBox(
                     height: 20,
                   ),

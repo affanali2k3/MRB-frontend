@@ -73,6 +73,19 @@ class ProfilePageRepository {
     }
   }
 
+  Future<Response> getUserAnalytics({required int userId}) async {
+    try {
+      final Response response = await http.get(
+          Uri.parse(
+              '${GlobalVariables.url}/agent-analytics/get-agent-analytic?userId=${userId}'),
+          headers: {"authorization": GlobalVariables.authorization});
+
+      return response;
+    } catch (e) {
+      throw Exception(e);
+    }
+  }
+
   Future<void> acceptAssociation(
       {required int senderId, required int receiverId}) async {
     try {

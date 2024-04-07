@@ -11,6 +11,8 @@ class LoginLoginEvent extends LoginEvent {
   final String password;
 }
 
+class LoginGetUserEvent extends LoginEvent {}
+
 class LoginGoogleLoginEvent extends LoginEvent {}
 
 class LoginLogoutEvent extends LoginEvent {}

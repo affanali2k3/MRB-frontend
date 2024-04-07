@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mrb/global_variables.dart';
+import 'package:mrb/src/common/date_format.dart';
 import 'package:mrb/src/common/profile_photo.dart';
 import 'package:mrb/src/feed_page/bloc/feed_page_bloc.dart';
 import 'package:mrb/src/feed_page/bloc/feed_page_event.dart';
@@ -13,13 +14,27 @@ import 'package:mrb/src/profile_page/model/user_post_model.dart';
 import 'package:mrb/src/profile_page/view/widgets/profile_business_stats.dart';
 import 'package:mrb/themes/font_theme.dart';
 
-class CustomPostModel extends StatelessWidget {
-  const CustomPostModel({Key? key, required this.post}) : super(key: key);
-
+class CustomPostModel extends StatefulWidget {
+  const CustomPostModel({super.key, required this.post});
   final UserPostModel post;
 
   @override
+  State<CustomPostModel> createState() => _PostModelState();
+}
+
+class _PostModelState extends State<CustomPostModel> {
+  int postLikes = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    postLikes = widget.post.likes;
+  }
+
+  @override
   Widget build(BuildContext context) {
+    UserPostModel post = widget.post;
+
     return Container(
       margin: const EdgeInsets.only(bottom: 20, left: 5, right: 5),
       padding: const EdgeInsets.all(5),
@@ -50,9 +65,9 @@ class CustomPostModel extends StatelessWidget {
                           const SizedBox(
                             width: 5,
                           ),
-                          const Text(
-                            '21 minutes ago',
-                            style: TextStyle(
+                          Text(
+                            '${dateFormat(post.createdAt).number} ${dateFormat(post.createdAt).type} ago',
+                            style: const TextStyle(
                                 color: CustomTheme.tertiaryFontColor,
                                 fontSize: 12),
                           )
@@ -104,7 +119,7 @@ class CustomPostModel extends StatelessWidget {
                     const SizedBox(
                       width: 5,
                     ),
-                    TextCustom(post.likes.toString()),
+                    TextCustom(postLikes.toString()),
                   ],
                 ),
                 GestureDetector(
@@ -138,6 +153,10 @@ class CustomPostModel extends StatelessWidget {
                 onPressed: () {
                   context.read<FeedPageBloc>().add(FeedPageLikePostEvent(
                       userId: post.userId, postId: post.id));
+
+                  setState(() {
+                    postLikes = postLikes + 1;
+                  });
                 },
                 icon: Column(
                   children: [

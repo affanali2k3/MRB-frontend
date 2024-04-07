@@ -16,6 +16,14 @@ class CustomAgentWidget extends StatelessWidget {
 
   final UserModel agent;
 
+  num calculateAnalyticScore(num score, int number) {
+    if (number == 0) {
+      return 0;
+    } else {
+      return score / number;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -74,9 +82,10 @@ class CustomAgentWidget extends StatelessWidget {
                       itemSize: 20.0,
                       direction: Axis.horizontal,
                     ),
-                    const Text(
-                      '4.7 (6.8K review)',
-                      style: TextStyle(color: CustomTheme.secondaryFontColor),
+                    Text(
+                      '${calculateAnalyticScore(agent.agentToAgentRatingScore, agent.agentToAgentRatingNumber)} (${agent.agentToAgentRatingNumber} reviews)',
+                      style: const TextStyle(
+                          color: CustomTheme.secondaryFontColor),
                     )
                   ],
                 ),
