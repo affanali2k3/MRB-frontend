@@ -4,14 +4,19 @@ import { AntDesign } from "@expo/vector-icons";
 import { Image } from "expo-image";
 import { router, Tabs } from "expo-router";
 import React, { useEffect, useState } from "react";
-import { StyleSheet, TouchableOpacity, View } from "react-native";
+import { StyleSheet, TouchableOpacity, TouchableWithoutFeedback, View } from "react-native";
 
 export default function TabLayout() {
   const [isModalVisible, setModalVisible] = useState(false);
+  const [currentTab, setCurrentTab] = useState<string>("Home");
 
   const toggleModal = () => {
     setModalVisible(!isModalVisible);
   };
+
+  useEffect(() => {
+    console.log(`curr ${currentTab}`);
+  }, [currentTab]);
 
   return (
     <>
@@ -39,7 +44,9 @@ export default function TabLayout() {
             title: "Home",
             header: () => <ReferralCentreHeader />,
             tabBarIcon: ({ color }) => (
-              <Image source={require("@/assets/icons/navbar/home.png")} style={{ width: 28, height: 28, tintColor: color }} />
+              <TouchableWithoutFeedback onPress={() => setCurrentTab("A")}>
+                <Image source={require("@/assets/icons/navbar/home.png")} style={{ width: 28, height: 28, tintColor: color }} />
+              </TouchableWithoutFeedback>
             ),
           }}
         />
@@ -77,9 +84,10 @@ export default function TabLayout() {
           }}
         />
         <Tabs.Screen
-          name="account"
+          name="profile"
           options={{
-            title: "Account",
+            title: "Profile",
+            headerShown: false,
             tabBarIcon: ({ color }) => (
               <Image source={require("@/assets/icons/navbar/profile2.png")} style={{ width: 28, height: 28, tintColor: color }} />
             ),

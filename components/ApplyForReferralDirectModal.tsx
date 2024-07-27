@@ -7,14 +7,15 @@ import BoxedReferralInfo from "./BoxedReferralInfo";
 import { ClientTypes } from "@/entities/ClientType";
 import PrimaryButton from "./PrimaryButton";
 import { ReferralOpenForm } from "@/entities/ReferralOpenForm";
+import { ReferralDirectForm } from "@/entities/ReferralDirectForm";
 
 interface Props {
   isVisible: boolean;
-  applyReferralDetails: ReferralOpenForm;
+  applyReferralDetails: ReferralDirectForm;
   onClose: () => void;
 }
 
-const ApplyForReferralModal: React.FC<Props> = (props) => {
+const ApplyForReferralDirectModal: React.FC<Props> = (props) => {
   const [proposal, setProposal] = useState<string>("");
   return (
     <Modal
@@ -34,11 +35,11 @@ const ApplyForReferralModal: React.FC<Props> = (props) => {
         <HorizontalLine />
         <View style={styles.spacer}></View>
         <BoxedReferralInfo
-          name={props.applyReferralDetails.user.name}
-          reviewCount={props.applyReferralDetails.user.agentAnalytic.agentToAgentRatingNumber}
+          name={props.applyReferralDetails.senderAgent.name}
+          reviewCount={props.applyReferralDetails.senderAgent.agentAnalytic.agentToAgentRatingNumber}
           clientType={props.applyReferralDetails.isBuyer ? ClientTypes.buyer : ClientTypes.seller}
           timeAmount={props.applyReferralDetails.timeAmount}
-          reviewScore={props.applyReferralDetails.user.agentAnalytic.agentToAgentRatingScore}
+          reviewScore={props.applyReferralDetails.senderAgent.agentAnalytic.agentToAgentRatingScore}
         />
         <View style={styles.spacer}></View>
 
@@ -128,4 +129,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ApplyForReferralModal;
+export default ApplyForReferralDirectModal;

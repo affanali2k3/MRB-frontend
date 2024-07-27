@@ -18,6 +18,10 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   const [user, setUser] = useState<User | null>(null);
 
   useEffect(() => {
+    console.log(user?.id);
+  }, [user]);
+
+  useEffect(() => {
     const getUser = async () => {
       try {
         const response = await axios.get(`${url}/users/get/email?userEmail=a@gmail.com`);
@@ -28,10 +32,6 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     };
     getUser();
   }, []);
-
-  useEffect(() => {
-    console.log(firebaseUser?.email);
-  }, [firebaseUser]);
 
   return <UserContext.Provider value={{ user, setUser, firebaseUser, setFirebaseUser }}>{children}</UserContext.Provider>;
 };

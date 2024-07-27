@@ -1,7 +1,6 @@
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import { Image } from "expo-image";
 import React from "react";
-import { FontAwesome } from "@expo/vector-icons";
 import { Entypo } from "@expo/vector-icons";
 import { Colors } from "@/constants/Colors";
 import ReviewInfo from "./ReviewInfo";
@@ -9,27 +8,25 @@ import HorizontalLine from "./HorizontalLine";
 import ClientType from "./ClientType";
 import { ClientTypes } from "@/entities/ClientType";
 import { useUser } from "@/hooks/useUser";
-import { ReferralOpenForm } from "@/entities/ReferralOpenForm";
+import { ReferralDirectForm } from "@/entities/ReferralDirectForm";
 interface props {
-  card: ReferralOpenForm;
+  card: ReferralDirectForm;
   index: number;
   onApplyReferralModalPress: (index: number) => void;
 }
-const ReferralCentreCard: React.FC<props> = (props) => {
-  const user = useUser().user;
-
+const ReferralReceivedCard: React.FC<props> = (props) => {
   return (
     <View style={styles.container}>
       <View style={styles.upperRow}>
         <Image source={require("@/assets/images/default_profile_photo.jpeg")} style={styles.image} />
         <View style={styles.contentContainer}>
           <View style={styles.contentUpperRow}>
-            <Text style={styles.name}>{props.card.user.name}</Text>
+            <Text style={styles.name}>{props.card.senderAgent.name}</Text>
             <Text style={styles.postedTime}>Posted 1h ago</Text>
           </View>
           <ReviewInfo
-            score={props.card.user.agentAnalytic.agentToAgentRatingScore}
-            count={props.card.user.agentAnalytic.agentToAgentRatingNumber}
+            score={props.card.senderAgent.agentAnalytic.agentToAgentRatingScore}
+            count={props.card.senderAgent.agentAnalytic.agentToAgentRatingNumber}
           />
 
           <View style={styles.clientTypeLocation}>
@@ -48,18 +45,15 @@ const ReferralCentreCard: React.FC<props> = (props) => {
         </View>
       </View>
       <HorizontalLine />
-      {props.card.senderAgentId === user?.id ? (
-        <Text style={styles.postedByYou}>Posted By You</Text>
-      ) : (
-        <TouchableOpacity style={styles.applyButton} onPress={() => props.onApplyReferralModalPress(props.index)}>
-          <Text style={styles.buttonText}>Apply For Lead</Text>
-        </TouchableOpacity>
-      )}
+
+      <TouchableOpacity style={styles.applyButton} onPress={() => props.onApplyReferralModalPress(props.index)}>
+        <Text style={styles.buttonText}>Apply For Lead</Text>
+      </TouchableOpacity>
     </View>
   );
 };
 
-export default ReferralCentreCard;
+export default ReferralReceivedCard;
 
 const styles = StyleSheet.create({
   container: {

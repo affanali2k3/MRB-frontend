@@ -2,14 +2,14 @@ import { View, Text, ScrollView, FlatList, SafeAreaView, StyleSheet } from "reac
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { url } from "@/constants/Server";
-import { ReferralCard } from "@/entities/ReferralCard";
 import ReferralCentreCard from "./ReferralCentreCard";
 import PostReferralModal from "./PostReferralModal";
 import ApplyForReferralModal from "./ApplyForReferralModal";
 import { useUser } from "@/hooks/useUser";
+import { ReferralOpenForm } from "@/entities/ReferralOpenForm";
 
 export default function ReferralCentre() {
-  const [referrals, setReferrals] = useState<ReferralCard[]>([]);
+  const [referrals, setReferrals] = useState<ReferralOpenForm[]>([]);
   const [applyReferralIndex, setApplyReferralIndex] = useState<number | null>(null);
   const [applyReferralModalIsVisible, setApplyReferralModalIsVisible] = useState<boolean>(false);
 
@@ -26,7 +26,7 @@ export default function ReferralCentre() {
     }
   };
 
-  const renderItem = ({ item, index }: { item: ReferralCard; index: number }) => (
+  const renderItem = ({ item, index }: { item: ReferralOpenForm; index: number }) => (
     <ReferralCentreCard
       index={index}
       onApplyReferralModalPress={(index: number) => {

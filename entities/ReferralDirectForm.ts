@@ -1,9 +1,10 @@
 import { User } from "./User";
 
-export interface ReferralCard {
+export interface ReferralDirectForm {
   id: number;
   timeAmount: number;
-  senderAgent: number;
+  senderAgentId: number;
+  receiverAgentId: number;
   details: string;
   typeOfHouse: string;
   isBuyer: boolean;
@@ -13,5 +14,5 @@ export interface ReferralCard {
   price: number;
   createdAt: Date;
   updatedAt: Date;
-  user: User;
+  senderAgent: User;
 }
