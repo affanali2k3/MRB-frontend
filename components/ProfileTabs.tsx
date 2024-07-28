@@ -11,14 +11,16 @@ interface props {
 const ProfileTabs: React.FC<props> = (props) => {
   const tabs = ["Network", "Posts", "Reviews", "About"];
   return (
-    <FlatList
-      horizontal={true}
-      showsHorizontalScrollIndicator={false}
-      data={tabs}
-      renderItem={({ item, index }) => (
-        <ProfileTab active={index === props.activeIndex} title={item} index={index} setActiveIndex={props.setActiveIndex}></ProfileTab>
-      )}
-    ></FlatList>
+    <View>
+      <FlatList
+        horizontal={true}
+        showsHorizontalScrollIndicator={false}
+        data={tabs}
+        renderItem={({ item, index }) => (
+          <ProfileTab active={index === props.activeIndex} title={item} index={index} setActiveIndex={props.setActiveIndex}></ProfileTab>
+        )}
+      ></FlatList>
+    </View>
   );
 };
 
