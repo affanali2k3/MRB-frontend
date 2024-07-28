@@ -1,16 +1,20 @@
 import { Image } from "expo-image";
-import React from "react";
-import { View, Text, StyleSheet, Dimensions, TouchableOpacity } from "react-native";
+import React, { useState } from "react";
+import { View, Text, StyleSheet, Dimensions, TouchableOpacity, TextInput } from "react-native";
 import Modal from "react-native-modal";
 import HorizontalLine from "./HorizontalLine";
 import BoxedReferralInfo from "./BoxedReferralInfo";
+import { useUser } from "@/hooks/useUser";
+import { Colors } from "@/constants/Colors";
 
 interface Props {
   isVisible: boolean;
   onClose: () => void;
 }
 
-const PostReferralModal: React.FC<Props> = (props) => {
+const PostToFeedModal: React.FC<Props> = (props) => {
+  const [postText, setPostText] = useState("");
+  const { user } = useUser();
   return (
     <Modal
       isVisible={props.isVisible}
@@ -21,12 +25,16 @@ const PostReferralModal: React.FC<Props> = (props) => {
     >
       <View style={styles.container}>
         <View style={styles.applyClose}>
-          <Text>Apply for Lead</Text>
+          <View style={styles.imageName}>
+            <Image style={styles.image} source={require("@/assets/images/default_profile_photo.jpeg")} />
+            <Text>{user?.name}</Text>
+          </View>
           <TouchableOpacity onPress={props.onClose}>
             <Image style={styles.icon} source={require("@/assets/icons/referral_centre/close.png")} />
           </TouchableOpacity>
         </View>
         <HorizontalLine />
+        <TextInput placeholder={"Whats on your mind..."} style={styles.postText} multiline={true} onChangeText={setPostText} />
         {/* <BoxedReferralInfo /> */}
       </View>
     </Modal>
@@ -38,10 +46,29 @@ const styles = StyleSheet.create({
     justifyContent: "flex-end",
     margin: 0,
   },
+  imageName: {
+    flexDirection: "row",
+    gap: 10,
+    alignItems: "center",
+  },
+  postText: {
+    borderRadius: 20,
+    backgroundColor: Colors.neutralColor,
+    textAlignVertical: "top",
+    height: 200,
+    padding: 20,
+    marginTop: 20,
+    alignItems: "flex-start",
+  },
   applyClose: {
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
+  },
+  image: {
+    width: 50,
+    height: 50,
+    borderRadius: 50,
   },
   icon: {
     width: 30,
@@ -56,4 +83,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default PostReferralModal;
+export default PostToFeedModal;

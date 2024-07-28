@@ -1,28 +1,57 @@
 import ApplyForReferralModal from "@/components/ApplyForReferralModal";
+import PostReferralModal from "@/components/PostReferralModal";
+import PostToFeedModal from "@/components/PostToFeedModal";
 import ReferralCentreHeader from "@/components/ReferralCentreHeader";
 import { AntDesign } from "@expo/vector-icons";
 import { Image } from "expo-image";
 import { router, Tabs } from "expo-router";
 import React, { useEffect, useState } from "react";
-import { StyleSheet, TouchableOpacity, TouchableWithoutFeedback, View } from "react-native";
+import { StyleSheet, TouchableOpacity, View, Text } from "react-native";
 
 export default function TabLayout() {
   const [isModalVisible, setModalVisible] = useState(false);
-  const [currentTab, setCurrentTab] = useState<string>("Home");
+  const [currentRoute, setCurrentRoute] = useState<string | null>(null);
 
   const toggleModal = () => {
     setModalVisible(!isModalVisible);
   };
 
-  useEffect(() => {
-    console.log(`curr ${currentTab}`);
-  }, [currentTab]);
+  const renderModalContent = () => {
+    console.log(currentRoute);
+    switch (currentRoute) {
+      case "feed":
+        return (
+          <PostToFeedModal
+            isVisible={isModalVisible}
+            onClose={() => {
+              setModalVisible(false);
+            }}
+          />
+        );
+      default:
+        return (
+          <PostReferralModal
+            isVisible={isModalVisible}
+            onClose={() => {
+              setModalVisible(false);
+            }}
+          />
+        );
+    }
+  };
 
   return (
     <>
       <Tabs
+        screenListeners={{
+          // Monitor tab press and if 'test' tab is pressed, toggle value in zustand to trigger refetching of data from server
+          tabPress: (e: any) => {
+            const parts = e.target.split("-");
+            const result = parts[0];
+            setCurrentRoute(result);
+          },
+        }}
         screenOptions={{
-          // headerShown: false,
           headerStyle: {},
           tabBarStyle: {
             padding: 10,
@@ -44,9 +73,7 @@ export default function TabLayout() {
             title: "Home",
             header: () => <ReferralCentreHeader />,
             tabBarIcon: ({ color }) => (
-              <TouchableWithoutFeedback onPress={() => setCurrentTab("A")}>
-                <Image source={require("@/assets/icons/navbar/home.png")} style={{ width: 28, height: 28, tintColor: color }} />
-              </TouchableWithoutFeedback>
+              <Image source={require("@/assets/icons/navbar/home.png")} style={{ width: 28, height: 28, tintColor: color }} />
             ),
           }}
         />
@@ -94,10 +121,11 @@ export default function TabLayout() {
           }}
         />
       </Tabs>
-      {/* <ApplyForReferralModal isVisible={isModalVisible} onClose={toggleModal}></ApplyForReferralModal> */}
+      {isModalVisible && renderModalContent()}
     </>
   );
 }
+
 const styles = StyleSheet.create({
   fabContainer: {
     backgroundColor: "#007bff",
