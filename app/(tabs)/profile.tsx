@@ -6,6 +6,10 @@ import { url } from "@/constants/Server";
 import { useUser } from "@/hooks/useUser";
 import ProfileTabs from "@/components/ProfileTabs";
 import ProfilePagePostsList from "@/components/ProfilePagePostsList";
+import ProfileNetworkList from "@/components/ProfileNetworkList";
+import UserReviewSummary from "@/components/UserReviewSummary";
+import ProfileReviewList from "@/components/ProfileReviewList";
+import ProfileAbout from "@/components/ProfileAbout";
 
 const Profile = () => {
   const { user } = useUser();
@@ -14,13 +18,18 @@ const Profile = () => {
   const renderContent = () => {
     switch (activeIndex) {
       case 0:
-        return null;
+        return <ProfileNetworkList userId={user!.id} />;
       case 1:
         return <ProfilePagePostsList />;
       case 2:
-        return null;
+        return (
+          <>
+            <UserReviewSummary userId={user!.id} />
+            <ProfileReviewList />
+          </>
+        );
       case 3:
-        return null;
+        return <ProfileAbout user={user!} />;
     }
   };
 
